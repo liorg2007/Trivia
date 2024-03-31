@@ -1,22 +1,22 @@
 #include "Server.h"
 
 Server::Server()
-	: _commThread(nullptr)
+	: _communicatorThread(nullptr)
 {
 }
 
 Server::~Server()
 {
-	if (_commThread != nullptr)
+	if (_communicatorThread != nullptr)
 	{
-		_commThread->join();
-		delete _commThread;
+		_communicatorThread->join();
+		delete _communicatorThread;
 	}
 }
 
 void Server::run()
 {
-	_commThread = new std::thread(&Communicator::startHandleRequests,
+	_communicatorThread = new std::thread(&Communicator::startHandleRequests,
 		_communicator);
 	std::string inp;
 	do
