@@ -15,6 +15,8 @@ private:
 
 public:
 	Communicator();
+
+	/* Free used memory in the end (if needed)*/
 	~Communicator();
 
 	/* starts handling the client requests */
