@@ -6,4 +6,5 @@ Server::Server()
 
 void Server::run()
 {
+	_communicator.startHandleRequests();
 }

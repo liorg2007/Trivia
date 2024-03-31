@@ -4,6 +4,7 @@
 class Server {
 private:
 	Communicator _communicator;
+	std::thread* _commThread;
 
 public:
 	Server();
