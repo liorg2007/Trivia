@@ -4,7 +4,7 @@
 struct LoginResponse
 {
 	unsigned int status;
-} LoginResponse;
+};
 
 struct SignupResponse
 {
