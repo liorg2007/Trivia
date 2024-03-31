@@ -1,5 +1,6 @@
 #pragma once
 #include <winsock.h>
+#include "IRequestHandler.h"
 #include <unordered_map>
 
 class Communicator {
