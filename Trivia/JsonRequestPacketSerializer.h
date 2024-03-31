@@ -2,8 +2,6 @@
 #include "Responses.h"
 #include <vector>
 
-typedef std::vector<unsigned char> Buffer;
-
 class JsonRequestPacketSerializer
 {
 public:

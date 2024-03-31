@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+typedef std::vector<unsigned char> Buffer;
+
 struct LoginResponse
 {
 	unsigned int status;
