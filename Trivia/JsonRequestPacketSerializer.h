@@ -1,4 +1,5 @@
 #pragma once
+#include "json.hpp"
 #include "Responses.h"
 
 class JsonRequestPacketSerializer
