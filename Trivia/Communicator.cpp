@@ -2,33 +2,33 @@
 
 void Communicator::bindAndListen()
 {
-	struct sockaddr_in sa = { 0 };
+	struct sockaddr_in sockAddr = { 0 };
 
-	sa.sin_port = htons(PORT); // port that server will listen for
-	sa.sin_family = AF_INET;   // must be AF_INET
-	sa.sin_addr.s_addr = INADDR_ANY;    // when there are few ip's for the machine. We will use always "INADDR_ANY"
+	sockAddr.sin_port = htons(_PORT); // port that server will listen for
+	sockAddr.sin_family = AF_INET;   // must be AF_INET
+	sockAddr.sin_addr.s_addr = INADDR_ANY;    // when there are few ip's for the machine. We will use always "INADDR_ANY"
 
-	if (bind(_serverSocket, (struct sockaddr*)&sa, sizeof(sa)) == SOCKET_ERROR)
+	if (bind(_serverSocket, (struct sockaddr*)&sockAddr, sizeof(sockAddr)) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - bind");
 
 	if (listen(_serverSocket, SOMAXCONN) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - listen");
-	std::cout << "Listening on port " << PORT << std::endl;
+	std::cout << "Listening on port " << _PORT << std::endl;
 
 	while (true)
 	{
 		std::cout << "Waiting for client connection request" << std::endl;
 
 		// GOT A NEW CLIENT
-		SOCKET client_socket = accept(_serverSocket, NULL, NULL);
-		if (client_socket == INVALID_SOCKET)
+		SOCKET clientSocket = accept(_serverSocket, NULL, NULL);
+		if (clientSocket == INVALID_SOCKET)
 			throw std::exception(__FUNCTION__);
 
 		std::cout << "New client accepted, starting a new thread" << std::endl;
 		_threadPool.push_back(
 			new std::thread(&Communicator::handleNewClient,
-				this, client_socket));
-		_clients.insert({ client_socket, LoginRequestHandler() });
+				this, clientSocket));
+		_clients.insert({ clientSocket, LoginRequestHandler() });
 	}
 }
 
@@ -62,10 +62,10 @@ Communicator::~Communicator()
 {
 	try
 	{
-		for (const auto& t : _threadPool)
+		for (const auto& pThread : _threadPool)
 		{
-			t->join();
-			delete t;
+			pThread->join();
+			delete pThread;
 		}
 		closesocket(_serverSocket);
 	}

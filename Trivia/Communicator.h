@@ -13,7 +13,7 @@ private:
 	
 	std::vector<std::thread*> _threadPool;
 
-	const int PORT = 6969;
+	const int _PORT = 6969;
 
 	/* Initialize listening socket for the server */
 	void bindAndListen();
