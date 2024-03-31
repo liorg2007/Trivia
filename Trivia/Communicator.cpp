@@ -34,6 +34,9 @@ void Communicator::bindAndListen()
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
+	char data[6] = { 0 };
+	recv(clientSocket, data, 5, 0);
+	std::cout << "Client says: " << data << std::endl;
 	try
 	{
 		while (true)
