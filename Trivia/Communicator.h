@@ -1,5 +1,7 @@
 #pragma once
-#include <winsock.h>
+#pragma comment(lib, "ws2_32.lib")
+#include <WinSock2.h>
+#include <Windows.h>
 #include "IRequestHandler.h"
 #include "LoginRequestHandler.h"
 #include <unordered_map>
