@@ -1,6 +1,5 @@
 #pragma once
 #include "Responses.h"
-#include <vector>
 
 class JsonRequestPacketSerializer
 {
