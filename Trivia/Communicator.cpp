@@ -34,6 +34,19 @@ void Communicator::bindAndListen()
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
+	try
+	{
+		while (true)
+		{
+			// handle requests using _clients.at(clientSocket)
+		}
+	}
+	catch (...)
+	{
+		std::cerr << "User " << clientSocket << " disconnected." << std::endl;
+		_clients.erase(clientSocket);
+		closesocket(clientSocket);
+	}
 }
 
 Communicator::Communicator()
