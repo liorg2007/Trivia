@@ -29,3 +29,9 @@ void Server::run()
 	} while (inp != "EXIT");
 	exit(0);
 }
+
+int main()
+{
+	Server server = Server();
+	server.run();
+}
