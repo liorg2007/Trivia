@@ -1,10 +1,10 @@
 #include "Communicator.h"
 
-void Communicator::bindAndListen(int port)
+void Communicator::bindAndListen()
 {
 	struct sockaddr_in sa = { 0 };
 
-	sa.sin_port = htons(port); // port that server will listen for
+	sa.sin_port = htons(PORT); // port that server will listen for
 	sa.sin_family = AF_INET;   // must be AF_INET
 	sa.sin_addr.s_addr = INADDR_ANY;    // when there are few ip's for the machine. We will use always "INADDR_ANY"
 
@@ -60,4 +60,5 @@ Communicator::~Communicator()
 
 void Communicator::startHandleRequests()
 {
+	bindAndListen();
 }

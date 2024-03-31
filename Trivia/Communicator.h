@@ -12,8 +12,10 @@ private:
 	
 	std::vector<std::thread*> _threadPool;
 
+	const int PORT = 6969;
+
 	/* Initialize listening socket for the server */
-	void bindAndListen(int port);
+	void bindAndListen();
 
 	/* handles a client socket */
 	void handleNewClient(SOCKET clientSocket);
