@@ -13,7 +13,7 @@ void Communicator::bindAndListen()
 
 	if (listen(_serverSocket, SOMAXCONN) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - listen");
-	std::cout << "Listening on port " << port << std::endl;
+	std::cout << "Listening on port " << PORT << std::endl;
 
 	while (true)
 	{
