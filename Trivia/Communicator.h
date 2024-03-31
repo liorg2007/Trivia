@@ -1,6 +1,7 @@
 #pragma once
 #include <winsock.h>
 #include "IRequestHandler.h"
+#include "LoginRequestHandler.h"
 #include <unordered_map>
 #include <thread>
 #include <iostream>
