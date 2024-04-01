@@ -10,10 +10,10 @@ Buffer JsonRequestPacketSerializer::serializeResponse(ErrorResponse res)
     int msgSize = msg.length();
 
     Buffer buff;
-    buff.resize(msgSize + MESSAGE_HEADER_LENGTH); // another byte for a response code and message size)
-    buff[0] = ErrorResponseCode;
-    std::memcpy(&buff[1], &msgSize, 4);
-    std::memcpy(&buff[5], msg.c_str(), msgSize);
+    buff.resize(msgSize + HEADER_FIELD_LENGTH); // another byte for a response code and message size)
+    buff[0] = ErrorResponseCode; // no need for memcpy for a size of 1
+    std::memcpy(&buff[CODE_FIELD_LENGTH], &msgSize, SIZE_FIELD_LENGTH);
+    std::memcpy(&buff[HEADER_FIELD_LENGTH], msg.c_str(), msgSize);
     return buff;
 }
 

@@ -10,6 +10,6 @@ enum MessageCode {
 	ErrorResponseCode
 };
 
-// Message code - 1 bytes
-// Message length - 4 bytes
-constexpr auto MESSAGE_HEADER_LENGTH = 5;
+constexpr auto CODE_FIELD_LENGTH = 1;
+constexpr auto SIZE_FIELD_LENGTH = 4;
+constexpr auto HEADER_FIELD_LENGTH = CODE_FIELD_LENGTH + SIZE_FIELD_LENGTH;
