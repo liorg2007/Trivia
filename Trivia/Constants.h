@@ -1,10 +1,11 @@
 #pragma once
 #include <vector>
 
-typedef unsigned char Byte;
+typedef uint8_t Byte;
 typedef std::vector<Byte> Buffer;
 
-enum MessageCode {
+enum class MessageCode : Byte 
+{
 	SignupResponseCode,
 	LoginResponseCode,
 	ErrorResponseCode
