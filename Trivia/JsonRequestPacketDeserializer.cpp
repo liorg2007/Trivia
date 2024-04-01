@@ -12,9 +12,11 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buff)
   std::memcpy(jsonString, &buff[HEADER_FIELD_LENGTH], msgSize);
   jsonString[msgSize] = '\0'; 
   data = json::parse(jsonString);
-
-
-  return LoginRequest();
+  
+  request.username = data["username"];
+  request.password = data["password"];
+   
+  return request;
 }
 
 SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer buff)
