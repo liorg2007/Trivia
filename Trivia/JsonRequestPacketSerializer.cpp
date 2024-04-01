@@ -2,15 +2,34 @@
 
 Buffer JsonRequestPacketSerializer::serializeResponse(ErrorResponse res)
 {
-    return Buffer();
+    json jsonObj{ { "message", res.message } };
+    
+    return buildBuffer(MessageCode::ErrorResponseCode, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(LoginResponse res)
 {
-    return Buffer();
+    json jsonObj{ { "status", res.status } };
+
+    return buildBuffer(MessageCode::LoginResponseCode, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(SignupResponse res)
 {
-    return Buffer();
+    json jsonObj{ { "status", res.status } };
+
+    return buildBuffer(MessageCode::SignupResponseCode, jsonObj);
+}
+
+Buffer JsonRequestPacketSerializer::buildBuffer(MessageCode resCode, const json& jsonObj)
+{
+    auto msg = jsonObj.dump();
+    int msgSize = msg.length();
+
+    Buffer buff(msgSize + HEADER_FIELD_LENGTH);
+
+    buff[0] = (int)resCode; // no need for memcpy for a size of 1
+    std::memcpy(&buff[CODE_FIELD_LENGTH], &msgSize, SIZE_FIELD_LENGTH);
+    std::memcpy(&buff[HEADER_FIELD_LENGTH], msg.c_str(), msgSize);
+    return buff;
 }
