@@ -21,5 +21,20 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buff)
 
 SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer buff)
 {
-    return SignupRequest();
+  int msgSize;
+  SignupRequest request;
+  json data;
+
+  std::memcpy(&msgSize, &buff[CODE_FIELD_LENGTH], SIZE_FIELD_LENGTH);
+  char* jsonString = new char[msgSize + 1];
+
+  std::memcpy(jsonString, &buff[HEADER_FIELD_LENGTH], msgSize);
+  jsonString[msgSize] = '\0';
+  data = json::parse(jsonString);
+
+  request.username = data["username"];
+  request.password = data["password"];
+  request.email = data["email"];
+
+  return request;
 }
