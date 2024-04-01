@@ -1,4 +1,5 @@
 #pragma once
 #include <vector>
 
-typedef std::vector<unsigned char> Buffer;
+typedef unsigned char Byte;
+typedef std::vector<Byte> Buffer;
