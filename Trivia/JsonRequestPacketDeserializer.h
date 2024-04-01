@@ -4,6 +4,8 @@
 #include "Responses.h"
 #include "Constants.h"
 
+using json = nlohmann::json;
+
 class JsonRequestPacketDeserializer
 {
 public:

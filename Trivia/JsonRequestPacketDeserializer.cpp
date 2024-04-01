@@ -1,8 +1,20 @@
 #include "JsonRequestPacketDeserializer.h"
-
+#include <iostream>
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buff)
 {
-    return LoginRequest();
+  int msgSize;
+  LoginRequest request;
+  json data;
+  
+  std::memcpy(&msgSize, &buff[CODE_FIELD_LENGTH], SIZE_FIELD_LENGTH);
+  char* jsonString = new char[msgSize + 1];
+
+  std::memcpy(jsonString, &buff[HEADER_FIELD_LENGTH], msgSize);
+  jsonString[msgSize] = '\0'; 
+  data = json::parse(jsonString);
+
+
+  return LoginRequest();
 }
 
 SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer buff)
