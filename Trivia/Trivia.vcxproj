@@ -135,14 +135,13 @@
     <ClCompile Include="WSAInitializer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Buffer.h" />
     <ClInclude Include="Communicator.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonRequestPacketDeserializer.h" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="JsonRequestPacketSerializer.h" />
-    <ClInclude Include="MessageCode.h" />
     <ClInclude Include="Requests.h" />
     <ClInclude Include="Responses.h" />
     <ClInclude Include="Server.h" />
