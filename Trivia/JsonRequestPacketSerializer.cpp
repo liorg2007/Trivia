@@ -1,17 +1,20 @@
 #include "JsonRequestPacketSerializer.h"
-#include "MessageCode.h"
 
 using json = nlohmann::json;
 
 Buffer JsonRequestPacketSerializer::serializeResponse(ErrorResponse res)
 {
-    json jsonObj;
+    json jsonObj{ { "message", res.message } };
     
-    jsonObj["message"] = res.message;
     auto msg = jsonObj.dump();
-    Buffer buff(msg.size() + 5); // another byte for a response code and message size
-    buff[0] = ErrorResponseCode;
+    int msgSize = msg.length();
 
+    Buffer buff;
+    buff.resize(msgSize + MESSAGE_HEADER_LENGTH); // another byte for a response code and message size)
+    buff[0] = ErrorResponseCode;
+    std::memcpy(&buff[1], &msgSize, 4);
+    std::memcpy(&buff[5], msg.c_str(), msgSize);
+    return buff;
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(LoginResponse res)

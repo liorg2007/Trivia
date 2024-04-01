@@ -2,7 +2,7 @@
 #include "json.hpp"
 #include "Requests.h"
 #include "Responses.h"
-#include "Buffer.h"
+#include "Constants.h"
 
 class JsonRequestPacketDeserializer
 {

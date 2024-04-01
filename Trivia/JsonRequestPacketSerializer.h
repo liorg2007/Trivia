@@ -1,7 +1,7 @@
 #pragma once
 #include "json.hpp"
 #include "Responses.h"
-#include "Buffer.h"
+#include "Constants.h"
 
 class JsonRequestPacketSerializer
 {
