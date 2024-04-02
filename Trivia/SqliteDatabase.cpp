@@ -22,7 +22,6 @@ SqliteDatabase::SqliteDatabase(const std::string& dbName)
 
 		sqlite3_exec(_db, tableQuery.c_str(), nullptr, nullptr, nullptr);
 	}
-	sqlite3_close(_db);
 }
 
 SqliteDatabase::~SqliteDatabase()
@@ -36,10 +35,21 @@ void SqliteDatabase::AddUser(const std::string& username, const std::string& pas
 
 bool SqliteDatabase::DoesUserExist(const std::string& username)
 {
-	return false;
+	std::string query = "SELECT COUNT(*) FROM USERS WHERE username = '" + username + "'";
+	int count = 0;
+
+	sqlite3_exec(_db, query.c_str(), &SqliteDatabase::getCountCallback, &count, nullptr);
+
+	return count == 1;
 }
 
 bool SqliteDatabase::IsPasswordOk(const std::string& password)
 {
 	return false;
+}
+
+int SqliteDatabase::getCountCallback(void* data, int argc, char** argv, char** azColName)
+{
+	*((int*)data) = atoi(argv[0]);	//0 is first and only value
+	return 0;
 }

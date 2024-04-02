@@ -5,7 +5,6 @@
 int main()
 {
 	SqliteDatabase db = SqliteDatabase("hahaha.sqlite");
-	db.~SqliteDatabase();
 	WSAInitializer wsaInit;
 	Server server;
 	
