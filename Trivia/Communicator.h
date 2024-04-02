@@ -11,7 +11,7 @@
 class Communicator {
 private:
 	SOCKET _serverSocket;
-	std::unordered_map<SOCKET, IRequestHandler> _clients;
+	std::unordered_map<SOCKET, IRequestHandler*> _clients;
 	
 	std::vector<std::thread*> _threadPool;
 

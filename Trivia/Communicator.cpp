@@ -28,7 +28,7 @@ void Communicator::bindAndListen()
 		_threadPool.push_back(
 			new std::thread(&Communicator::handleNewClient,
 				this, clientSocket));
-		_clients.insert({ clientSocket, LoginRequestHandler() });
+		_clients.insert({ clientSocket, new LoginRequestHandler() });
 	}
 }
 
