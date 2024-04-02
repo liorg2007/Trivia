@@ -1,6 +1,6 @@
 #include "JsonRequestPacketDeserializer.h"
 #include <iostream>
-LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buff)
+LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const Buffer& buff)
 {
 	json data = deserializeJsonObject(buff);
 	LoginRequest request;
@@ -11,7 +11,7 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buff)
 	return request;
 }
 
-SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer buff)
+SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const Buffer& buff)
 {
 	json data = deserializeJsonObject(buff);
 	SignupRequest request;
@@ -23,7 +23,7 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer buf
 	return request;
 }
 
-json JsonRequestPacketDeserializer::deserializeJsonObject(Buffer buff)
+json JsonRequestPacketDeserializer::deserializeJsonObject(const Buffer& buff)
 {
 	int msgSize;
 	std::memcpy(&msgSize, &buff[CODE_FIELD_LENGTH], SIZE_FIELD_LENGTH);

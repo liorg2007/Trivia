@@ -9,9 +9,9 @@ using json = nlohmann::json;
 class JsonRequestPacketDeserializer
 {
 public:
-	static LoginRequest deserializeLoginRequest(Buffer buff);
-	static SignupRequest deserializeSignupRequest(Buffer buff);
+	static LoginRequest deserializeLoginRequest(const Buffer& buff);
+	static SignupRequest deserializeSignupRequest(const Buffer& buff);
 
 private:
-	static json deserializeJsonObject(Buffer buff);
+	static json deserializeJsonObject(const Buffer& buff);
 };
