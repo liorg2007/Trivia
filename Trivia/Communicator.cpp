@@ -109,5 +109,7 @@ Communicator::~Communicator()
 
 void Communicator::startHandleRequests()
 {
-	bindAndListen();
+	_threadPool.push_back(
+		new std::thread(&Communicator::bindAndListen,
+			this));
 }
