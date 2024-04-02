@@ -20,7 +20,7 @@ struct SignupRequest
 struct RequestInfo
 {
 	MessageCode id;
-	std::time_t receivalTIme;
+	std::time_t receivalTime;
 	Buffer buffer;
 };
 

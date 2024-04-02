@@ -38,7 +38,14 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	{
 		while (true)
 		{
-			// _clients.at(clientSocket)->handleRequest(...);
+			RequestInfo reqInfo;
+			reqInfo.buffer = recieveData(clientSocket);
+			reqInfo.receivalTime = std::time(0);
+			reqInfo.id = (MessageCode)reqInfo.buffer.at(0);
+			RequestResult res = _clients.at(clientSocket)->handleRequest(reqInfo);
+
+			_clients.find(clientSocket)->second = res.newHandler;
+			sendData(clientSocket, res.response);
 		}
 	}
 	catch (...)
@@ -49,11 +56,19 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	}
 }
 
+void Communicator::sendData(SOCKET clientSocket, const Buffer& buff) const
+{
+	if (send(clientSocket, (const char*) & buff[0], buff.size(), 0) == INVALID_SOCKET)
+	{
+		throw std::exception("Error while sending message to client");
+	}
+}
+
 Buffer Communicator::recieveData(SOCKET clientSocket) const
 {
 	Buffer data(HEADER_FIELD_LENGTH);
 	uint32_t msgSize = 0;
-	
+
 	recv(clientSocket, (char*)&data[0], HEADER_FIELD_LENGTH, 0);
 	std::memcpy(&msgSize, &data[CODE_FIELD_LENGTH], SIZE_FIELD_LENGTH);
 	data.resize(HEADER_FIELD_LENGTH + msgSize);

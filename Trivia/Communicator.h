@@ -25,6 +25,7 @@ private:
 	/* handles a client socket */
 	void handleNewClient(SOCKET clientSocket);
 
+	void sendData(SOCKET clientSocket, const Buffer& buff) const;
 	Buffer recieveData(SOCKET clientSocket) const;
 
 public:
