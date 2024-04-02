@@ -69,10 +69,16 @@ Buffer Communicator::recieveData(SOCKET clientSocket) const
 	Buffer data(HEADER_FIELD_LENGTH);
 	uint32_t msgSize = 0;
 
-	recv(clientSocket, (char*)&data[0], HEADER_FIELD_LENGTH, 0);
+	if (recv(clientSocket, (char*)&data[0], HEADER_FIELD_LENGTH, 0) != HEADER_FIELD_LENGTH)
+	{
+		throw std::exception("Client sent protocol invalid length");
+	}
 	std::memcpy(&msgSize, &data[CODE_FIELD_LENGTH], SIZE_FIELD_LENGTH);
 	data.resize(HEADER_FIELD_LENGTH + msgSize);
-	recv(clientSocket, (char*)&data[HEADER_FIELD_LENGTH], msgSize, 0);
+	if (recv(clientSocket, (char*)&data[HEADER_FIELD_LENGTH], msgSize, 0))
+	{
+		throw std::exception("Client message length doesn't accord to expected length");
+	}
 
 	// std::cout << "Client says: " << (char*)&data[0] << std::endl;
 	return data;
