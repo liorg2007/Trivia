@@ -5,8 +5,8 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const Buffer
 	json data = deserializeJsonObject(buff);
 	LoginRequest request;
 
-	request.username = data["username"];
-	request.password = data["password"];
+	request.username = std::move(data["username"]);
+	request.password = std::move(data["password"]);
 
 	return request;
 }
@@ -16,9 +16,9 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const Buff
 	json data = deserializeJsonObject(buff);
 	SignupRequest request;
 
-	request.username = data["username"];
-	request.password = data["password"];
-	request.email = data["email"];
+	request.username = std::move(data["username"]);
+	request.password = std::move(data["password"]);
+	request.email = std::move(data["email"]);
 
 	return request;
 }
