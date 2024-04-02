@@ -1,6 +1,9 @@
 #pragma once
 #include "Requests.h"
 
+struct RequestResult;
+struct RequestInfo;
+
 class IRequestHandler {
 public:
 	virtual bool isRequestRelevant(const RequestInfo&) = 0;

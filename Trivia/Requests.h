@@ -4,6 +4,8 @@
 #include "Constants.h"
 #include "IRequestHandler.h"
 
+class IRequestHandler;
+
 struct LoginRequest
 {
 	std::string username;
