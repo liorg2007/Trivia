@@ -4,23 +4,24 @@
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& req)
 {
-	return req.id == MessageCode::LoginRequestCode;
+	return req.id == MessageCode::LoginRequestCode
+		|| req.id == MessageCode::SignupRequestCode;
 }
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo& req)
 {
-	LoginRequest login = JsonRequestPacketDeserializer::deserializeLoginRequest(req.buffer);
 	RequestResult reqResult;
 	LoginResponse res;
-
-	// check if username matches password according to the database
-	if (true) 
+	res.status = 1;
+	if (req.id == MessageCode::LoginRequestCode)
 	{
-		res.status = 1;
+		auto login = JsonRequestPacketDeserializer::deserializeLoginRequest(req.buffer);
+		// LOGIN AND SET STATUS 1 IF SUCCESSFUL
 	}
 	else
 	{
-		res.status = 0;
+		auto signup = JsonRequestPacketDeserializer::deserializeSignupRequest(req.buffer);
+		// SIGNUP AND SET STATUS 1 IF SUCCESSFUL
 	}
 	reqResult.newHandler = new LoginRequestHandler(); // the next state, not LoginRequestHandler
 	reqResult.response = JsonRequestPacketSerializer::serializeResponse(res);
