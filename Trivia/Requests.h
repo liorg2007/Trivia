@@ -2,6 +2,7 @@
 #include <string>
 #include <ctime>
 #include "Constants.h"
+#include "IRequestHandler.h"
 
 struct LoginRequest
 {
@@ -21,4 +22,10 @@ struct RequestInfo
 	MessageCode id;
 	std::time_t receivalTIme;
 	Buffer buffer;
+};
+
+struct RequestResult
+{
+	Buffer response;
+	IRequestHandler* newHandler;
 };
