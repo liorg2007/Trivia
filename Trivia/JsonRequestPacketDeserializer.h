@@ -11,4 +11,7 @@ class JsonRequestPacketDeserializer
 public:
 	static LoginRequest deserializeLoginRequest(Buffer buff);
 	static SignupRequest deserializeSignupRequest(Buffer buff);
+
+private:
+	static json deserializeJsonObject(Buffer buff);
 };
