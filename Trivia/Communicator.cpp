@@ -38,27 +38,38 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	{
 		while (true)
 		{
+			auto handlerSearch = _clients.find(clientSocket);
+			if (handlerSearch == _clients.end())
+			{
+				throw std::exception("Can't find client's state");
+			}
 			RequestInfo reqInfo;
 			reqInfo.buffer = recieveData(clientSocket);
 			reqInfo.receivalTime = std::time(0);
 			reqInfo.id = (MessageCode)reqInfo.buffer.at(0);
-			RequestResult res = _clients.at(clientSocket)->handleRequest(reqInfo);
 
-			_clients.find(clientSocket)->second = res.newHandler;
+			RequestResult res = handlerSearch->second->handleRequest(reqInfo);
+			delete handlerSearch->second; // free previous handler
+			handlerSearch->second = res.newHandler;
 			sendData(clientSocket, res.response);
 		}
 	}
 	catch (...)
 	{
 		std::cerr << "User " << clientSocket << " disconnected." << std::endl;
-		_clients.erase(clientSocket);
+		auto handlerSearch = _clients.find(clientSocket);
+		if (handlerSearch != _clients.end())
+		{
+			delete handlerSearch->second;
+			_clients.erase(clientSocket);
+		}
 		closesocket(clientSocket);
 	}
 }
 
 void Communicator::sendData(SOCKET clientSocket, const Buffer& buff) const
 {
-	if (send(clientSocket, (const char*) & buff[0], buff.size(), 0) == INVALID_SOCKET)
+	if (send(clientSocket, (const char*)&buff[0], buff.size(), 0) == INVALID_SOCKET)
 	{
 		throw std::exception("Error while sending message to client");
 	}
@@ -75,7 +86,7 @@ Buffer Communicator::recieveData(SOCKET clientSocket) const
 	}
 	std::memcpy(&msgSize, &data[CODE_FIELD_LENGTH], SIZE_FIELD_LENGTH);
 	data.resize(HEADER_FIELD_LENGTH + msgSize);
-	if (recv(clientSocket, (char*)&data[HEADER_FIELD_LENGTH], msgSize, 0))
+	if (recv(clientSocket, (char*)&data[HEADER_FIELD_LENGTH], msgSize, 0) != msgSize)
 	{
 		throw std::exception("Client message length doesn't accord to expected length");
 	}
@@ -101,6 +112,11 @@ Communicator::~Communicator()
 		{
 			pThread->join();
 			delete pThread;
+		}
+		for (const auto& pair : _clients)
+		{
+			// free handlers memory
+			delete pair.second;
 		}
 		closesocket(_serverSocket);
 	}
