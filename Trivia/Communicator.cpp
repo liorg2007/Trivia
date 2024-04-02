@@ -1,4 +1,5 @@
 #include "Communicator.h"
+#include "JsonRequestPacketSerializer.h"
 
 void Communicator::bindAndListen()
 {
@@ -48,10 +49,21 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			reqInfo.receivalTime = std::time(0);
 			reqInfo.id = (MessageCode)reqInfo.buffer.at(0);
 
-			RequestResult res = handlerSearch->second->handleRequest(reqInfo);
-			delete handlerSearch->second; // free previous handler
-			handlerSearch->second = res.newHandler;
-			sendData(clientSocket, res.response);
+			if (handlerSearch->second->isRequestRelevant(reqInfo))
+			{
+				RequestResult res = handlerSearch->second->handleRequest(reqInfo);
+				delete handlerSearch->second; // free previous handler
+				handlerSearch->second = res.newHandler;
+				sendData(clientSocket, res.response);
+			}
+			else
+			{
+				// send error message
+				ErrorResponse errRes;
+				errRes.message = "Request is not relevant to current client state";
+				sendData(clientSocket,
+					JsonRequestPacketSerializer::serializeResponse(errRes));
+			}
 		}
 	}
 	catch (...)
