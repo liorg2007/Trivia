@@ -2,11 +2,13 @@
 #pragma comment(lib, "ws2_32.lib")
 #include <WinSock2.h>
 #include <Windows.h>
-#include "IRequestHandler.h"
-#include "LoginRequestHandler.h"
 #include <unordered_map>
 #include <thread>
 #include <iostream>
+#include "Constants.h"
+#include "IRequestHandler.h"
+#include "LoginRequestHandler.h"
+
 
 class Communicator {
 private:
@@ -22,6 +24,8 @@ private:
 
 	/* handles a client socket */
 	void handleNewClient(SOCKET clientSocket);
+
+	Buffer recieveData(SOCKET clientSocket) const;
 
 public:
 	Communicator();

@@ -34,14 +34,11 @@ void Communicator::bindAndListen()
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
-	char data[6] = { 0 };
-	recv(clientSocket, data, 5, 0);
-	std::cout << "Client says: " << data << std::endl;
 	try
 	{
 		while (true)
 		{
-			// handle requests using _clients.at(clientSocket)
+			// _clients.at(clientSocket)->handleRequest(...);
 		}
 	}
 	catch (...)
@@ -50,6 +47,20 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		_clients.erase(clientSocket);
 		closesocket(clientSocket);
 	}
+}
+
+Buffer Communicator::recieveData(SOCKET clientSocket) const
+{
+	Buffer data(HEADER_FIELD_LENGTH);
+	uint32_t msgSize = 0;
+	
+	recv(clientSocket, (char*)&data[0], HEADER_FIELD_LENGTH, 0);
+	std::memcpy(&msgSize, &data[CODE_FIELD_LENGTH], SIZE_FIELD_LENGTH);
+	data.resize(HEADER_FIELD_LENGTH + msgSize);
+	recv(clientSocket, (char*)&data[HEADER_FIELD_LENGTH], msgSize, 0);
+
+	// std::cout << "Client says: " << (char*)&data[0] << std::endl;
+	return data;
 }
 
 Communicator::Communicator()
