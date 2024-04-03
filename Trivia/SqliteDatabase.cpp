@@ -43,13 +43,24 @@ bool SqliteDatabase::DoesUserExist(const std::string& username)
 	return count == 1;
 }
 
-bool SqliteDatabase::IsPasswordOk(const std::string& password)
+bool SqliteDatabase::IsPasswordOk(const std::string& username, const std::string& password)
 {
-	return false;
+	std::string query = "SELECT password FROM USERS WHERE username = '" + username + "'";
+	std::string userPassword = "";
+
+	sqlite3_exec(_db, query.c_str(), &SqliteDatabase::getSingleStringCallback, &userPassword, nullptr);
+
+	return userPassword == password;
 }
 
 int SqliteDatabase::getCountCallback(void* data, int argc, char** argv, char** azColName)
 {
 	*((int*)data) = atoi(argv[0]);	//0 is first and only value
+	return 0;
+}
+
+int SqliteDatabase::getSingleStringCallback(void* data, int argc, char** argv, char** azColName)
+{
+	*((std::string*)data) = argv[0]; //0 is first and only value
 	return 0;
 }

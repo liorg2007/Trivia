@@ -16,8 +16,9 @@ private:
 
 	/* Private Queries */
 	bool DoesUserExist(const std::string& username) override;
-	bool IsPasswordOk(const std::string& password) override;
+	bool IsPasswordOk(const std::string& username, const std::string& password) override;
 
 	/* callback */
 	static int getCountCallback(void* data, int argc, char** argv, char** azColName);
+	static int getSingleStringCallback(void* data, int argc, char** argv, char** azColName);
 };

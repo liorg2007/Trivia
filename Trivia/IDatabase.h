@@ -9,5 +9,5 @@ public:
 
 	/* Private Queries */
 	virtual bool DoesUserExist(const std::string& username) = 0;
-	virtual bool IsPasswordOk(const std::string& password) = 0;
+	virtual bool IsPasswordOk(const std::string& username, const std::string& password) = 0;
 };
