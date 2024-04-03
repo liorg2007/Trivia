@@ -7,7 +7,9 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* database)
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler() const
 {
-    return nullptr;
+    LoginRequestHandler* reqHandler = new LoginRequestHandler();
+    // do a bunch of stuff
+    return reqHandler;
 }
 
 LoginManager& RequestHandlerFactory::getLoginManager()

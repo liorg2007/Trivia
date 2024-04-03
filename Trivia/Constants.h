@@ -19,3 +19,5 @@ enum class MessageCode : Byte
 constexpr auto CODE_FIELD_LENGTH = 1;
 constexpr auto SIZE_FIELD_LENGTH = 4;
 constexpr auto HEADER_FIELD_LENGTH = CODE_FIELD_LENGTH + SIZE_FIELD_LENGTH;
+
+constexpr auto DATABASE_FILE_NAME = "UsersDB.sqlite3";
