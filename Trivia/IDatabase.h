@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-
+#include "DatabaseException.hpp"
 
 class IDatabase {
 public:
