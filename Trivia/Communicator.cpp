@@ -26,10 +26,10 @@ void Communicator::bindAndListen()
 			throw std::exception(__FUNCTION__);
 
 		std::cout << "New client accepted, starting a new thread" << std::endl;
+		_clients.insert({ clientSocket, new LoginRequestHandler() });
 		_threadPool.push_back(
 			new std::thread(&Communicator::handleNewClient,
 				this, clientSocket));
-		_clients.insert({ clientSocket, new LoginRequestHandler() });
 	}
 }
 
