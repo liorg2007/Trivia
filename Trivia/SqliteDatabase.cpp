@@ -8,7 +8,7 @@ SqliteDatabase::SqliteDatabase(const std::string& dbName)
 	if (result) {
 		std::string errorMsg = std::string(sqlite3_errmsg(_db));
 		sqlite3_close(_db);
-		throw(DatabaseException("Error with sqlite database: " + errorMsg));
+		throw DatabaseException("Error with sqlite database: " + errorMsg);
 	}
 	else {
 		std::cout << "Sqlite database opened!" << std::endl;
@@ -18,7 +18,7 @@ SqliteDatabase::SqliteDatabase(const std::string& dbName)
                             "id INTEGER PRIMARY KEY,"
                             "username TEXT UNIQUE NOT NULL,"
                             "password TEXT NOT NULL,"
-														"email TEXT NOT NULL);";
+							"email TEXT NOT NULL);";
 
 		sqlite3_exec(_db, tableQuery.c_str(), nullptr, nullptr, nullptr);
 	}
@@ -31,7 +31,8 @@ SqliteDatabase::~SqliteDatabase()
 
 void SqliteDatabase::AddUser(const std::string& username, const std::string& password, const std::string& email)
 {
-	std::string query = "INSERT INTO USERS(username, password, email) VALUES('" + username + "', '" + password + "', '" + email + "')";
+	std::string query = "INSERT INTO USERS(username, password, email) "
+		"VALUES('" + username + "', '" + password + "', '" + email + "')";
 	int result;
 
 	result = sqlite3_exec(_db, query.c_str(), nullptr, nullptr, nullptr);
