@@ -5,10 +5,13 @@
 typedef uint8_t Byte;
 typedef std::vector<Byte> Buffer;
 
-enum class MessageCode : Byte 
+enum class MessageCode : Byte
 {
-	SignupResponseCode,
+	LoginRequestCode,
+	SignupRequestCode,
+
 	LoginResponseCode,
+	SignupResponseCode,
 	ErrorResponseCode
 };
 
