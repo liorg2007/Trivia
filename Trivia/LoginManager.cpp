@@ -10,6 +10,7 @@ bool LoginManager::signup(const std::string& username, const std::string& passwo
 	if (!_database->DoesUserExist(username))
 	{
 		_database->AddUser(username, password, email);
+		_loggedUsers.push_back(LoggedUser(username));
 		return true;
 	}
 	return false;
