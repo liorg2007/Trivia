@@ -26,7 +26,7 @@ void Communicator::bindAndListen()
 			throw std::exception(__FUNCTION__);
 
 		std::cout << "New client accepted, starting a new thread" << std::endl;
-		_clients.insert({ clientSocket, new LoginRequestHandler() });
+		_clients.insert({ clientSocket, _handlerFactory.createLoginRequestHandler()});
 		_threadPool.push_back(
 			new std::thread(&Communicator::handleNewClient,
 				this, clientSocket));
@@ -107,8 +107,8 @@ Buffer Communicator::recieveData(SOCKET clientSocket) const
 	return data;
 }
 
-Communicator::Communicator()
-	: _serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
+Communicator::Communicator(RequestHandlerFactory& handlerFactory)
+	: _serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)), _handlerFactory(handlerFactory)
 {
 	if (_serverSocket == INVALID_SOCKET)
 	{

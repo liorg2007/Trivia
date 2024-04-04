@@ -3,7 +3,7 @@
 #include "Constants.h"
 
 Server::Server()
-	: _database(new SqliteDatabase(DATABASE_FILE_NAME)), _handlerFactory(_database)
+	: _database(new SqliteDatabase(DATABASE_FILE_NAME)), _handlerFactory(_database), _communicator(_handlerFactory)
 {
 }
 

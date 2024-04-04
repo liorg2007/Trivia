@@ -8,6 +8,7 @@
 #include "Constants.h"
 #include "IRequestHandler.h"
 #include "LoginRequestHandler.h"
+#include "RequestHandlerFactory.h"
 
 
 class Communicator {
@@ -31,7 +32,7 @@ private:
 	Buffer recieveData(SOCKET clientSocket) const;
 
 public:
-	Communicator();
+	Communicator(RequestHandlerFactory& handlerFactory);
 
 	/* Free used memory in the end (if needed)*/
 	~Communicator();
