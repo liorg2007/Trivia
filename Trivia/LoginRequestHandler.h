@@ -2,6 +2,8 @@
 #include "IRequestHandler.h"
 #include "RequestHandlerFactory.h"
 
+class RequestHandlerFactory;
+
 class LoginRequestHandler : public IRequestHandler {
 public:
 	LoginRequestHandler(RequestHandlerFactory& handlerFactory);

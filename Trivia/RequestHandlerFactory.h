@@ -4,6 +4,9 @@
 #include "IDatabase.h"
 #include "LoginManager.h"
 
+class LoginRequestHandler;
+class MenuRequestHandler;
+
 class RequestHandlerFactory
 {
 public:
