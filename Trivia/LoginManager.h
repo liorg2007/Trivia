@@ -8,9 +8,9 @@ class LoginManager
 public:
 	LoginManager(IDatabase* database);
 
-	void signup(const std::string& username, const std::string& password, const std::string& email);
-	void login(const std::string& username, const std::string& password);
-	void logout(const std::string& username);
+	bool signup(const std::string& username, const std::string& password, const std::string& email);
+	bool login(const std::string& username, const std::string& password);
+	bool logout(const std::string& username);
 
 private:
 	IDatabase* _database;

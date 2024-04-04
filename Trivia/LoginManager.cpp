@@ -5,29 +5,35 @@ LoginManager::LoginManager(IDatabase* database)
 {
 }
 
-void LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
+bool LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
 {
 	if (!_database->DoesUserExist(username))
 	{
 		_database->AddUser(username, password, email);
+		return true;
 	}
+	return false;
 }
 
-void LoginManager::login(const std::string& username, const std::string& password)
+bool LoginManager::login(const std::string& username, const std::string& password)
 {
 	LoggedUser newLoggedUser(username);
 	if (std::find(_loggedUsers.begin(), _loggedUsers.end(), newLoggedUser) != _loggedUsers.end()
 		&& _database->IsPasswordOk(username, password))
 	{
 		_loggedUsers.push_back(LoggedUser(username));
+		return true;
 	}
+	return false;
 }
 
-void LoginManager::logout(const std::string& username)
+bool LoginManager::logout(const std::string& username)
 {
 	auto search = std::find(_loggedUsers.begin(), _loggedUsers.end(), LoggedUser(username));
 	if (search != _loggedUsers.end())
 	{
 		_loggedUsers.erase(search);
+		return true;
 	}
+	return false;
 }
