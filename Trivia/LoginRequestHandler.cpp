@@ -37,7 +37,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& req)
 	}
 	else {
 		loginResponse.status = FAILURE;
-		result.newHandler = _handlerFactory.createLoginRequestHandler();//leave user in login handler
+		result.newHandler = nullptr;
 	}
 
 	result.response = JsonRequestPacketSerializer::serializeResponse(loginResponse);
@@ -58,7 +58,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& req)
 	}
 	else {
 		signupResponse.status = FAILURE;
-		result.newHandler = _handlerFactory.createLoginRequestHandler();//leave user in login handler
+		result.newHandler = nullptr;
 	}
 
 	result.response = JsonRequestPacketSerializer::serializeResponse(signupResponse);
