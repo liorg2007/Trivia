@@ -26,7 +26,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& req)
 
 RequestResult LoginRequestHandler::login(const RequestInfo& req)
 {
-	LoginManager loginManager = _handlerFactory.getLoginManager();
+	LoginManager& loginManager = _handlerFactory.getLoginManager();
 	LoginRequest loginData = JsonRequestPacketDeserializer::deserializeLoginRequest(req.buffer);
 	LoginResponse loginResponse;
 	RequestResult result;
@@ -47,7 +47,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& req)
 
 RequestResult LoginRequestHandler::signup(const RequestInfo& req)
 {
-	LoginManager loginManager = _handlerFactory.getLoginManager();
+	LoginManager& loginManager = _handlerFactory.getLoginManager();
 	SignupRequest signupData = JsonRequestPacketDeserializer::deserializeSignupRequest(req.buffer);
 	SignupResponse signupResponse;
 	RequestResult result;
