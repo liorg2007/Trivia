@@ -33,7 +33,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& req)
 
 	if (loginManager.login(loginData.username, loginData.password)) {
 		loginResponse.status = SUCCESS;
-		//TODO: _handlerFactory.createMenuRequestHandler
+		result.newHandler = _handlerFactory.createMenuRequestHandler();
 	}
 	else {
 		loginResponse.status = FAILURE;
@@ -54,7 +54,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& req)
 
 	if (loginManager.signup(signupData.username, signupData.password, signupData.email)) {
 		signupResponse.status = SUCCESS;
-		//TODO: _handlerFactory.createMenuRequestHandler
+		result.newHandler = _handlerFactory.createMenuRequestHandler();
 	}
 	else {
 		signupResponse.status = FAILURE;
