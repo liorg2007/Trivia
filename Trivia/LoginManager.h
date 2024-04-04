@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <mutex>
 #include "IDatabase.h"
 #include "LoggedUser.h"
 
@@ -13,6 +14,7 @@ public:
 	bool logout(const std::string& username);
 
 private:
+	std::mutex _loggedUserMtx;
 	IDatabase* _database;
 	std::vector<LoggedUser> _loggedUsers;
 };

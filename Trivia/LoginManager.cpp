@@ -9,6 +9,8 @@ bool LoginManager::signup(const std::string& username, const std::string& passwo
 {
 	if (!_database->DoesUserExist(username))
 	{
+		std::lock_guard<std::mutex> lock(_loggedUserMtx);
+
 		_database->AddUser(username, password, email);
 		_loggedUsers.push_back(LoggedUser(username));
 		return true;
@@ -19,11 +21,15 @@ bool LoginManager::signup(const std::string& username, const std::string& passwo
 bool LoginManager::login(const std::string& username, const std::string& password)
 {
 	LoggedUser newLoggedUser(username);
-	if (std::find(_loggedUsers.begin(), _loggedUsers.end(), newLoggedUser) == _loggedUsers.end()
-		&& _database->IsPasswordOk(username, password))
 	{
-		_loggedUsers.push_back(LoggedUser(username));
-		return true;
+		std::lock_guard<std::mutex> lock(_loggedUserMtx);
+
+		if (std::find(_loggedUsers.begin(), _loggedUsers.end(), newLoggedUser) == _loggedUsers.end()
+			&& _database->IsPasswordOk(username, password))
+		{
+			_loggedUsers.push_back(LoggedUser(username));
+			return true;
+		}
 	}
 	return false;
 }

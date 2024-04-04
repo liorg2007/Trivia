@@ -14,7 +14,7 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 
 LoginManager& RequestHandlerFactory::getLoginManager()
 {
-    return _loginManager;
+  return _loginManager;
 }
 
 MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler()
