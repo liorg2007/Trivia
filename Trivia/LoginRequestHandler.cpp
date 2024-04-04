@@ -17,18 +17,10 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& req)
 {
 	RequestResult result;
 	if (req.id == MessageCode::LoginRequestCode)
-	{
 		result = login(req);
-	}
 	else
-	{
-		SignupResponse signupRes;
-		auto signup = JsonRequestPacketDeserializer::deserializeSignupRequest(req.buffer);
-		// SIGNUP AND SET STATUS 1 IF SUCCESSFUL
-		signupRes.status = 1;
-		result.response = JsonRequestPacketSerializer::serializeResponse(signupRes);
-	}
-	result.newHandler = _handlerFactory.createLoginRequestHandler(); // the next state (menu), not LoginRequestHandler
+		result = signup(req);
+
 	return result;
 }
 
@@ -55,5 +47,21 @@ RequestResult LoginRequestHandler::login(const RequestInfo& req)
 
 RequestResult LoginRequestHandler::signup(const RequestInfo& req)
 {
-	return RequestResult();
+	LoginManager loginManager = _handlerFactory.getLoginManager();
+	SignupRequest signupData = JsonRequestPacketDeserializer::deserializeSignupRequest(req.buffer);
+	SignupResponse signupResponse;
+	RequestResult result;
+
+	if (loginManager.signup(signupData.username, signupData.password, signupData.email)) {
+		signupResponse.status = SUCCESS;
+		//TODO: _handlerFactory.createMenuRequestHandler
+	}
+	else {
+		signupResponse.status = FAILURE;
+		result.newHandler = _handlerFactory.createLoginRequestHandler();//leave user in login handler
+	}
+
+	result.response = JsonRequestPacketSerializer::serializeResponse(signupResponse);
+
+	return result;
 }
