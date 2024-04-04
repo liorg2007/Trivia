@@ -52,8 +52,11 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			if (handlerSearch->second->isRequestRelevant(reqInfo))
 			{
 				RequestResult res = handlerSearch->second->handleRequest(reqInfo);
-				delete handlerSearch->second; // free previous handler
-				handlerSearch->second = res.newHandler;
+				if (res.newHandler != nullptr)
+				{
+					delete handlerSearch->second; // free previous handler
+					handlerSearch->second = res.newHandler;
+				}
 				sendData(clientSocket, res.response);
 			}
 			else
