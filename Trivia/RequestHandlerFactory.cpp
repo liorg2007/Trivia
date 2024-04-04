@@ -5,9 +5,9 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* database)
 {
 }
 
-LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler() const
+LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
-    LoginRequestHandler* reqHandler = new LoginRequestHandler();
+    LoginRequestHandler* reqHandler = new LoginRequestHandler(*this);
     // do a bunch of stuff
     return reqHandler;
 }
