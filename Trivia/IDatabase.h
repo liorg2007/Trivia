@@ -4,6 +4,9 @@
 
 class IDatabase {
 public:
+	virtual bool open() = 0;
+	virtual bool close() = 0;
+
 	/* Public Queries*/
 	virtual void AddUser(const std::string& username, const std::string& password, const std::string& email) = 0;
 	virtual bool DoesUserExist(const std::string& username) = 0;

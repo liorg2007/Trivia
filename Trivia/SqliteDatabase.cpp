@@ -1,9 +1,19 @@
 #include "SqliteDatabase.h"
 
 SqliteDatabase::SqliteDatabase(const std::string& dbName)
+	: _dbFileName(dbName), _db(nullptr)
 {
-	int result = 0;
-	result = sqlite3_open(dbName.c_str(), &_db); //open database file
+	open();
+}
+
+SqliteDatabase::~SqliteDatabase()
+{
+	close();
+}
+
+bool SqliteDatabase::open()
+{
+	int result = sqlite3_open(_dbFileName.c_str(), &_db); //open database file
 
 	if (result) {
 		std::string errorMsg = std::string(sqlite3_errmsg(_db));
@@ -15,18 +25,24 @@ SqliteDatabase::SqliteDatabase(const std::string& dbName)
 
 		//create table if it doesnt exists
 		std::string tableQuery = "CREATE TABLE IF NOT EXISTS USERS ("
-                            "id INTEGER PRIMARY KEY,"
-                            "username TEXT UNIQUE NOT NULL,"
-                            "password TEXT NOT NULL,"
-							"email TEXT NOT NULL);";
+			"id INTEGER PRIMARY KEY,"
+			"username TEXT UNIQUE NOT NULL,"
+			"password TEXT NOT NULL,"
+			"email TEXT NOT NULL);";
 
 		sqlite3_exec(_db, tableQuery.c_str(), nullptr, nullptr, nullptr);
 	}
+	return true;
 }
 
-SqliteDatabase::~SqliteDatabase()
+bool SqliteDatabase::close()
 {
-	sqlite3_close(_db);
+	if (_db != nullptr)
+	{
+		sqlite3_close(_db);
+		return true;
+	}
+	return false;
 }
 
 void SqliteDatabase::AddUser(const std::string& username, const std::string& password, const std::string& email)
