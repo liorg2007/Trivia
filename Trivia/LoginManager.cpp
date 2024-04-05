@@ -21,21 +21,20 @@ bool LoginManager::signup(const std::string& username, const std::string& passwo
 bool LoginManager::login(const std::string& username, const std::string& password)
 {
 	LoggedUser newLoggedUser(username);
-	{
-		std::lock_guard<std::mutex> lock(_loggedUserMtx);
+	std::lock_guard<std::mutex> lock(_loggedUserMtx);
 
-		if (std::find(_loggedUsers.begin(), _loggedUsers.end(), newLoggedUser) == _loggedUsers.end()
-			&& _database->IsPasswordOk(username, password))
-		{
-			_loggedUsers.push_back(LoggedUser(username));
-			return true;
-		}
+	if (std::find(_loggedUsers.begin(), _loggedUsers.end(), newLoggedUser) == _loggedUsers.end()
+		&& _database->IsPasswordOk(username, password))
+	{
+		_loggedUsers.push_back(newLoggedUser);
+		return true;
 	}
 	return false;
 }
 
 bool LoginManager::logout(const std::string& username)
 {
+	std::lock_guard<std::mutex> lock(_loggedUserMtx);
 	auto search = std::find(_loggedUsers.begin(), _loggedUsers.end(), LoggedUser(username));
 	if (search != _loggedUsers.end())
 	{
