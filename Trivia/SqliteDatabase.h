@@ -2,6 +2,7 @@
 #include "Lib/sqlite3.h"
 #include "IDatabase.h"
 #include <iostream>
+#include <mutex>
 
 class SqliteDatabase : public IDatabase {
 public:
@@ -19,6 +20,9 @@ private:
 	/* Private Members */
 	std::string _dbFileName;
 	sqlite3* _db;
+	std::mutex _mtx;
+
+	void execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out);
 
 	/* Callbacks */
 	static int getCountCallback(void* data, int argc, char** argv, char** azColName);

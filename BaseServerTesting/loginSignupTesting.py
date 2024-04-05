@@ -20,8 +20,6 @@ def Test1(s):
 
     send_json(s, SIGNUP_CODE, { "username": "shimon", "password": "1234567", "email": "shimon@gmail.com" })
     print("Recieved for signup:", s.recv(1024))
-    send_json(s, LOGIN_CODE, { "username": "shimon", "password": "1234567" })
-    print("Recieved for login with existant user:", s.recv(1024))
 
     s.close()
 
@@ -37,7 +35,7 @@ def Test2(s):
     s2.connect(("127.0.0.1", PORT))
     print("Connected successfully to port", PORT, "with another socket")
     send_json(s2, SIGNUP_CODE, { "username": "lior", "password": "3123123", "email" : "bbb@bruh.com" })
-    print("Recieved for signup for the second time with the same username:", s.recv(1024))
+    print("Recieved for signup for the second time with the same username:", s2.recv(1024))
 
     s2.close()
     s.close()
@@ -50,13 +48,13 @@ def Test3(s):
     print("Connected successfully to port", PORT)
 
     send_json(s, LOGIN_CODE, { "username": "lior", "password": "1234567" })
-    print("Recieved for signup:", s.recv(1024))
+    print("Recieved for login:", s.recv(1024))
 
     s2.connect(("127.0.0.1", PORT))
     print("Connected successfully to port", PORT)
     
     send_json(s2, LOGIN_CODE, { "username": "lior", "password": "1234567" })
-    print("Recieved for signup:", s2.recv(1024))
+    print("Recieved for login with same user:", s2.recv(1024))
 
     s2.close()
     s.close()

@@ -71,6 +71,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	}
 	catch (...)
 	{
+		// TODO: Logout using the login manager here
 		std::cerr << "User " << clientSocket << " disconnected." << std::endl;
 		auto handlerSearch = _clients.find(clientSocket);
 		if (handlerSearch != _clients.end())

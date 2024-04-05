@@ -30,7 +30,7 @@ bool SqliteDatabase::open()
 			"password TEXT NOT NULL,"
 			"email TEXT NOT NULL);";
 
-		sqlite3_exec(_db, tableQuery.c_str(), nullptr, nullptr, nullptr);
+		execQuery(tableQuery, nullptr, nullptr);
 	}
 	return true;
 }
@@ -49,13 +49,13 @@ void SqliteDatabase::AddUser(const std::string& username, const std::string& pas
 {
 	std::string query = "INSERT INTO USERS(username, password, email) "
 		"VALUES('" + username + "', '" + password + "', '" + email + "')";
-	int result;
-
-	result = sqlite3_exec(_db, query.c_str(), nullptr, nullptr, nullptr);
-
-	if (result != SQLITE_OK)
+	try
 	{
-		throw(DatabaseException("User already exists!"));
+		execQuery(query, nullptr, nullptr);
+	}
+	catch (const DatabaseException&)
+	{
+		throw DatabaseException("User already exists!");
 	}
 }
 
@@ -64,7 +64,7 @@ bool SqliteDatabase::DoesUserExist(const std::string& username)
 	std::string query = "SELECT EXISTS(SELECT 1 FROM USERS WHERE username = '" + username + "')";
 	int count = 0;
 
-	sqlite3_exec(_db, query.c_str(), &SqliteDatabase::getCountCallback, &count, nullptr);
+	execQuery(query, getCountCallback, &count);
 
 	return count;
 }
@@ -74,9 +74,19 @@ bool SqliteDatabase::IsPasswordOk(const std::string& username, const std::string
 	std::string query = "SELECT password FROM USERS WHERE username = '" + username + "'";
 	std::string userPassword = "";
 
-	sqlite3_exec(_db, query.c_str(), &SqliteDatabase::getSingleStringCallback, &userPassword, nullptr);
+	execQuery(query, getSingleStringCallback, &userPassword);
 
 	return userPassword == password;
+}
+
+void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out)
+{
+	std::lock_guard<std::mutex> lock(_mtx);
+	char* errmsg = nullptr;
+	if (sqlite3_exec(_db, query.c_str(), callback, out, &errmsg) != SQLITE_OK)
+	{
+		throw DatabaseException(errmsg);
+	}
 }
 
 int SqliteDatabase::getCountCallback(void* data, int argc, char** argv, char** azColName)
