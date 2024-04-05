@@ -9,16 +9,14 @@ public:
 	~SqliteDatabase();
 
 	void AddUser(const std::string& username, const std::string& password, const std::string& email) override;
+	bool DoesUserExist(const std::string& username) override;
+	bool IsPasswordOk(const std::string& username, const std::string& password) override;
 
 private:
 	/* Private Members */
 	sqlite3* _db;
 
-	/* Private Queries */
-	bool DoesUserExist(const std::string& username) override;
-	bool IsPasswordOk(const std::string& username, const std::string& password) override;
-
-	/* callback */
+	/* Callbacks */
 	static int getCountCallback(void* data, int argc, char** argv, char** azColName);
 	static int getSingleStringCallback(void* data, int argc, char** argv, char** azColName);
 };
