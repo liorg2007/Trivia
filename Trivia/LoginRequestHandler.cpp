@@ -2,6 +2,11 @@
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonRequestPacketSerializer.h"
 
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory)
+	: _handlerFactory(handlerFactory)
+{
+}
+
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& req)
 {
 	return req.id == MessageCode::LoginRequestCode
@@ -12,21 +17,51 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& req)
 {
 	RequestResult result;
 	if (req.id == MessageCode::LoginRequestCode)
-	{
-		LoginResponse loginRes;
-		auto login = JsonRequestPacketDeserializer::deserializeLoginRequest(req.buffer);
-		// LOGIN AND SET STATUS 1 IF SUCCESSFUL
-		loginRes.status = 1;
-		result.response = JsonRequestPacketSerializer::serializeResponse(loginRes);
-	}
+		result = login(req);
 	else
-	{
-		SignupResponse signupRes;
-		auto signup = JsonRequestPacketDeserializer::deserializeSignupRequest(req.buffer);
-		// SIGNUP AND SET STATUS 1 IF SUCCESSFUL
-		signupRes.status = 1;
-		result.response = JsonRequestPacketSerializer::serializeResponse(signupRes);
+		result = signup(req);
+
+	return result;
+}
+
+RequestResult LoginRequestHandler::login(const RequestInfo& req)
+{
+	LoginManager& loginManager = _handlerFactory.getLoginManager();
+	LoginRequest loginData = JsonRequestPacketDeserializer::deserializeLoginRequest(req.buffer);
+	LoginResponse loginResponse;
+	RequestResult result;
+
+	if (loginManager.login(loginData.username, loginData.password)) {
+		loginResponse.status = SUCCESS;
+		result.newHandler = _handlerFactory.createMenuRequestHandler();
 	}
-	result.newHandler = new LoginRequestHandler(); // the next state, not LoginRequestHandler
+	else {
+		loginResponse.status = FAILURE;
+		result.newHandler = nullptr;
+	}
+
+	result.response = JsonRequestPacketSerializer::serializeResponse(loginResponse);
+
+	return result;
+}
+
+RequestResult LoginRequestHandler::signup(const RequestInfo& req)
+{
+	LoginManager& loginManager = _handlerFactory.getLoginManager();
+	SignupRequest signupData = JsonRequestPacketDeserializer::deserializeSignupRequest(req.buffer);
+	SignupResponse signupResponse;
+	RequestResult result;
+
+	if (loginManager.signup(signupData.username, signupData.password, signupData.email)) {
+		signupResponse.status = SUCCESS;
+		result.newHandler = _handlerFactory.createMenuRequestHandler();
+	}
+	else {
+		signupResponse.status = FAILURE;
+		result.newHandler = nullptr;
+	}
+
+	result.response = JsonRequestPacketSerializer::serializeResponse(signupResponse);
+
 	return result;
 }

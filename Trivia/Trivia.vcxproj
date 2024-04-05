@@ -133,6 +133,10 @@
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
     <ClCompile Include="JsonRequestPacketSerializer.cpp" />
     <ClCompile Include="Lib\sqlite3.c" />
+    <ClCompile Include="LoggedUser.cpp" />
+    <ClCompile Include="LoginManager.cpp" />
+    <ClCompile Include="MenuRequestHandler.cpp" />
+    <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -148,8 +152,12 @@
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonRequestPacketDeserializer.h" />
     <ClInclude Include="Lib\sqlite3.h" />
+    <ClInclude Include="LoggedUser.h" />
+    <ClInclude Include="LoginManager.h" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="JsonRequestPacketSerializer.h" />
+    <ClInclude Include="MenuRequestHandler.h" />
+    <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="Requests.h" />
     <ClInclude Include="Responses.h" />
     <ClInclude Include="Server.h" />

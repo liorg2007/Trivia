@@ -8,11 +8,14 @@
 #include "Constants.h"
 #include "IRequestHandler.h"
 #include "LoginRequestHandler.h"
+#include "RequestHandlerFactory.h"
 
 
 class Communicator {
 private:
 	SOCKET _serverSocket;
+	RequestHandlerFactory& _handlerFactory;
+
 	std::unordered_map<SOCKET, IRequestHandler*> _clients;
 	
 	std::vector<std::thread*> _threadPool;
@@ -29,7 +32,7 @@ private:
 	Buffer recieveData(SOCKET clientSocket) const;
 
 public:
-	Communicator();
+	Communicator(RequestHandlerFactory& handlerFactory);
 
 	/* Free used memory in the end (if needed)*/
 	~Communicator();
