@@ -22,10 +22,10 @@ bool CheckSignupData::CheckAddress(const std::string& address)
 
 bool CheckSignupData::CheckPhoneNumber(const std::string& phoneNumber)
 {
-  return std::regex_match(phoneNumber, std::regex("^0[0-9]{9}$"));;
+  return std::regex_match(phoneNumber, std::regex("^0[0-9]{9}$"));
 }
 
 bool CheckSignupData::CheckBirthDate(const std::string& birthDate)
 {
-  return false;
+  return std::regex_match(birthDate, std::regex("\d\d+\/+\d\d+\/+\d\d\d\d$"));
 }
