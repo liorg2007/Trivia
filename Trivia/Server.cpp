@@ -9,6 +9,11 @@ Server::Server()
 {
 }
 
+Server::~Server()
+{
+	delete _database;
+}
+
 Server& Server::getInstance()
 {
 	static Server instance;

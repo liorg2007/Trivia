@@ -11,10 +11,11 @@ private:
 
 	Server();
 public:
-	static Server& getInstance();
+	~Server();
 
 	void run();
 
 	Server(Server&) = delete;
 	void operator=(const Server&) = delete;
+	static Server& getInstance();
 };
