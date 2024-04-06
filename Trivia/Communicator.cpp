@@ -1,4 +1,5 @@
 #include "Communicator.h"
+#include "JsonRequestPacketSerializer.h"
 
 void Communicator::bindAndListen()
 {
@@ -25,35 +26,93 @@ void Communicator::bindAndListen()
 			throw std::exception(__FUNCTION__);
 
 		std::cout << "New client accepted, starting a new thread" << std::endl;
+		_clients.insert({ clientSocket, _handlerFactory.createLoginRequestHandler()});
 		_threadPool.push_back(
 			new std::thread(&Communicator::handleNewClient,
 				this, clientSocket));
-		_clients.insert({ clientSocket, LoginRequestHandler() });
 	}
 }
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
-	char data[6] = { 0 };
-	recv(clientSocket, data, 5, 0);
-	std::cout << "Client says: " << data << std::endl;
 	try
 	{
 		while (true)
 		{
-			// handle requests using _clients.at(clientSocket)
+			auto handlerSearch = _clients.find(clientSocket);
+			if (handlerSearch == _clients.end())
+			{
+				throw std::exception("Can't find client's state");
+			}
+			RequestInfo reqInfo;
+			reqInfo.buffer = recieveData(clientSocket);
+			reqInfo.receivalTime = std::time(0);
+			reqInfo.id = (MessageCode)reqInfo.buffer.at(0);
+
+			if (handlerSearch->second->isRequestRelevant(reqInfo))
+			{
+				RequestResult res = handlerSearch->second->handleRequest(reqInfo);
+				if (res.newHandler != nullptr)
+				{
+					delete handlerSearch->second; // free previous handler
+					handlerSearch->second = res.newHandler;
+				}
+				sendData(clientSocket, res.response);
+			}
+			else
+			{
+				// send error message
+				ErrorResponse errRes;
+				errRes.message = "Request is not relevant to current client state";
+				sendData(clientSocket,
+					JsonRequestPacketSerializer::serializeResponse(errRes));
+			}
 		}
 	}
 	catch (...)
 	{
+		// TODO: Logout using the login manager here
 		std::cerr << "User " << clientSocket << " disconnected." << std::endl;
-		_clients.erase(clientSocket);
+		auto handlerSearch = _clients.find(clientSocket);
+		if (handlerSearch != _clients.end())
+		{
+			delete handlerSearch->second;
+			_clients.erase(clientSocket);
+		}
 		closesocket(clientSocket);
 	}
 }
 
-Communicator::Communicator()
-	: _serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
+void Communicator::sendData(SOCKET clientSocket, const Buffer& buff) const
+{
+	if (send(clientSocket, (const char*)&buff[0], buff.size(), 0) == INVALID_SOCKET)
+	{
+		throw std::exception("Error while sending message to client");
+	}
+}
+
+Buffer Communicator::recieveData(SOCKET clientSocket) const
+{
+	Buffer data(HEADER_FIELD_LENGTH);
+	uint32_t msgSize = 0;
+
+	if (recv(clientSocket, (char*)&data[0], HEADER_FIELD_LENGTH, 0) != HEADER_FIELD_LENGTH)
+	{
+		throw std::exception("Client sent protocol invalid length");
+	}
+	std::memcpy(&msgSize, &data[CODE_FIELD_LENGTH], SIZE_FIELD_LENGTH);
+	data.resize(HEADER_FIELD_LENGTH + msgSize);
+	if (recv(clientSocket, (char*)&data[HEADER_FIELD_LENGTH], msgSize, 0) != msgSize)
+	{
+		throw std::exception("Client message length doesn't accord to expected length");
+	}
+
+	// std::cout << "Client says: " << (char*)&data[0] << std::endl;
+	return data;
+}
+
+Communicator::Communicator(RequestHandlerFactory& handlerFactory)
+	: _serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)), _handlerFactory(handlerFactory)
 {
 	if (_serverSocket == INVALID_SOCKET)
 	{
@@ -70,6 +129,11 @@ Communicator::~Communicator()
 			pThread->join();
 			delete pThread;
 		}
+		for (const auto& pair : _clients)
+		{
+			// free handlers memory
+			delete pair.second;
+		}
 		closesocket(_serverSocket);
 	}
 	catch (...) {}
@@ -77,5 +141,7 @@ Communicator::~Communicator()
 
 void Communicator::startHandleRequests()
 {
-	bindAndListen();
+	_threadPool.push_back(
+		new std::thread(&Communicator::bindAndListen,
+			this));
 }

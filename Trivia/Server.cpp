@@ -1,23 +1,15 @@
 #include "Server.h"
+#include "SqliteDatabase.h"
+#include "Constants.h"
 
 Server::Server()
-	: _communicatorThread(nullptr)
+	: _database(new SqliteDatabase(DATABASE_FILE_NAME)), _handlerFactory(_database), _communicator(_handlerFactory)
 {
-}
-
-Server::~Server()
-{
-	if (_communicatorThread != nullptr)
-	{
-		_communicatorThread->join();
-		delete _communicatorThread;
-	}
 }
 
 void Server::run()
 {
-	_communicatorThread = new std::thread(&Communicator::startHandleRequests,
-		_communicator);
+	_communicator.startHandleRequests();
 	std::string inp;
 	do
 	{
