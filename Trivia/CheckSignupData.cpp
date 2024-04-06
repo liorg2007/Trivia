@@ -2,7 +2,11 @@
 
 bool CheckSignupData::CheckData(const SignupRequest& userData)
 {
-    return false;
+  return CheckPassword(userData.password) &&
+    CheckSignupData::CheckEmail(userData.email) &&
+    CheckAddress(userData.address) &&
+    CheckPhoneNumber(userData.phoneNumber) &&
+    CheckBirthDate(userData.birthDate);
 }
 
 bool CheckSignupData::CheckPassword(const std::string& password)
