@@ -9,6 +9,12 @@ Server::Server()
 {
 }
 
+Server& Server::getInstance()
+{
+	static Server instance;
+	return instance;
+}
+
 void Server::run()
 {
 	_communicator.startHandleRequests();

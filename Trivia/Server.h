@@ -9,8 +9,12 @@ private:
 	RequestHandlerFactory& _handlerFactory;
 	Communicator& _communicator;
 
-public:
 	Server();
+public:
+	static Server& getInstance();
 
 	void run();
+
+	Server(Server&) = delete;
+	void operator=(const Server&) = delete;
 };
