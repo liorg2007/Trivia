@@ -111,13 +111,20 @@ Buffer Communicator::recieveData(SOCKET clientSocket) const
 	return data;
 }
 
-Communicator::Communicator(RequestHandlerFactory& handlerFactory)
-	: _serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)), _handlerFactory(handlerFactory)
+Communicator::Communicator()
+	: _serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)),
+	_handlerFactory(RequestHandlerFactory::getInstance())
 {
 	if (_serverSocket == INVALID_SOCKET)
 	{
 		throw std::exception(__FUNCTION__ " - socket");
 	}
+}
+
+Communicator& Communicator::getInstance()
+{
+	static Communicator instance;
+	return instance;
 }
 
 Communicator::~Communicator()

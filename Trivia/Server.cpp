@@ -3,8 +3,21 @@
 #include "Constants.h"
 
 Server::Server()
-	: _database(new SqliteDatabase(DATABASE_FILE_NAME)), _handlerFactory(_database), _communicator(_handlerFactory)
+	: _database(IDatabase::getInstance()),
+	_handlerFactory(RequestHandlerFactory::getInstance()),
+	_communicator(Communicator::getInstance())
 {
+}
+
+Server::~Server()
+{
+	delete _database;
+}
+
+Server& Server::getInstance()
+{
+	static Server instance;
+	return instance;
 }
 
 void Server::run()

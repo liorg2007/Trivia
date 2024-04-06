@@ -1,8 +1,14 @@
 #include "LoginManager.h"
 
-LoginManager::LoginManager(IDatabase* database)
-	: _database(database)
+LoginManager::LoginManager()
+	: _database(IDatabase::getInstance())
 {
+}
+
+LoginManager& LoginManager::getInstance()
+{
+	static LoginManager instance;
+	return instance;
 }
 
 bool LoginManager::signup(const std::string& username, const std::string& password, const std::string& email, const std::string& address, const std::string& phoneNumber, const std::string& birthDate)

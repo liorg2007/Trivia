@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="CheckSignupData.cpp" />
     <ClCompile Include="Communicator.cpp" />
+    <ClCompile Include="IDatabase.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
     <ClCompile Include="JsonRequestPacketSerializer.cpp" />
     <ClCompile Include="Lib\sqlite3.c" />
