@@ -52,7 +52,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& req)
 	SignupResponse signupResponse;
 	RequestResult result;
 
-	if (loginManager.signup(signupData.username, signupData.password, signupData.email)) {
+	if (loginManager.signup(signupData.username, signupData.password, signupData.email, signupData.address, signupData.phoneNumber, signupData.birthDate)) {
 		signupResponse.status = SUCCESS;
 		result.newHandler = _handlerFactory.createMenuRequestHandler();
 	}
