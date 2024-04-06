@@ -7,7 +7,7 @@
 class SqliteDatabase : public IDatabase {
 public:
 	SqliteDatabase(const std::string& dbName);
-	~SqliteDatabase();
+	~SqliteDatabase() override;
 
 	bool open() override;
 	bool close() override;

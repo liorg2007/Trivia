@@ -1,13 +1,13 @@
 #include "RequestHandlerFactory.h"
 
-RequestHandlerFactory::RequestHandlerFactory(IDatabase* database)
-    : _database(database), _loginManager(LoginManager::getInstance(database))
+RequestHandlerFactory::RequestHandlerFactory()
+    : _database(IDatabase::getInstance()), _loginManager(LoginManager::getInstance())
 {
 }
 
-RequestHandlerFactory& RequestHandlerFactory::getInstance(IDatabase* database)
+RequestHandlerFactory& RequestHandlerFactory::getInstance()
 {
-    static RequestHandlerFactory instance(database);
+    static RequestHandlerFactory instance;
     return instance;
 }
 

@@ -113,7 +113,7 @@ Buffer Communicator::recieveData(SOCKET clientSocket) const
 
 Communicator::Communicator()
 	: _serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)),
-	_handlerFactory(RequestHandlerFactory::getInstance(nullptr))
+	_handlerFactory(RequestHandlerFactory::getInstance())
 {
 	if (_serverSocket == INVALID_SOCKET)
 	{

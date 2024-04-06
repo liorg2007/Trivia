@@ -1,13 +1,13 @@
 #include "LoginManager.h"
 
-LoginManager::LoginManager(IDatabase* database)
-	: _database(database)
+LoginManager::LoginManager()
+	: _database(IDatabase::getInstance())
 {
 }
 
-LoginManager& LoginManager::getInstance(IDatabase* database)
+LoginManager& LoginManager::getInstance()
 {
-	static LoginManager instance(database);
+	static LoginManager instance;
 	return instance;
 }
 

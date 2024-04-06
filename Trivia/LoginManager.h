@@ -8,7 +8,7 @@ class LoginManager
 {
 public:
 	/* Singleton instance */
-	static LoginManager& getInstance(IDatabase* database);
+	static LoginManager& getInstance();
 
 	bool signup(const std::string& username, const std::string& password, const std::string& email);
 	bool login(const std::string& username, const std::string& password);
@@ -19,7 +19,7 @@ public:
 	void operator=(const LoginManager&) = delete;
 
 private:
-	LoginManager(IDatabase* database);
+	LoginManager();
 
 	std::mutex _loggedUserMtx;
 	IDatabase* _database;

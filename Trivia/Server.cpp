@@ -3,8 +3,8 @@
 #include "Constants.h"
 
 Server::Server()
-	: _database(new SqliteDatabase(DATABASE_FILE_NAME)),
-	_handlerFactory(RequestHandlerFactory::getInstance(_database)),
+	: _database(IDatabase::getInstance()),
+	_handlerFactory(RequestHandlerFactory::getInstance()),
 	_communicator(Communicator::getInstance())
 {
 }
