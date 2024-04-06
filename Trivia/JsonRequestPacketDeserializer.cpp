@@ -19,6 +19,9 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const Buff
 	request.username = std::move(data["username"]);
 	request.password = std::move(data["password"]);
 	request.email = std::move(data["email"]);
+	request.address = std::move(data["address"]);
+	request.phoneNumber = std::move(data["phoneNumber"]);
+	request.birthDate = std::move(data["birthDate"]);
 
 	return request;
 }
