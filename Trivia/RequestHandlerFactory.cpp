@@ -5,6 +5,12 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* database)
 {
 }
 
+RequestHandlerFactory& RequestHandlerFactory::getInstance(IDatabase* database)
+{
+    static RequestHandlerFactory instance(database);
+    return instance;
+}
+
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
     LoginRequestHandler* reqHandler = new LoginRequestHandler(*this);

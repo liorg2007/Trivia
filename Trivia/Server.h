@@ -6,7 +6,7 @@
 class Server {
 private:
 	IDatabase* _database;
-	RequestHandlerFactory _handlerFactory;
+	RequestHandlerFactory& _handlerFactory;
 	Communicator _communicator;
 
 public:
