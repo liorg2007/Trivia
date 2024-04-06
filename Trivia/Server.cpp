@@ -5,7 +5,7 @@
 Server::Server()
 	: _database(new SqliteDatabase(DATABASE_FILE_NAME)),
 	_handlerFactory(RequestHandlerFactory::getInstance(_database)),
-	_communicator(Communicator::getInstance(_handlerFactory))
+	_communicator(Communicator::getInstance())
 {
 }
 

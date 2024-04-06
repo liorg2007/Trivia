@@ -111,8 +111,9 @@ Buffer Communicator::recieveData(SOCKET clientSocket) const
 	return data;
 }
 
-Communicator::Communicator(RequestHandlerFactory& handlerFactory)
-	: _serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)), _handlerFactory(handlerFactory)
+Communicator::Communicator()
+	: _serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)),
+	_handlerFactory(RequestHandlerFactory::getInstance(nullptr))
 {
 	if (_serverSocket == INVALID_SOCKET)
 	{
@@ -120,9 +121,9 @@ Communicator::Communicator(RequestHandlerFactory& handlerFactory)
 	}
 }
 
-Communicator& Communicator::getInstance(RequestHandlerFactory& handlerFactory)
+Communicator& Communicator::getInstance()
 {
-	static Communicator instance(handlerFactory);
+	static Communicator instance;
 	return instance;
 }
 

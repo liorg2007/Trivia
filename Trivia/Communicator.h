@@ -31,9 +31,9 @@ private:
 	void sendData(SOCKET clientSocket, const Buffer& buff) const;
 	Buffer recieveData(SOCKET clientSocket) const;
 
-	Communicator(RequestHandlerFactory& handlerFactory);
+	Communicator();
 public:
-	static Communicator& getInstance(RequestHandlerFactory& handlerFactory);
+	static Communicator& getInstance();
 
 	/* Free used memory in the end (if needed)*/
 	~Communicator();
