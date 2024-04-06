@@ -17,7 +17,7 @@ bool CheckSignupData::CheckEmail(const std::string& email)
 
 bool CheckSignupData::CheckAddress(const std::string& address)
 {
-  return false;
+  return std::regex_match(address, std::regex("^[a-zA-Z]+,[\d]+,[a-zA-Z]+$"));;
 }
 
 bool CheckSignupData::CheckPhoneNumber(const std::string& phoneNumber)
