@@ -51,8 +51,11 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& req)
 	SignupRequest signupData = JsonRequestPacketDeserializer::deserializeSignupRequest(req.buffer);
 	SignupResponse signupResponse;
 	RequestResult result;
+	bool isDataValid;
 
-	if (loginManager.signup(signupData.username, signupData.password, signupData.email)) {
+	isDataValid = CheckSignupData::CheckData(signupData);
+
+	if (isDataValid && loginManager.signup(signupData.username, signupData.password, signupData.email, signupData.address, signupData.phoneNumber, signupData.birthDate)) {
 		signupResponse.status = SUCCESS;
 		result.newHandler = _handlerFactory.createMenuRequestHandler();
 	}
