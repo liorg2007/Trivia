@@ -1,7 +1,7 @@
 #include "RequestHandlerFactory.h"
 
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* database)
-    : _database(database), _loginManager(database)
+    : _database(database), _loginManager(LoginManager::getInstance(database))
 {
 }
 

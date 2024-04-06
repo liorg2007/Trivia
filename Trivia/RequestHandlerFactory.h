@@ -18,7 +18,7 @@ public:
 	MenuRequestHandler* createMenuRequestHandler();
 
 private:
-	LoginManager _loginManager;
+	LoginManager& _loginManager;
 	IDatabase* _database;
 };
 

@@ -5,6 +5,12 @@ LoginManager::LoginManager(IDatabase* database)
 {
 }
 
+LoginManager& LoginManager::getInstance(IDatabase* database)
+{
+	static LoginManager instance(database);
+	return instance;
+}
+
 bool LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
 {
 	if (!_database->DoesUserExist(username))
