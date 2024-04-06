@@ -31,5 +31,5 @@ bool CheckSignupData::CheckPhoneNumber(const std::string& phoneNumber)
 
 bool CheckSignupData::CheckBirthDate(const std::string& birthDate)
 {
-  return std::regex_match(birthDate, std::regex("\d\d+\/+\d\d+\/+\d\d\d\d$"));
+  return std::regex_match(birthDate, std::regex("^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$"));
 }
