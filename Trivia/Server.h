@@ -11,6 +11,7 @@ private:
 
 public:
 	Server();
+	~Server();
 
 	void run();
 };

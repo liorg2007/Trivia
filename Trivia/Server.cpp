@@ -7,6 +7,11 @@ Server::Server()
 {
 }
 
+Server::~Server()
+{
+	delete _database;
+}
+
 void Server::run()
 {
 	_communicator.startHandleRequests();
