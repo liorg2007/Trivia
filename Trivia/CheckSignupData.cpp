@@ -12,7 +12,7 @@ bool CheckSignupData::CheckPassword(const std::string& password)
 
 bool CheckSignupData::CheckEmail(const std::string& email)
 {
-  return false;
+  return std::regex_match(email, std::regex("^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"));
 }
 
 bool CheckSignupData::CheckAddress(const std::string& address)
