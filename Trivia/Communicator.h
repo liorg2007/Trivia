@@ -31,12 +31,16 @@ private:
 	void sendData(SOCKET clientSocket, const Buffer& buff) const;
 	Buffer recieveData(SOCKET clientSocket) const;
 
-public:
 	Communicator(RequestHandlerFactory& handlerFactory);
+public:
+	static Communicator& getInstance(RequestHandlerFactory& handlerFactory);
 
 	/* Free used memory in the end (if needed)*/
 	~Communicator();
 
 	/* starts handling the client requests */
 	void startHandleRequests();
+
+	Communicator(Communicator&) = delete;
+	void operator=(const Communicator&) = delete;
 };

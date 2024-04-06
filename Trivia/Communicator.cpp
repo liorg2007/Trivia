@@ -120,6 +120,12 @@ Communicator::Communicator(RequestHandlerFactory& handlerFactory)
 	}
 }
 
+Communicator& Communicator::getInstance(RequestHandlerFactory& handlerFactory)
+{
+	static Communicator instance(handlerFactory);
+	return instance;
+}
+
 Communicator::~Communicator()
 {
 	try
