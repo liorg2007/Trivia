@@ -7,7 +7,7 @@ bool CheckSignupData::CheckData(const SignupRequest& userData)
 
 bool CheckSignupData::CheckPassword(const std::string& password)
 {
-  return false;
+  return std::regex_match(password, std::regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"));
 }
 
 bool CheckSignupData::CheckEmail(const std::string& email)
