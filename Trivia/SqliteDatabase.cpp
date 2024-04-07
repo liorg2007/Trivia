@@ -52,28 +52,16 @@ void SqliteDatabase::AddUser(const std::string& username, const std::string& pas
 {
 	std::string query = "INSERT INTO USERS(username, password, email, address, phoneNumber, birthDate) "
 		"VALUES('" + username + "', '" + password + "', '" + email + "', '" + address + "', '" + phoneNumber + "', '" + birthDate + "')";
-	try
-	{
-		execQuery(query, nullptr, nullptr);
-	}
-	catch (const DatabaseException&)
-	{
-		throw DatabaseException("User already exists!");
-	}
+
+	execQuery(query, nullptr, nullptr);
 }
 
 bool SqliteDatabase::DoesUserExist(const std::string& username)
 {
 	std::string query = "SELECT EXISTS(SELECT 1 FROM USERS WHERE username = '" + username + "')";
 	int count = 0;
-	try {
-		execQuery(query, getCountCallback, &count);
-	}
-	catch (const DatabaseException& e)
-	{
-		std::cerr << e.what() << std::endl;
-		return false;
-	}
+
+	execQuery(query, getCountCallback, &count);
 
 	return count;
 }
@@ -83,14 +71,7 @@ bool SqliteDatabase::IsPasswordOk(const std::string& username, const std::string
 	std::string query = "SELECT password FROM USERS WHERE username = '" + username + "'";
 	std::string userPassword = "";
 
-	try{
 	execQuery(query, getSingleStringCallback, &userPassword);
-	}
-	catch (const DatabaseException& e)
-	{
-		std::cerr << e.what() << std::endl;
-		return false;
-	}
 
 	return userPassword == password;
 }
