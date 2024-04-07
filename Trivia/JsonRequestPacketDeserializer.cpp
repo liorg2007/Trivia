@@ -30,13 +30,7 @@ json JsonRequestPacketDeserializer::deserializeJsonObject(const Buffer& buff)
 {
 	int msgSize;
 	std::memcpy(&msgSize, &buff[CODE_FIELD_LENGTH], SIZE_FIELD_LENGTH);
-
-	char* jsonString = new char[msgSize + 1];
-	std::memcpy(jsonString, &buff[HEADER_FIELD_LENGTH], msgSize);
-	jsonString[msgSize] = '\0';
-
-	json data = json::parse(jsonString);
-	delete[] jsonString;
+	json data = json::parse(std::string((char*)&buff.at(HEADER_FIELD_LENGTH), msgSize));
 
 	return data;
 }

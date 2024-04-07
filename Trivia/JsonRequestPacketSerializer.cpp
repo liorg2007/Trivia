@@ -28,8 +28,8 @@ Buffer JsonRequestPacketSerializer::buildBuffer(MessageCode resCode, const json&
 
     Buffer buff(msgSize + HEADER_FIELD_LENGTH);
 
-    buff[0] = (int)resCode; // no need for memcpy for a size of 1
-    std::memcpy(&buff[CODE_FIELD_LENGTH], &msgSize, SIZE_FIELD_LENGTH);
-    std::memcpy(&buff[HEADER_FIELD_LENGTH], msg.c_str(), msgSize);
+    buff.at(0) = (int)resCode; // no need for memcpy for a size of 1
+    std::memcpy(&buff.at(CODE_FIELD_LENGTH), &msgSize, SIZE_FIELD_LENGTH);
+    std::memcpy(&buff.at(HEADER_FIELD_LENGTH), msg.c_str(), msgSize);
     return buff;
 }
