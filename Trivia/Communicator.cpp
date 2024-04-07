@@ -45,9 +45,15 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 				throw std::exception("Can't find client's state");
 			}
 			RequestInfo reqInfo;
-			reqInfo.buffer = recieveData(clientSocket);
-			reqInfo.receivalTime = std::time(0);
-			reqInfo.id = (MessageCode)reqInfo.buffer.at(0);
+			try
+			{
+				reqInfo = recieveData(clientSocket);
+			}
+			catch (const std::exception& e)
+			{
+				sendData(clientSocket, parseErrorMessage(e.what()));
+				continue;
+			}
 
 			if (handlerSearch->second->isRequestRelevant(reqInfo))
 			{
@@ -101,24 +107,26 @@ void Communicator::sendData(SOCKET clientSocket, const Buffer& buff) const
 	}
 }
 
-Buffer Communicator::recieveData(SOCKET clientSocket) const
+RequestInfo Communicator::recieveData(SOCKET clientSocket) const
 {
-	Buffer data(HEADER_FIELD_LENGTH);
+	RequestInfo req;
+	req.buffer = Buffer(HEADER_FIELD_LENGTH);
 	uint32_t msgSize = 0;
 
-	if (recv(clientSocket, (char*)&data[0], HEADER_FIELD_LENGTH, 0) != HEADER_FIELD_LENGTH)
+	if (recv(clientSocket, (char*)&req.buffer.at(0), HEADER_FIELD_LENGTH, 0) != HEADER_FIELD_LENGTH)
 	{
-		throw std::exception("Client sent protocol invalid length");
+		throw std::exception("Invalid packet protocol");
 	}
-	std::memcpy(&msgSize, &data[CODE_FIELD_LENGTH], SIZE_FIELD_LENGTH);
-	data.resize(HEADER_FIELD_LENGTH + msgSize);
-	if (recv(clientSocket, (char*)&data[HEADER_FIELD_LENGTH], msgSize, 0) != msgSize)
+	std::memcpy(&msgSize, &req.buffer.at(CODE_FIELD_LENGTH), SIZE_FIELD_LENGTH);
+	req.buffer.resize(HEADER_FIELD_LENGTH + msgSize);
+	if (recv(clientSocket, (char*)&req.buffer.at(HEADER_FIELD_LENGTH), msgSize, 0) != msgSize)
 	{
-		throw std::exception("Client message length doesn't accord to expected length");
+		throw std::exception("Packet length is not as expected");
 	}
-
-	// std::cout << "Client says: " << (char*)&data[0] << std::endl;
-	return data;
+	req.id = (MessageCode)req.buffer.at(0);
+	req.receivalTime = std::time(0);
+	// std::cout << "Client says: " << (char*)&req.buffer.at(0) << std::endl;
+	return req;
 }
 
 Buffer Communicator::parseErrorMessage(const std::string& errMsg) const
