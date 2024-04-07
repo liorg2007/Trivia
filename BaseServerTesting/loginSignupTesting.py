@@ -7,7 +7,7 @@ SIGNUP_CODE = 1
 
 def main():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    Test4(s)
+    Test1(s)
 
 
 
@@ -15,7 +15,7 @@ def Test1(s):
     s.connect(("127.0.0.1", PORT))
     print("Connected successfully to port", PORT)
     
-    send_json(s, LOGIN_CODE, { "username": "blahblahblahblah", "password": "1234567" })
+    send_json(s, LOGIN_CODE, { "username": "lior", "password": "#Ahalan30" })
     print("Recieved for login with non existent user:", s.recv(1024))
 
     send_json(s, SIGNUP_CODE, { "username": "shimon", "password": "1234567", "email": "shimon@gmail.com", "address" : "Shimon 12", "phoneNumber" : "0501231234", "birthDate" : "1/2/2007"  })
