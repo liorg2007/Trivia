@@ -82,9 +82,9 @@ void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, i
 	char* errmsg = nullptr;
 	if (sqlite3_exec(_db, query.c_str(), callback, out, &errmsg) != SQLITE_OK)
 	{
-		std::string errorMSG(errmsg);
+		DatabaseException exception(errmsg);
 		sqlite3_free(errmsg);
-		throw DatabaseException(errmsg);
+		throw exception;
 	}
 }
 
