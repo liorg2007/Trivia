@@ -101,7 +101,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 void Communicator::sendData(SOCKET clientSocket, const Buffer& buff) const
 {
-	if (send(clientSocket, (const char*)&buff[0], buff.size(), 0) == INVALID_SOCKET)
+	if (send(clientSocket, (const char*)&buff.at(0), buff.size(), 0) == INVALID_SOCKET)
 	{
 		throw std::exception("Error while sending message to client");
 	}

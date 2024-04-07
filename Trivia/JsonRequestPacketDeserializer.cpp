@@ -29,7 +29,7 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const Buff
 json JsonRequestPacketDeserializer::deserializeJsonObject(const Buffer& buff)
 {
 	int msgSize;
-	std::memcpy(&msgSize, &buff[CODE_FIELD_LENGTH], SIZE_FIELD_LENGTH);
+	std::memcpy(&msgSize, &buff.at(CODE_FIELD_LENGTH), SIZE_FIELD_LENGTH);
 	if (msgSize > buff.size() - HEADER_FIELD_LENGTH)
 	{
 		throw std::exception("Recieved message size is longer than message");
