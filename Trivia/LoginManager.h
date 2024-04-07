@@ -3,6 +3,7 @@
 #include <mutex>
 #include "IDatabase.h"
 #include "LoggedUser.h"
+#include <iostream>
 
 class LoginManager
 {

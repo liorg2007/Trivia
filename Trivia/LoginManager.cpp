@@ -13,14 +13,22 @@ LoginManager& LoginManager::getInstance()
 
 bool LoginManager::signup(const std::string& username, const std::string& password, const std::string& email, const std::string& address, const std::string& phoneNumber, const std::string& birthDate)
 {
-	if (!_database->DoesUserExist(username))
-	{
-		std::lock_guard<std::mutex> lock(_loggedUserMtx);
+	try {
+		if (!_database->doesUserExist(username))
+		{
+			std::lock_guard<std::mutex> lock(_loggedUserMtx);
 
-		_database->AddUser(username, password, email, address, phoneNumber, birthDate);
-		_loggedUsers.push_back(LoggedUser(username));
-		return true;
+			_database->addNewUser(username, password, email, address, phoneNumber, birthDate);
+
+			_loggedUsers.push_back(LoggedUser(username));
+			return true;
+		}
 	}
+	catch (const DatabaseException& e) {
+		std::cerr << e.what() << std::endl;
+		return false;
+	}
+
 	return false;
 }
 
@@ -29,12 +37,20 @@ bool LoginManager::login(const std::string& username, const std::string& passwor
 	LoggedUser newLoggedUser(username);
 	std::lock_guard<std::mutex> lock(_loggedUserMtx);
 
-	if (std::find(_loggedUsers.begin(), _loggedUsers.end(), newLoggedUser) == _loggedUsers.end()
-		&& _database->IsPasswordOk(username, password))
-	{
-		_loggedUsers.push_back(newLoggedUser);
-		return true;
+	try {
+		if (std::find(_loggedUsers.begin(), _loggedUsers.end(), newLoggedUser) == _loggedUsers.end()
+			&& _database->doesPasswordMatch(username, password))
+		{
+			_loggedUsers.push_back(newLoggedUser);
+			return true;
+		}
 	}
+	catch (const DatabaseException& e)
+	{
+		std::cerr << e.what() << std::endl;
+		return false;
+	}
+
 	return false;
 }
 
