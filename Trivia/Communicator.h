@@ -30,6 +30,7 @@ private:
 
 	void sendData(SOCKET clientSocket, const Buffer& buff) const;
 	Buffer recieveData(SOCKET clientSocket) const;
+	Buffer parseErrorMessage(const std::string& errMsg) const;
 
 	Communicator();
 public:

@@ -26,7 +26,7 @@ void Communicator::bindAndListen()
 			throw std::exception(__FUNCTION__);
 
 		std::cout << "New client accepted, starting a new thread" << std::endl;
-		_clients.insert({ clientSocket, _handlerFactory.createLoginRequestHandler()});
+		_clients.insert({ clientSocket, _handlerFactory.createLoginRequestHandler() });
 		_threadPool.push_back(
 			new std::thread(&Communicator::handleNewClient,
 				this, clientSocket));
@@ -51,7 +51,17 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 			if (handlerSearch->second->isRequestRelevant(reqInfo))
 			{
-				RequestResult res = handlerSearch->second->handleRequest(reqInfo);
+				RequestResult res;
+				try
+				{
+					res = handlerSearch->second->handleRequest(reqInfo);
+				}
+				catch (const std::exception& e)
+				{
+					res.newHandler = nullptr;
+					res.response = parseErrorMessage(e.what());
+				}
+
 				if (res.newHandler != nullptr)
 				{
 					delete handlerSearch->second; // free previous handler
@@ -109,6 +119,13 @@ Buffer Communicator::recieveData(SOCKET clientSocket) const
 
 	// std::cout << "Client says: " << (char*)&data[0] << std::endl;
 	return data;
+}
+
+Buffer Communicator::parseErrorMessage(const std::string& errMsg) const
+{
+	ErrorResponse res;
+	res.message = errMsg;
+	return JsonRequestPacketSerializer::serializeResponse(res);
 }
 
 Communicator::Communicator()

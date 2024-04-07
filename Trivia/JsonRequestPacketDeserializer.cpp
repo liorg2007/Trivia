@@ -5,8 +5,8 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const Buffer
 	json data = deserializeJsonObject(buff);
 	LoginRequest request;
 
-	request.username = std::move(data.at("username"));
-	request.password = std::move(data.at("password"));
+	request.username = std::move(data.at(USERNAME_HEADER));
+	request.password = std::move(data.at(PASSWORD_HEADER));
 
 	return request;
 }
@@ -16,12 +16,12 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const Buff
 	json data = deserializeJsonObject(buff);
 	SignupRequest request;
 
-	request.username = std::move(data.at("username"));
-	request.password = std::move(data.at("password"));
-	request.email = std::move(data.at("email"));
-	request.address = std::move(data.at("address"));
-	request.phoneNumber = std::move(data.at("phoneNumber"));
-	request.birthDate = std::move(data.at("birthDate"));
+	request.username = std::move(data.at(USERNAME_HEADER));
+	request.password = std::move(data.at(PASSWORD_HEADER));
+	request.email = std::move(data.at(EMAIL_HEADER));
+	request.address = std::move(data.at(ADDRESS_HEADER));
+	request.phoneNumber = std::move(data.at(PHONE_NUMBER_HEADER));
+	request.birthDate = std::move(data.at(BIRTH_DATE_HEADER));
 
 	return request;
 }
