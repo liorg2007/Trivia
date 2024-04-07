@@ -66,8 +66,14 @@ bool SqliteDatabase::DoesUserExist(const std::string& username)
 {
 	std::string query = "SELECT EXISTS(SELECT 1 FROM USERS WHERE username = '" + username + "')";
 	int count = 0;
-
-	execQuery(query, getCountCallback, &count);
+	try {
+		execQuery(query, getCountCallback, &count);
+	}
+	catch (const DatabaseException& e)
+	{
+		std::cerr << e.what() << std::endl;
+		return false;
+	}
 
 	return count;
 }
@@ -77,7 +83,14 @@ bool SqliteDatabase::IsPasswordOk(const std::string& username, const std::string
 	std::string query = "SELECT password FROM USERS WHERE username = '" + username + "'";
 	std::string userPassword = "";
 
+	try{
 	execQuery(query, getSingleStringCallback, &userPassword);
+	}
+	catch (const DatabaseException& e)
+	{
+		std::cerr << e.what() << std::endl;
+		return false;
+	}
 
 	return userPassword == password;
 }
@@ -88,6 +101,8 @@ void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, i
 	char* errmsg = nullptr;
 	if (sqlite3_exec(_db, query.c_str(), callback, out, &errmsg) != SQLITE_OK)
 	{
+		std::string errorMSG(errmsg);
+		sqlite3_free(errmsg);
 		throw DatabaseException(errmsg);
 	}
 }
