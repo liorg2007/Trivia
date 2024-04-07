@@ -28,7 +28,10 @@ bool SqliteDatabase::open()
 			"id INTEGER PRIMARY KEY,"
 			"username TEXT UNIQUE NOT NULL,"
 			"password TEXT NOT NULL,"
-			"email TEXT NOT NULL);";
+			"email TEXT NOT NULL,"
+			"address TEXT NOT NULL, "
+			"phoneNumber TEXT NOT NULL, "
+			"birthDate TEXT NOT NULL); ";
 
 		execQuery(tableQuery, nullptr, nullptr);
 	}
@@ -45,10 +48,10 @@ bool SqliteDatabase::close()
 	return false;
 }
 
-void SqliteDatabase::AddUser(const std::string& username, const std::string& password, const std::string& email)
+void SqliteDatabase::AddUser(const std::string& username, const std::string& password, const std::string& email, const std::string& address, const std::string& phoneNumber, const std::string& birthDate)
 {
-	std::string query = "INSERT INTO USERS(username, password, email) "
-		"VALUES('" + username + "', '" + password + "', '" + email + "')";
+	std::string query = "INSERT INTO USERS(username, password, email, address, phoneNumber, birthDate) "
+		"VALUES('" + username + "', '" + password + "', '" + email + "', '" + address + "', '" + phoneNumber + "', '" + birthDate + "')";
 	try
 	{
 		execQuery(query, nullptr, nullptr);

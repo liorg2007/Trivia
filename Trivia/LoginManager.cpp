@@ -1,17 +1,23 @@
 #include "LoginManager.h"
 
-LoginManager::LoginManager(IDatabase* database)
-	: _database(database)
+LoginManager::LoginManager()
+	: _database(IDatabase::getInstance())
 {
 }
 
-bool LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
+LoginManager& LoginManager::getInstance()
+{
+	static LoginManager instance;
+	return instance;
+}
+
+bool LoginManager::signup(const std::string& username, const std::string& password, const std::string& email, const std::string& address, const std::string& phoneNumber, const std::string& birthDate)
 {
 	if (!_database->DoesUserExist(username))
 	{
 		std::lock_guard<std::mutex> lock(_loggedUserMtx);
 
-		_database->AddUser(username, password, email);
+		_database->AddUser(username, password, email, address, phoneNumber, birthDate);
 		_loggedUsers.push_back(LoggedUser(username));
 		return true;
 	}
