@@ -26,7 +26,7 @@ void Communicator::bindAndListen()
 			throw std::exception(__FUNCTION__);
 
 		std::cout << "New client accepted, starting a new thread" << std::endl;
-		_clients.insert({ clientSocket, _handlerFactory.createLoginRequestHandler()});
+		_clients.insert({ clientSocket, _handlerFactory.createLoginRequestHandler() });
 		_threadPool.push_back(
 			new std::thread(&Communicator::handleNewClient,
 				this, clientSocket));
@@ -45,13 +45,29 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 				throw std::exception("Can't find client's state");
 			}
 			RequestInfo reqInfo;
-			reqInfo.buffer = recieveData(clientSocket);
-			reqInfo.receivalTime = std::time(0);
-			reqInfo.id = (MessageCode)reqInfo.buffer.at(0);
+			try
+			{
+				reqInfo = recieveData(clientSocket);
+			}
+			catch (const std::exception& e)
+			{
+				sendData(clientSocket, parseErrorMessage(e.what()));
+				continue;
+			}
 
 			if (handlerSearch->second->isRequestRelevant(reqInfo))
 			{
-				RequestResult res = handlerSearch->second->handleRequest(reqInfo);
+				RequestResult res;
+				try
+				{
+					res = handlerSearch->second->handleRequest(reqInfo);
+				}
+				catch (const std::exception& e)
+				{
+					res.newHandler = nullptr;
+					res.response = parseErrorMessage(e.what());
+				}
+
 				if (res.newHandler != nullptr)
 				{
 					delete handlerSearch->second; // free previous handler
@@ -85,30 +101,39 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 void Communicator::sendData(SOCKET clientSocket, const Buffer& buff) const
 {
-	if (send(clientSocket, (const char*)&buff[0], buff.size(), 0) == INVALID_SOCKET)
+	if (send(clientSocket, (const char*)&buff.at(0), buff.size(), 0) == INVALID_SOCKET)
 	{
 		throw std::exception("Error while sending message to client");
 	}
 }
 
-Buffer Communicator::recieveData(SOCKET clientSocket) const
+RequestInfo Communicator::recieveData(SOCKET clientSocket) const
 {
-	Buffer data(HEADER_FIELD_LENGTH);
+	RequestInfo req;
+	req.buffer = Buffer(HEADER_FIELD_LENGTH);
 	uint32_t msgSize = 0;
 
-	if (recv(clientSocket, (char*)&data[0], HEADER_FIELD_LENGTH, 0) != HEADER_FIELD_LENGTH)
+	if (recv(clientSocket, (char*)&req.buffer.at(0), HEADER_FIELD_LENGTH, 0) != HEADER_FIELD_LENGTH)
 	{
-		throw std::exception("Client sent protocol invalid length");
+		throw std::exception("Invalid packet protocol");
 	}
-	std::memcpy(&msgSize, &data[CODE_FIELD_LENGTH], SIZE_FIELD_LENGTH);
-	data.resize(HEADER_FIELD_LENGTH + msgSize);
-	if (recv(clientSocket, (char*)&data[HEADER_FIELD_LENGTH], msgSize, 0) != msgSize)
+	std::memcpy(&msgSize, &req.buffer.at(CODE_FIELD_LENGTH), SIZE_FIELD_LENGTH);
+	req.buffer.resize(HEADER_FIELD_LENGTH + msgSize);
+	if (recv(clientSocket, (char*)&req.buffer.at(HEADER_FIELD_LENGTH), msgSize, 0) != msgSize)
 	{
-		throw std::exception("Client message length doesn't accord to expected length");
+		throw std::exception("Packet length is not as expected");
 	}
+	req.id = (MessageCode)req.buffer.at(0);
+	req.receivalTime = std::time(0);
+	// std::cout << "Client says: " << (char*)&req.buffer.at(0) << std::endl;
+	return req;
+}
 
-	// std::cout << "Client says: " << (char*)&data[0] << std::endl;
-	return data;
+Buffer Communicator::parseErrorMessage(const std::string& errMsg) const
+{
+	ErrorResponse res;
+	res.message = errMsg;
+	return JsonRequestPacketSerializer::serializeResponse(res);
 }
 
 Communicator::Communicator()

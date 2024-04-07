@@ -14,4 +14,11 @@ public:
 
 private:
 	static json deserializeJsonObject(const Buffer& buff);
+
+	static constexpr auto USERNAME_HEADER = "username";
+	static constexpr auto PASSWORD_HEADER = "password";
+	static constexpr auto EMAIL_HEADER = "email";
+	static constexpr auto ADDRESS_HEADER = "address";
+	static constexpr auto PHONE_NUMBER_HEADER = "phoneNumber";
+	static constexpr auto BIRTH_DATE_HEADER = "birthDate";
 };

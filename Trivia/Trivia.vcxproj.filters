@@ -66,6 +66,9 @@
     <ClCompile Include="IDatabase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CheckSignupData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h">
@@ -119,11 +122,14 @@
     <ClInclude Include="MenuRequestHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RequestHandlerFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DatabaseException.hpp">
       <Filter>Header Files\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckSignupData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestHandlerFactory.h">
+      <Filter>Header Files\Requests</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

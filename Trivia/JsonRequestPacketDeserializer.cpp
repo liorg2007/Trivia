@@ -5,8 +5,8 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const Buffer
 	json data = deserializeJsonObject(buff);
 	LoginRequest request;
 
-	request.username = std::move(data["username"]);
-	request.password = std::move(data["password"]);
+	request.username = std::move(data.at(USERNAME_HEADER));
+	request.password = std::move(data.at(PASSWORD_HEADER));
 
 	return request;
 }
@@ -16,12 +16,12 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const Buff
 	json data = deserializeJsonObject(buff);
 	SignupRequest request;
 
-	request.username = std::move(data["username"]);
-	request.password = std::move(data["password"]);
-	request.email = std::move(data["email"]);
-	request.address = std::move(data["address"]);
-	request.phoneNumber = std::move(data["phoneNumber"]);
-	request.birthDate = std::move(data["birthDate"]);
+	request.username = std::move(data.at(USERNAME_HEADER));
+	request.password = std::move(data.at(PASSWORD_HEADER));
+	request.email = std::move(data.at(EMAIL_HEADER));
+	request.address = std::move(data.at(ADDRESS_HEADER));
+	request.phoneNumber = std::move(data.at(PHONE_NUMBER_HEADER));
+	request.birthDate = std::move(data.at(BIRTH_DATE_HEADER));
 
 	return request;
 }
@@ -29,14 +29,10 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const Buff
 json JsonRequestPacketDeserializer::deserializeJsonObject(const Buffer& buff)
 {
 	int msgSize;
-	std::memcpy(&msgSize, &buff[CODE_FIELD_LENGTH], SIZE_FIELD_LENGTH);
-
-	char* jsonString = new char[msgSize + 1];
-	std::memcpy(jsonString, &buff[HEADER_FIELD_LENGTH], msgSize);
-	jsonString[msgSize] = '\0';
-
-	json data = json::parse(jsonString);
-	delete[] jsonString;
-
-	return data;
+	std::memcpy(&msgSize, &buff.at(CODE_FIELD_LENGTH), SIZE_FIELD_LENGTH);
+	if (msgSize > buff.size() - HEADER_FIELD_LENGTH)
+	{
+		throw std::exception("Recieved message size is longer than message");
+	}
+	return json::parse(std::string((char*)&buff.at(HEADER_FIELD_LENGTH), msgSize));
 }

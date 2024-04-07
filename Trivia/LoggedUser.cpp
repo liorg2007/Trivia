@@ -14,3 +14,8 @@ bool LoggedUser::operator==(const LoggedUser& other) const
 {
 	return other.getUsername() == _username;
 }
+
+bool LoggedUser::operator==(const std::string& other) const
+{
+	return other == _username;
+}
