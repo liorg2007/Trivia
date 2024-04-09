@@ -5,11 +5,11 @@
 
 class Room {
 private:
-	RoomData _RoomData;
+	RoomData _roomData;
 	std::vector<LoggedUser> _users;
 
 public:
-	Room();
+	Room(const RoomData& roomData);
 
 	void addUser(const LoggedUser& loggedUser);
 	void removeUser(const LoggedUser& loggedUser);
