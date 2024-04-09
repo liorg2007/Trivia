@@ -19,5 +19,10 @@ void Room::removeUser(const LoggedUser& loggedUser)
 
 std::vector<std::string> Room::getAllUsers() const
 {
-	return std::vector<std::string>();
+	std::vector<std::string> users;
+
+	for (const auto& user : _users)
+		users.push_back(user.getUsername());
+
+	return users;
 }
