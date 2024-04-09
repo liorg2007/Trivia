@@ -11,7 +11,7 @@ private:
 public:
 	Room(const RoomData& roomData, const LoggedUser& user);
 
-	RoomData& getRoomData() const;
+	const RoomData& getRoomData() const;
 
 	void addUser(const LoggedUser& loggedUser);
 	void removeUser(const LoggedUser& loggedUser);
