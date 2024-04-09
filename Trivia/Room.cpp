@@ -1,9 +1,10 @@
 #include "Room.h"
 
 
-Room::Room(const RoomData& roomData)
+Room::Room(const RoomData& roomData, const LoggedUser& user)
 	:_roomData(roomData)
 {
+	_users.push_back(user);
 }
 
 void Room::addUser(const LoggedUser& loggedUser)
