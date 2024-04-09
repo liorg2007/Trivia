@@ -7,6 +7,11 @@ Room::Room(const RoomData& roomData, const LoggedUser& user)
 	_users.push_back(user);
 }
 
+RoomData& Room::getRoomData() const
+{
+	return (RoomData&)_roomData;
+}
+
 void Room::addUser(const LoggedUser& loggedUser)
 {
 	_users.push_back(loggedUser);
