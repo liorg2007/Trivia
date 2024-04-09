@@ -5,9 +5,10 @@
 class RoomManager {
 private:
 	std::unordered_map<int, Room> _rooms;
+	RoomManager();
 
 public:
-	RoomManager();
+	static RoomManager& getInstance();
 
 	void createRoom(const LoggedUser& user, const RoomData& roomData);
 	void deleteRoom(int roomId);

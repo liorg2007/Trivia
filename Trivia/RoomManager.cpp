@@ -4,6 +4,12 @@ RoomManager::RoomManager()
 {
 }
 
+RoomManager& RoomManager::getInstance()
+{
+	static RoomManager instance;
+	return instance;
+}
+
 void RoomManager::createRoom(const LoggedUser& user, const RoomData& roomData)
 {
 	_rooms.emplace(roomData.id, roomData, user);
