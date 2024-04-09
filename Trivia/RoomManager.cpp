@@ -11,6 +11,7 @@ void RoomManager::createRoom(const LoggedUser& user, const RoomData& roomData)
 
 void RoomManager::deleteRoom(int roomId)
 {
+	_rooms.erase(roomId);
 }
 
 unsigned int RoomManager::getRoomState(int roomId) const
