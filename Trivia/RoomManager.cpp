@@ -12,7 +12,7 @@ RoomManager& RoomManager::getInstance()
 
 void RoomManager::createRoom(const LoggedUser& user, const RoomData& roomData)
 {
-	_rooms.emplace(roomData.id, roomData, user);
+	_rooms.insert({ roomData.id, Room(roomData, user) });
 }
 
 void RoomManager::deleteRoom(int roomId)
