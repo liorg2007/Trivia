@@ -2,7 +2,7 @@
 
 
 Room::Room(const RoomData& roomData, const LoggedUser& user)
-	:_roomData(roomData)
+	: _roomData(roomData)
 {
 	_users.push_back(user);
 }
@@ -27,10 +27,10 @@ void Room::removeUser(const LoggedUser& loggedUser)
 
 std::vector<std::string> Room::getAllUsers() const
 {
-	std::vector<std::string> users;
+	std::vector<std::string> ans;
 
 	for (const auto& user : _users)
-		users.push_back(user.getUsername());
+		ans.push_back(user.getUsername());
 
-	return users;
+	return ans;
 }

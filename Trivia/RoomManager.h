@@ -14,5 +14,5 @@ public:
 	void deleteRoom(int roomId);
 	unsigned int getRoomState(int roomId) const;
 	std::vector<RoomData> getRooms() const;
-	Room& getRoom(int roomId) const;
+	Room& getRoom(int roomId);
 };
