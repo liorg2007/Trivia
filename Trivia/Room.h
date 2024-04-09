@@ -9,6 +9,8 @@ private:
 	std::vector<LoggedUser> _users;
 
 public:
+	Room();
+
 	void addUser(const LoggedUser& loggedUser);
 	void removeUser(const LoggedUser& loggedUser);
 	std::vector<std::string> getAllUsers() const;
