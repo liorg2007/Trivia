@@ -38,9 +38,9 @@ bool SqliteDatabase::open()
 		tableQuery = "CREATE TABLE IF DOESNT EXISTS STATISTICS ("
 			"gameId INTEGER, "
 			"username TEXT NOT NULL, "
-			"correctAnswers INTEGER, "
-			"wrongAnswers INTEGER, "
-			"averageTime REAL, ";
+			"questionId INTEGER, "
+			"isCorrect INTEGER, "
+			"time REAL, ";
 
 		execQuery(tableQuery, nullptr, nullptr);
 	}
@@ -83,6 +83,11 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
 	execQuery(query, getSingleStringCallback, &userPassword);
 
 	return userPassword == password;
+}
+
+float SqliteDatabase::getPlayerAverageAnswerTime(const std::string& userName)
+{
+	return 0.0f;
 }
 
 void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out)
