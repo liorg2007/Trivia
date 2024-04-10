@@ -105,6 +105,17 @@ int SqliteDatabase::getNumOfCorrectAnswers(const std::string& userName)
 	return std::stoi(answer);
 }
 
+int SqliteDatabase::getPlayerScore(const std::string& userName)
+{
+	int correctAnswers = getNumOfCorrectAnswers(userName);
+	int totalAnswers = getNumOfTotalAnswers(userName);
+	int averageTime = getPlayerAverageAnswerTime(userName);
+
+	double timeFunction = 1.0 / averageTime;
+	
+	return ((correctAnswers / totalAnswers) * CORRECT_ANSWER_WEIGHT * timeFunction) + (((double)totalAnswers / averageTime) * ANSWER_TIME_WEIGHT);
+}
+
 int SqliteDatabase::getNumOfTotalAnswers(const std::string& userName)
 {
 	std::string answer;

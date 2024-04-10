@@ -34,6 +34,10 @@ private:
 
 	void execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out);
 
+	/* Score Components Weights */
+	static constexpr float CORRECT_ANSWER_WEIGHT = 0.6;
+	static constexpr float ANSWER_TIME_WEIGHT = 0.4;
+
 	/* Callbacks */
 	static int getCountCallback(void* data, int argc, char** argv, char** azColName);
 	static int getSingleStringCallback(void* data, int argc, char** argv, char** azColName);
