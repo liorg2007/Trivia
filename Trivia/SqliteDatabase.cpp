@@ -32,7 +32,15 @@ bool SqliteDatabase::open()
 			"phoneNumber TEXT NOT NULL, "
 			"birthDate TEXT NOT NULL); ";
 
+		execQuery(tableQuery, nullptr, nullptr);
 
+		//create statistics table if it doesnt exists
+		tableQuery = "CREATE TABLE IF DOESNT EXISTS STATISTICS ("
+			"gameId INTEGER, "
+			"username TEXT NOT NULL, "
+			"correctAnswers INTEGER, "
+			"wrongAnswers INTEGER, "
+			"averageTime REAL, ";
 
 		execQuery(tableQuery, nullptr, nullptr);
 	}
