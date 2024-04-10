@@ -23,15 +23,16 @@ bool SqliteDatabase::open()
 	else {
 		std::cout << "Sqlite database opened!" << std::endl;
 
-		//create table if it doesnt exists
+		//create user table if it doesnt exists
 		std::string tableQuery = "CREATE TABLE IF NOT EXISTS USERS ("
-			"id INTEGER PRIMARY KEY,"
-			"username TEXT UNIQUE NOT NULL,"
+			"username TEXT NOT NULL PRIMARY KEY,"
 			"password TEXT NOT NULL,"
 			"email TEXT NOT NULL,"
 			"address TEXT NOT NULL, "
 			"phoneNumber TEXT NOT NULL, "
 			"birthDate TEXT NOT NULL); ";
+
+
 
 		execQuery(tableQuery, nullptr, nullptr);
 	}
