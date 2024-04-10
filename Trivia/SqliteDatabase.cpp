@@ -88,11 +88,21 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
 float SqliteDatabase::getPlayerAverageAnswerTime(const std::string& userName)
 {
 	std::string answer;
-	std::string query = "SELECT AVG(time) WHERE username = '" + userName + "'";
+	std::string query = "SELECT AVG(time) FROM STATISTICS WHERE username = '" + userName + "'";
 
 	execQuery(query, getSingleStringCallback, &answer);
 
 	return std::stof(answer);
+}
+
+int SqliteDatabase::getNumOfCorrectAnswers(const std::string& userName)
+{
+	std::string answer;
+	std::string query = "SELECT COUNT(*) FROM STATISTICS WHERE username = '" + userName + "' AND isCorrect = 1";
+
+	execQuery(query, getSingleStringCallback, &answer);
+
+	return std::stoi(answer);
 }
 
 void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out)
