@@ -26,6 +26,21 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const Buff
 	return request;
 }
 
+GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersRequest(const Buffer& buff)
+{
+	return GetPlayersInRoomRequest();
+}
+
+JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const Buffer& buff)
+{
+	return JoinRoomRequest();
+}
+
+CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const Buffer& buff)
+{
+	return CreateRoomRequest();
+}
+
 json JsonRequestPacketDeserializer::deserializeJsonObject(const Buffer& buff)
 {
 	int msgSize;

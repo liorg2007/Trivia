@@ -23,7 +23,7 @@ bool LoginManager::signup(const std::string& username, const std::string& passwo
 			return true;
 		}
 	}
-		catch (const DatabaseException& e) {
+	catch (const DatabaseException& e) {
 		std::cerr << e.what() << std::endl;
 		return false;
 	}

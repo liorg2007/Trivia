@@ -34,3 +34,21 @@ struct RequestResult
 	Buffer response;
 	IRequestHandler* newHandler = nullptr;
 };
+
+struct CreateRoomRequest
+{
+	std::string roomName;
+	unsigned int maxUsers;
+	unsigned int questionCount;
+	unsigned int answerTimeout;
+};
+
+struct JoinRoomRequest
+{
+	unsigned int roomId;
+};
+
+struct GetPlayersInRoomRequest
+{
+	unsigned int roomId;
+};

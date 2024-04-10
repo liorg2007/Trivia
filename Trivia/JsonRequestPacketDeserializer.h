@@ -12,6 +12,10 @@ public:
 	static LoginRequest deserializeLoginRequest(const Buffer& buff);
 	static SignupRequest deserializeSignupRequest(const Buffer& buff);
 
+	static GetPlayersInRoomRequest deserializeGetPlayersRequest(const Buffer& buff);
+	static JoinRoomRequest deserializeJoinRoomRequest(const Buffer& buff);
+	static CreateRoomRequest deserializeCreateRoomRequest(const Buffer& buff);
+
 private:
 	static json deserializeJsonObject(const Buffer& buff);
 

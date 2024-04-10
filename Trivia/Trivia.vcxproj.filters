@@ -93,6 +93,12 @@
     <ClCompile Include="Lib\sqlite3.c">
       <Filter>Source Files\Database</Filter>
     </ClCompile>
+    <ClCompile Include="StatisticsManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Question.cpp">
+      <Filter>Source Files\Room</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h">
@@ -163,6 +169,12 @@
     </ClInclude>
     <ClInclude Include="CheckSignupData.h">
       <Filter>Header Files\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="StatisticsManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Question.h">
+      <Filter>Header Files\Room</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
