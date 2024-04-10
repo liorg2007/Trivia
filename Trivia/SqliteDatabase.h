@@ -18,7 +18,7 @@ public:
 	bool doesPasswordMatch(const std::string& username, const std::string& password) override;
 
 	/* Statistics Queries */
-	float getPlayerAverageAnswerTime(const std::string& userName) override;
+	double getPlayerAverageAnswerTime(const std::string& userName) override;
 	int getNumOfCorrectAnswers(const std::string& userName) override;
 	int getNumOfTotalAnswers(const std::string& userName) override;
 	int getNumOfPlayerGames(const std::string& userName) override;
