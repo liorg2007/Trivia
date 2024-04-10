@@ -105,6 +105,16 @@ int SqliteDatabase::getNumOfCorrectAnswers(const std::string& userName)
 	return std::stoi(answer);
 }
 
+int SqliteDatabase::getNumOfTotalAnswers(const std::string& userName)
+{
+	std::string answer;
+	std::string query = "SELECT COUNT(*) FROM STATISTICS WHERE username = '" + userName + "'";
+
+	execQuery(query, getSingleStringCallback, &answer);
+
+	return std::stoi(answer);
+}
+
 void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out)
 {
 	std::lock_guard<std::mutex> lock(_mtx);
