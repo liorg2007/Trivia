@@ -1,6 +1,7 @@
 #pragma once
 #include "Lib/sqlite3.h"
 #include "IDatabase.h"
+#include <array>
 #include <iostream>
 #include <mutex>
 
@@ -16,6 +17,8 @@ public:
 	bool doesUserExist(const std::string& username) override;
 	bool doesPasswordMatch(const std::string& username, const std::string& password) override;
 
+	std::list<Question> getQuestions(int amount) override;
+
 private:
 	/* Private Members */
 	std::string _dbFileName;
@@ -27,4 +30,5 @@ private:
 	/* Callbacks */
 	static int getCountCallback(void* data, int argc, char** argv, char** azColName);
 	static int getSingleStringCallback(void* data, int argc, char** argv, char** azColName);
+	static int getQuestionsCallback(void* data, int argc, char** argv, char** azColName);
 };
