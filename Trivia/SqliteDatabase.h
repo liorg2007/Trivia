@@ -12,9 +12,19 @@ public:
 	bool open() override;
 	bool close() override;
 
+	/* Login/Signup Queris */
 	void addNewUser(const std::string& username, const std::string& password, const std::string& email, const std::string& address, const std::string& phoneNumber, const std::string& birthDate) override;
 	bool doesUserExist(const std::string& username) override;
 	bool doesPasswordMatch(const std::string& username, const std::string& password) override;
+
+	/* Statistics Queries */
+	float getPlayerAverageAnswerTime(const std::string& userName) override;
+	int getNumOfCorrectAnswers(const std::string& userName) override;
+	int getNumOfTotalAnswers(const std::string& userName) override;
+	int getNumOfPlayerGames(const std::string& userName) override;
+	int getNumOfCorrectAnswers(const std::string& userName) override;
+	int getPlayerScore(const std::string& userName) override;
+	std::vector<std::string> getHighScores() override;
 
 private:
 	/* Private Members */
