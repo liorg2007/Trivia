@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include "RoomData.h"
+#include "Constants.h"
 
 struct LoginResponse
 {
@@ -38,7 +39,7 @@ struct GetPlayersInRoomResponse
 struct GetHighScoresResponse
 {
 	unsigned int status;
-	std::vector<std::pair<std::string, int>> highScores;
+	ScoreList highScores;
 };
 
 struct GetPersonalStatsResponse
