@@ -3,35 +3,30 @@
 Buffer JsonRequestPacketSerializer::serializeResponse(ErrorResponse res)
 {
 	json jsonObj{ { "message", res.message } };
-
 	return buildBuffer(MessageCode::ErrorResponseCode, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(LoginResponse res)
 {
 	json jsonObj{ { "status", res.status } };
-
 	return buildBuffer(MessageCode::LoginResponseCode, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(SignupResponse res)
 {
 	json jsonObj{ { "status", res.status } };
-
 	return buildBuffer(MessageCode::SignupResponseCode, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(LogoutResponse res)
 {
 	json jsonObj{ { "status", res.status } };
-
 	return buildBuffer(MessageCode::LogoutResponseCode, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(GetRoomsResponse res)
 {
 	json jsonObj{ {"Rooms", res.rooms} };
-
 	return buildBuffer(MessageCode::GetRoomsResponseCode, jsonObj);
 }
 
@@ -55,15 +50,22 @@ Buffer JsonRequestPacketSerializer::serializeResponse(CreateRoomResponse res)
 
 Buffer JsonRequestPacketSerializer::serializeResponse(GetHighScoreResponse res)
 {
-	// Haven't decided yet how the response would look like
-	json jsonObj{ { "HighScores", res.statistics }};
+	/* format: { "HighScores": [ [name1, score1], [name2, score2] ... ] } */
+	json jsonObj{ { "HighScores", res.highScores } };
 	return buildBuffer(MessageCode::GetHighScoreResponseCode, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(GetPersonalStatsResponse res)
 {
-	// Haven't decided yet how the response would look like
-	json jsonObj{ { "UserStatistics", res.statistics } };
+	json jsonObj
+	{
+		{ "UserStatistics",
+			{ "score", res.score },
+			{ "averageAnswerTime", res.averageAnswerTime},
+			{ "correctAnswers", res.correctAnswers },
+			{ "totalAnswers", res.totalAnswers }
+		} 
+	};
 	return buildBuffer(MessageCode::GetPersonalStatsResponseCode, jsonObj);
 }
 

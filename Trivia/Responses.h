@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <utility>
 #include "RoomData.h"
 
 struct LoginResponse
@@ -37,13 +38,16 @@ struct GetPlayersInRoomResponse
 struct GetHighScoreResponse
 {
 	unsigned int status;
-	std::vector<std::string> statistics;
+	std::vector<std::pair<std::string, int>> highScores;
 };
 
 struct GetPersonalStatsResponse
 {
 	unsigned int status;
-	std::vector<std::string> statistics;
+	double averageAnswerTime;
+	int correctAnswers;
+	int totalAnswers;
+	int score;
 };
 
 struct JoinRoomResponse
