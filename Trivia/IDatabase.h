@@ -22,7 +22,7 @@ public:
 	virtual int getNumOfPlayerGames(const std::string& userName) = 0;
 	virtual int getNumOfCorrectAnswers(const std::string& userName) = 0;
 	virtual int getPlayerScore(const std::string& userName) = 0;
-	virtual std::vector<std::string> getHighScores() = 0;
+	virtual std::vector<std::string, int> getHighScores() = 0;
 
 	IDatabase(IDatabase&) = delete;
 	void operator=(const IDatabase&) = delete;

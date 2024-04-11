@@ -125,6 +125,11 @@ int SqliteDatabase::getPlayerScore(const std::string& userName)
 	return answer;
 }
 
+std::vector<std::string, int> SqliteDatabase::getHighScores()
+{
+	return std::vector<std::string, int>();
+}
+
 int SqliteDatabase::getNumOfTotalAnswers(const std::string& userName)
 {
 	std::string answer;

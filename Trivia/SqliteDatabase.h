@@ -24,7 +24,7 @@ public:
 	int getNumOfPlayerGames(const std::string& userName) override;
 	int getNumOfCorrectAnswers(const std::string& userName) override;
 	int getPlayerScore(const std::string& userName) override;
-	std::vector<std::string> getHighScores() override;
+	std::vector<std::string, int> getHighScores() override;
 
 private:
 	/* Private Members */
