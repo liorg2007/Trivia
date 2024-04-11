@@ -2,8 +2,9 @@
 #include <vector>
 #include <string>
 
-typedef uint8_t Byte;
-typedef std::vector<Byte> Buffer;
+using Byte = uint8_t;
+using Buffer = std::vector<Byte>;
+using ScoreList = std::vector<std::pair<std::string, int>>;
 
 enum class MessageCode : Byte
 {

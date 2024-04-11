@@ -23,16 +23,18 @@ bool SqliteDatabase::open()
 	else {
 		std::cout << "Sqlite database opened!" << std::endl;
 
-		//create table if it doesnt exists
-		std::string tableQuery = "CREATE TABLE IF NOT EXISTS USERS ("
-			"id INTEGER PRIMARY KEY,"
-			"username TEXT UNIQUE NOT NULL,"
+		// create user table if it doesnt exists
+		std::string tableQuery = 
+			"CREATE TABLE IF NOT EXISTS USERS ("
+			"username TEXT NOT NULL PRIMARY KEY,"
 			"password TEXT NOT NULL,"
 			"email TEXT NOT NULL,"
 			"address TEXT NOT NULL, "
 			"phoneNumber TEXT NOT NULL, "
-			"birthDate TEXT NOT NULL);"
+			"birthDate TEXT NOT NULL, "
+			"score INTEGER); "
 			
+		// create questions table if it doesnt exists
 			"CREATE TABLE IF NOT EXISTS QUESTIONS ("
 			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"question TEXT UNIQUE NOT NULL,"
@@ -40,7 +42,17 @@ bool SqliteDatabase::open()
 			"answer_2 TEXT NOT NULL,"
 			"answer_3 TEXT NOT NULL,"
 			"answer_4 TEXT NOT NULL,"
-			"correctAnswerId INTEGER NOT NULL);";
+			"correctAnswerId INTEGER NOT NULL); "
+
+		// create statistics table if it doesnt exists
+			"CREATE TABLE IF NOT EXISTS STATISTICS ("
+			"gameId INTEGER, "
+			"username TEXT NOT NULL, "
+			"questionId INTEGER, "
+			"isCorrect INTEGER, "
+			"time REAL, "
+			"FOREIGN KEY(username) REFERENCES USERS(username), "
+			"FOREIGN KEY(gameId) REFERENCES GAMES(id));";
 
 		execQuery(tableQuery, nullptr, nullptr);
 	}
@@ -59,8 +71,8 @@ bool SqliteDatabase::close()
 
 void SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email, const std::string& address, const std::string& phoneNumber, const std::string& birthDate)
 {
-	std::string query = "INSERT INTO USERS(username, password, email, address, phoneNumber, birthDate) "
-		"VALUES('" + username + "', '" + password + "', '" + email + "', '" + address + "', '" + phoneNumber + "', '" + birthDate + "')";
+	std::string query = "INSERT INTO USERS(username, password, email, address, phoneNumber, birthDate, score) "
+		"VALUES('" + username + "', '" + password + "', '" + email + "', '" + address + "', '" + phoneNumber + "', '" + birthDate + "' + 0)";
 
 	execQuery(query, nullptr, nullptr);
 }
@@ -93,6 +105,66 @@ std::list<Question> SqliteDatabase::getQuestions(int amount)
 	return questions;
 }
 
+double SqliteDatabase::getPlayerAverageAnswerTime(const std::string& userName)
+{
+	std::string answer;
+	std::string query = "SELECT AVG(time) FROM STATISTICS WHERE username = '" + userName + "'";
+
+	execQuery(query, getSingleStringCallback, &answer);
+
+	return std::stod(answer);
+}
+
+int SqliteDatabase::getNumOfCorrectAnswers(const std::string& userName)
+{
+	std::string answer;
+	std::string query = "SELECT COUNT(*) FROM STATISTICS WHERE username = '" + userName + "' AND isCorrect = 1";
+
+	execQuery(query, getSingleStringCallback, &answer);
+
+	return std::stoi(answer);
+}
+
+int SqliteDatabase::getPlayerScore(const std::string& userName)
+{
+	int answer;
+	std::string query = "SELECT score FROM USERS WHERE username = '" + userName + "'";
+
+	execQuery(query, getCountCallback, &answer);
+
+	return answer;
+}
+
+std::vector<std::pair<std::string,int>> SqliteDatabase::getHighScores()
+{
+	ScoreList answer;
+	std::string query = "SELECT username, score FROM USERS ORDER BY score DESC LIMIT 5";
+
+	execQuery(query, getHighScoresCallback, &answer);
+
+	return answer;
+}
+
+int SqliteDatabase::getNumOfTotalAnswers(const std::string& userName)
+{
+	std::string answer;
+	std::string query = "SELECT COUNT(*) FROM STATISTICS WHERE username = '" + userName + "'";
+
+	execQuery(query, getSingleStringCallback, &answer);
+
+	return std::stoi(answer);
+}
+
+int SqliteDatabase::getNumOfPlayerGames(const std::string& userName)
+{
+	std::string answer;
+	std::string query = "SELECT COUNT(DISTINCT gameId) FROM STATISTICS WHERE username = '" + userName + "'";
+
+	execQuery(query, getSingleStringCallback, &answer);
+
+	return std::stoi(answer);
+}
+
 void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out)
 {
 	std::lock_guard<std::mutex> lock(_mtx);
@@ -105,15 +177,32 @@ void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, i
 	}
 }
 
+int SqliteDatabase::calculateScore(const std::string& userName)
+{
+	int correctAnswers = getNumOfCorrectAnswers(userName);
+	int totalAnswers = getNumOfTotalAnswers(userName);
+	int averageTime = getPlayerAverageAnswerTime(userName);
+
+	double timeFunction = 1.0 / averageTime;
+
+	return ((correctAnswers / totalAnswers) * CORRECT_ANSWER_WEIGHT * timeFunction) + (((double)totalAnswers / averageTime) * ANSWER_TIME_WEIGHT);
+}
+
 int SqliteDatabase::getCountCallback(void* data, int argc, char** argv, char** azColName)
 {
-	*((int*)data) = atoi(argv[0]);	//0 is first and only value
+	*((int*)data) = atoi(argv[FIRST_VALUE]);
 	return 0;
 }
 
 int SqliteDatabase::getSingleStringCallback(void* data, int argc, char** argv, char** azColName)
 {
-	*((std::string*)data) = argv[0]; //0 is first and only value
+	*((std::string*)data) = argv[FIRST_VALUE];
+	return 0;
+}
+
+int SqliteDatabase::getHighScoresCallback(void* data, int argc, char** argv, char** azColName)
+{
+	((ScoreList*)data)->push_back(std::make_pair(argv[FIRST_VALUE], atoi(argv[SECOND_VALUE])));
 	return 0;
 }
 

@@ -1,8 +1,10 @@
 #pragma once
 #include <string>
 #include <list>
+#include <vector>
 #include "DatabaseException.hpp"
 #include "Question.h"
+#include "Constants.h"
 
 class IDatabase {
 public:
@@ -18,6 +20,14 @@ public:
 
 	/* Trivia Questions Queries */
 	virtual std::list<Question> getQuestions(int amount) = 0;
+
+	/* Statistics Queries */
+	virtual double getPlayerAverageAnswerTime(const std::string& userName) = 0;
+	virtual int getNumOfCorrectAnswers(const std::string& userName) = 0;
+	virtual int getNumOfTotalAnswers(const std::string& userName) = 0;
+	virtual int getNumOfPlayerGames(const std::string& userName) = 0;
+	virtual int getPlayerScore(const std::string& userName) = 0;
+	virtual ScoreList getHighScores() = 0;
 
 	IDatabase(IDatabase&) = delete;
 	void operator=(const IDatabase&) = delete;
