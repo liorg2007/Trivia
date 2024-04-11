@@ -43,4 +43,9 @@ private:
 	/* Callbacks */
 	static int getCountCallback(void* data, int argc, char** argv, char** azColName);
 	static int getSingleStringCallback(void* data, int argc, char** argv, char** azColName);
+	static int getHighScoresCallback(void* data, int argc, char** argv, char** azColName);
+
+	/* Callbacks constants */
+	static constexpr auto FIRST_VALUE = 0;
+	static constexpr auto SECOND_VALUE = 1;
 };

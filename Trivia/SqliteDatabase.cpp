@@ -127,7 +127,12 @@ int SqliteDatabase::getPlayerScore(const std::string& userName)
 
 std::vector<std::string, int> SqliteDatabase::getHighScores()
 {
-	return std::vector<std::string, int>();
+	std::vector<std::string, int> answer;
+	std::string query = "SELECT * FROM SCORES ORDER BY score LIMIT 5";
+
+	execQuery(query, getHighScoresCallback, &answer);
+
+	return answer;
 }
 
 int SqliteDatabase::getNumOfTotalAnswers(const std::string& userName)
@@ -175,12 +180,18 @@ int SqliteDatabase::calculateScore(const std::string& userName)
 
 int SqliteDatabase::getCountCallback(void* data, int argc, char** argv, char** azColName)
 {
-	*((int*)data) = atoi(argv[0]);	//0 is first and only value
+	*((int*)data) = atoi(argv[FIRST_VALUE]);	//0 is first and only value
 	return 0;
 }
 
 int SqliteDatabase::getSingleStringCallback(void* data, int argc, char** argv, char** azColName)
 {
-	*((std::string*)data) = argv[0]; //0 is first and only value
+	*((std::string*)data) = argv[FIRST_VALUE]; //0 is first and only value
+	return 0;
+}
+
+int SqliteDatabase::getHighScoresCallback(void* data, int argc, char** argv, char** azColName)
+{
+	((std::vector<std::string, int>*)data)->emplace_back(argv[FIRST_VALUE], atoi(argv[SECOND_VALUE]));
 	return 0;
 }
