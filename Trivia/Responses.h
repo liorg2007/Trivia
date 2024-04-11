@@ -45,10 +45,7 @@ struct GetHighScoresResponse
 struct GetPersonalStatsResponse
 {
 	unsigned int status;
-	double averageAnswerTime;
-	int correctAnswers;
-	int totalAnswers;
-	int score;
+	UserStatistics statistics;
 };
 
 struct JoinRoomResponse
