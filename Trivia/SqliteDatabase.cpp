@@ -40,7 +40,14 @@ bool SqliteDatabase::open()
 			"username TEXT NOT NULL, "
 			"questionId INTEGER, "
 			"isCorrect INTEGER, "
-			"time REAL, ";
+			"time REAL); ";
+
+		execQuery(tableQuery, nullptr, nullptr);
+
+		//create score table if it doesnt exists
+		tableQuery = "CREATE TABLE IF DOESNT EXISTS SCORES ("
+			"username TEXT NOT NULL PRIMARY KEY, "
+			"score INTEGER);";
 
 		execQuery(tableQuery, nullptr, nullptr);
 	}
