@@ -36,7 +36,7 @@ bool SqliteDatabase::open()
 		execQuery(tableQuery, nullptr, nullptr);
 
 		//create statistics table if it doesnt exists
-		tableQuery = "CREATE TABLE IF DOESNT EXISTS STATISTICS ("
+		tableQuery = "CREATE TABLE IF NOT EXISTS STATISTICS ("
 			"gameId INTEGER, "
 			"username TEXT NOT NULL, "
 			"questionId INTEGER, "

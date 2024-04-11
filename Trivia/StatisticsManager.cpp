@@ -15,3 +15,6 @@ StatisticsManager& StatisticsManager::getInstance()
     static StatisticsManager instance;
     return instance;
 }
+
+StatisticsManager::StatisticsManager()
+{}
