@@ -116,6 +116,11 @@ int SqliteDatabase::getPlayerScore(const std::string& userName)
 	return ((correctAnswers / totalAnswers) * CORRECT_ANSWER_WEIGHT * timeFunction) + (((double)totalAnswers / averageTime) * ANSWER_TIME_WEIGHT);
 }
 
+std::vector<std::string> SqliteDatabase::getHighScores()
+{
+	return std::vector<std::string>();
+}
+
 int SqliteDatabase::getNumOfTotalAnswers(const std::string& userName)
 {
 	std::string answer;
@@ -148,6 +153,17 @@ void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, i
 	}
 }
 
+std::vector<std::string> SqliteDatabase::getUsers()
+{
+	std::vector<std::string> answer;
+	std::string query = "SELECT username FROM USERS";
+
+	//get all the users
+	execQuery(query, getMultipleStringsCallback, &answer);
+
+	return answer;
+}
+
 int SqliteDatabase::getCountCallback(void* data, int argc, char** argv, char** azColName)
 {
 	*((int*)data) = atoi(argv[0]);	//0 is first and only value
@@ -157,5 +173,11 @@ int SqliteDatabase::getCountCallback(void* data, int argc, char** argv, char** a
 int SqliteDatabase::getSingleStringCallback(void* data, int argc, char** argv, char** azColName)
 {
 	*((std::string*)data) = argv[0]; //0 is first and only value
+	return 0;
+}
+
+int SqliteDatabase::getMultipleStringsCallback(void* data, int argc, char** argv, char** azColName)
+{
+	((std::vector<std::string>*)data)->push_back(argv[0]); //0 is the first and only value
 	return 0;
 }

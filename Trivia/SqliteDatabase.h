@@ -34,11 +34,18 @@ private:
 
 	void execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out);
 
+	/* Get list of users */
+	std::vector<std::string> getUsers();
+
 	/* Score Components Weights */
 	static constexpr float CORRECT_ANSWER_WEIGHT = 0.6;
 	static constexpr float ANSWER_TIME_WEIGHT = 0.4;
 
+	/* CONSTANTS */
+	static constexpr auto MAX_SCORE_LEADERS = 5;
+
 	/* Callbacks */
 	static int getCountCallback(void* data, int argc, char** argv, char** azColName);
 	static int getSingleStringCallback(void* data, int argc, char** argv, char** azColName);
+	static int getMultipleStringsCallback(void* data, int argc, char** argv, char** azColName);
 };
