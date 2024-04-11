@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "DatabaseException.hpp"
+#include "Constants.h"
 
 class IDatabase {
 public:
@@ -21,7 +22,7 @@ public:
 	virtual int getNumOfTotalAnswers(const std::string& userName) = 0;
 	virtual int getNumOfPlayerGames(const std::string& userName) = 0;
 	virtual int getPlayerScore(const std::string& userName) = 0;
-	virtual std::vector<std::pair<std::string, int>> getHighScores() = 0;
+	virtual ScoreList getHighScores() = 0;
 
 	IDatabase(IDatabase&) = delete;
 	void operator=(const IDatabase&) = delete;

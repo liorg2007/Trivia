@@ -118,7 +118,7 @@ int SqliteDatabase::getPlayerScore(const std::string& userName)
 
 std::vector<std::pair<std::string,int>> SqliteDatabase::getHighScores()
 {
-	std::vector<std::pair<std::string, int>> answer;
+	ScoreList answer;
 	std::string query = "SELECT username, score FROM USERS ORDER BY score DESC LIMIT 5";
 
 	execQuery(query, getHighScoresCallback, &answer);
@@ -183,6 +183,6 @@ int SqliteDatabase::getSingleStringCallback(void* data, int argc, char** argv, c
 
 int SqliteDatabase::getHighScoresCallback(void* data, int argc, char** argv, char** azColName)
 {
-	((std::vector<std::pair<std::string, int>>*)data)->push_back(std::make_pair(argv[FIRST_VALUE], atoi(argv[SECOND_VALUE])));
+	((ScoreList*)data)->push_back(std::make_pair(argv[FIRST_VALUE], atoi(argv[SECOND_VALUE])));
 	return 0;
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "Lib/sqlite3.h"
 #include "IDatabase.h"
+#include "Constants.h"
 #include <iostream>
 #include <mutex>
 
@@ -23,7 +24,7 @@ public:
 	int getNumOfTotalAnswers(const std::string& userName) override;
 	int getNumOfPlayerGames(const std::string& userName) override;
 	int getPlayerScore(const std::string& userName) override;
-	std::vector<std::pair<std::string, int>> getHighScores() override;
+	ScoreList getHighScores() override;
 
 private:
 	/* Private Members */
