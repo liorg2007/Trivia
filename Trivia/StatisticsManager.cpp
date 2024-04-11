@@ -5,9 +5,9 @@ StatisticsManager::StatisticsManager()
 {
 }
 
-std::vector<std::string> StatisticsManager::getHighScore() const
+ScoreList StatisticsManager::getHighScores() const
 {
-    return std::vector<std::string>();
+    return _database->getHighScores();
 }
 
 std::vector<std::string> StatisticsManager::getUserStatistics(const std::string& username) const
