@@ -22,9 +22,8 @@ public:
 	int getNumOfCorrectAnswers(const std::string& userName) override;
 	int getNumOfTotalAnswers(const std::string& userName) override;
 	int getNumOfPlayerGames(const std::string& userName) override;
-	int getNumOfCorrectAnswers(const std::string& userName) override;
 	int getPlayerScore(const std::string& userName) override;
-	std::vector<std::string, int> getHighScores() override;
+	std::vector<std::pair<std::string, int>> getHighScores() override;
 
 private:
 	/* Private Members */
@@ -35,8 +34,8 @@ private:
 	void execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out);
 
 	/* Score Components Weights */
-	static constexpr float CORRECT_ANSWER_WEIGHT = 0.6;
-	static constexpr float ANSWER_TIME_WEIGHT = 0.4;
+	static constexpr double CORRECT_ANSWER_WEIGHT = 0.6;
+	static constexpr double ANSWER_TIME_WEIGHT = 0.4;
 
 	int calculateScore(const std::string& userName);
 
