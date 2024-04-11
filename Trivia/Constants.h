@@ -10,10 +10,21 @@ enum class MessageCode : Byte
 {
 	LoginRequestCode,
 	SignupRequestCode,
+	LogoutRequestCode,
+
+	ErrorResponseCode,
 
 	LoginResponseCode,
 	SignupResponseCode,
-	ErrorResponseCode
+	LogoutResponseCode,
+
+	JoinRoomResponseCode,
+	CreateRoomResponseCode,
+
+	GetRoomsResponseCode,
+	GetPlayersInRoomResponseCode,
+	GetHighScoresResponseCode,
+	GetPersonalStatsResponseCode
 };
 
 static constexpr auto SUCCESS = 1;

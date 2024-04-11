@@ -23,7 +23,7 @@ bool SqliteDatabase::open()
 	else {
 		std::cout << "Sqlite database opened!" << std::endl;
 
-		//create user table if it doesnt exists
+		// create user table if it doesnt exists
 		std::string tableQuery = 
 			"CREATE TABLE IF NOT EXISTS USERS ("
 			"username TEXT NOT NULL PRIMARY KEY,"
@@ -33,13 +33,24 @@ bool SqliteDatabase::open()
 			"phoneNumber TEXT NOT NULL, "
 			"birthDate TEXT NOT NULL, "
 			"score INTEGER); "
-		//create statistics table if it doesnt exists
+			
+		// create questions table if it doesnt exists
+			"CREATE TABLE IF NOT EXISTS QUESTIONS ("
+			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"question TEXT UNIQUE NOT NULL,"
+			"answer_1 TEXT NOT NULL,"
+			"answer_2 TEXT NOT NULL,"
+			"answer_3 TEXT NOT NULL,"
+			"answer_4 TEXT NOT NULL,"
+			"correctAnswerId INTEGER NOT NULL); "
+
+		// create statistics table if it doesnt exists
 			"CREATE TABLE IF NOT EXISTS STATISTICS ("
 			"gameId INTEGER, "
 			"username TEXT NOT NULL, "
 			"questionId INTEGER, "
 			"isCorrect INTEGER, "
-			"time REAL,"
+			"time REAL, "
 			"FOREIGN KEY(username) REFERENCES USERS(username), "
 			"FOREIGN KEY(gameId) REFERENCES GAMES(id));";
 
@@ -84,6 +95,14 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
 	execQuery(query, getSingleStringCallback, &userPassword);
 
 	return userPassword == password;
+}
+
+std::list<Question> SqliteDatabase::getQuestions(int amount)
+{
+	std::list<Question> questions;
+	auto query = "SELECT * FROM QUESTIONS LIMIT " + std::to_string(amount) + ';';
+	execQuery(query, getQuestionsCallback, &questions);
+	return questions;
 }
 
 double SqliteDatabase::getPlayerAverageAnswerTime(const std::string& userName)
@@ -184,5 +203,31 @@ int SqliteDatabase::getSingleStringCallback(void* data, int argc, char** argv, c
 int SqliteDatabase::getHighScoresCallback(void* data, int argc, char** argv, char** azColName)
 {
 	((ScoreList*)data)->push_back(std::make_pair(argv[FIRST_VALUE], atoi(argv[SECOND_VALUE])));
+	return 0;
+}
+
+int SqliteDatabase::getQuestionsCallback(void* data, int argc, char** argv, char** azColName)
+{
+	std::list<Question>& questions = *((std::list<Question>*)data);
+	std::vector<std::string> answers;
+	char* questionPromptPtr;
+	int correctAnswerId;
+	for (int i = 0; i < argc; i++)
+	{
+		std::string col = azColName[i];
+		if (col.rfind("answer", 0) == 0)
+		{
+			answers.emplace_back(argv[i]);
+		}
+		else if (col == "question")
+		{
+			questionPromptPtr = argv[i];
+		}
+		else if (col == "correctAnswerId")
+		{
+			correctAnswerId = std::stoi(argv[i]);
+		}
+	}
+	questions.emplace_back(questionPromptPtr, answers, correctAnswerId);
 	return 0;
 }

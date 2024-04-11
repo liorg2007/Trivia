@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
+#include <list>
 #include <vector>
 #include "DatabaseException.hpp"
+#include "Question.h"
 #include "Constants.h"
 
 class IDatabase {
@@ -15,6 +17,9 @@ public:
 	virtual void addNewUser(const std::string& username, const std::string& password, const std::string& email, const std::string& address, const std::string& phoneNumber, const std::string& birthDate) = 0;
 	virtual bool doesUserExist(const std::string& username) = 0;
 	virtual bool doesPasswordMatch(const std::string& username, const std::string& password) = 0;
+
+	/* Trivia Questions Queries */
+	virtual std::list<Question> getQuestions(int amount) = 0;
 
 	/* Statistics Queries */
 	virtual double getPlayerAverageAnswerTime(const std::string& userName) = 0;

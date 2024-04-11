@@ -2,6 +2,7 @@
 #include "Lib/sqlite3.h"
 #include "IDatabase.h"
 #include "Constants.h"
+#include <array>
 #include <iostream>
 #include <mutex>
 
@@ -17,6 +18,8 @@ public:
 	void addNewUser(const std::string& username, const std::string& password, const std::string& email, const std::string& address, const std::string& phoneNumber, const std::string& birthDate) override;
 	bool doesUserExist(const std::string& username) override;
 	bool doesPasswordMatch(const std::string& username, const std::string& password) override;
+
+	std::list<Question> getQuestions(int amount) override;
 
 	/* Statistics Queries */
 	double getPlayerAverageAnswerTime(const std::string& userName) override;
@@ -43,6 +46,7 @@ private:
 	/* Callbacks */
 	static int getCountCallback(void* data, int argc, char** argv, char** azColName);
 	static int getSingleStringCallback(void* data, int argc, char** argv, char** azColName);
+	static int getQuestionsCallback(void* data, int argc, char** argv, char** azColName);
 	static int getHighScoresCallback(void* data, int argc, char** argv, char** azColName);
 
 	/* Callbacks constants */
