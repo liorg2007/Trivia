@@ -24,26 +24,24 @@ bool SqliteDatabase::open()
 		std::cout << "Sqlite database opened!" << std::endl;
 
 		//create user table if it doesnt exists
-		std::string tableQuery = "CREATE TABLE IF NOT EXISTS USERS ("
+		std::string tableQuery = 
+			"CREATE TABLE IF NOT EXISTS USERS ("
 			"username TEXT NOT NULL PRIMARY KEY,"
 			"password TEXT NOT NULL,"
 			"email TEXT NOT NULL,"
 			"address TEXT NOT NULL, "
 			"phoneNumber TEXT NOT NULL, "
 			"birthDate TEXT NOT NULL, "
-			"score INTEGER); ";
-
-		execQuery(tableQuery, nullptr, nullptr);
-
+			"score INTEGER); "
 		//create statistics table if it doesnt exists
-		tableQuery = "CREATE TABLE IF NOT EXISTS STATISTICS ("
+			"CREATE TABLE IF NOT EXISTS STATISTICS ("
 			"gameId INTEGER, "
 			"username TEXT NOT NULL, "
 			"questionId INTEGER, "
 			"isCorrect INTEGER, "
 			"time REAL,"
 			"FOREIGN KEY(username) REFERENCES USERS(username), "
-			"FOREIGN KEY(gameId) REFERENCES GAME(id));";
+			"FOREIGN KEY(gameId) REFERENCES GAMES(id));";
 
 		execQuery(tableQuery, nullptr, nullptr);
 	}
@@ -95,7 +93,7 @@ double SqliteDatabase::getPlayerAverageAnswerTime(const std::string& userName)
 
 	execQuery(query, getSingleStringCallback, &answer);
 
-	return std::stof(answer);
+	return std::stod(answer);
 }
 
 int SqliteDatabase::getNumOfCorrectAnswers(const std::string& userName)
@@ -121,7 +119,7 @@ int SqliteDatabase::getPlayerScore(const std::string& userName)
 std::vector<std::pair<std::string,int>> SqliteDatabase::getHighScores()
 {
 	std::vector<std::pair<std::string, int>> answer;
-	std::string query = "SELECT username, score FROM USERS ORDER BY score LIMIT 5";
+	std::string query = "SELECT username, score FROM USERS ORDER BY score DESC LIMIT 5";
 
 	execQuery(query, getHighScoresCallback, &answer);
 
@@ -173,13 +171,13 @@ int SqliteDatabase::calculateScore(const std::string& userName)
 
 int SqliteDatabase::getCountCallback(void* data, int argc, char** argv, char** azColName)
 {
-	*((int*)data) = atoi(argv[FIRST_VALUE]);	//0 is first and only value
+	*((int*)data) = atoi(argv[FIRST_VALUE]);
 	return 0;
 }
 
 int SqliteDatabase::getSingleStringCallback(void* data, int argc, char** argv, char** azColName)
 {
-	*((std::string*)data) = argv[FIRST_VALUE]; //0 is first and only value
+	*((std::string*)data) = argv[FIRST_VALUE];
 	return 0;
 }
 
