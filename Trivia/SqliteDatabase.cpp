@@ -31,7 +31,16 @@ bool SqliteDatabase::open()
 			"email TEXT NOT NULL,"
 			"address TEXT NOT NULL, "
 			"phoneNumber TEXT NOT NULL, "
-			"birthDate TEXT NOT NULL); ";
+			"birthDate TEXT NOT NULL);"
+			
+			"CREATE TABLE IF NOT EXISTS QUESTIONS ("
+			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"question TEXT UNIQUE NOT NULL,"
+			"answer_1 TEXT NOT NULL,"
+			"answer_2 TEXT NOT NULL,"
+			"answer_3 TEXT NOT NULL,"
+			"answer_4 TEXT NOT NULL,"
+			"correctAnswerId INTEGER NOT NULL);";
 
 		execQuery(tableQuery, nullptr, nullptr);
 	}
@@ -76,6 +85,14 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
 	return userPassword == password;
 }
 
+std::list<Question> SqliteDatabase::getQuestions(int amount)
+{
+	std::list<Question> questions;
+	auto query = "SELECT * FROM QUESTIONS LIMIT " + std::to_string(amount) + ';';
+	execQuery(query, getQuestionsCallback, &questions);
+	return questions;
+}
+
 void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out)
 {
 	std::lock_guard<std::mutex> lock(_mtx);
@@ -97,5 +114,31 @@ int SqliteDatabase::getCountCallback(void* data, int argc, char** argv, char** a
 int SqliteDatabase::getSingleStringCallback(void* data, int argc, char** argv, char** azColName)
 {
 	*((std::string*)data) = argv[0]; //0 is first and only value
+	return 0;
+}
+
+int SqliteDatabase::getQuestionsCallback(void* data, int argc, char** argv, char** azColName)
+{
+	std::list<Question>& questions = *((std::list<Question>*)data);
+	std::vector<std::string> answers;
+	char* questionPromptPtr;
+	int correctAnswerId;
+	for (int i = 0; i < argc; i++)
+	{
+		std::string col = azColName[i];
+		if (col.rfind("answer", 0) == 0)
+		{
+			answers.emplace_back(argv[i]);
+		}
+		else if (col == "question")
+		{
+			questionPromptPtr = argv[i];
+		}
+		else if (col == "correctAnswerId")
+		{
+			correctAnswerId = std::stoi(argv[i]);
+		}
+	}
+	questions.emplace_back(questionPromptPtr, answers, correctAnswerId);
 	return 0;
 }
