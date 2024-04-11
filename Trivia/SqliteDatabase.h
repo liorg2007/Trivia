@@ -38,6 +38,8 @@ private:
 	static constexpr float CORRECT_ANSWER_WEIGHT = 0.6;
 	static constexpr float ANSWER_TIME_WEIGHT = 0.4;
 
+	int calculateScore(const std::string& userName);
+
 	/* Callbacks */
 	static int getCountCallback(void* data, int argc, char** argv, char** azColName);
 	static int getSingleStringCallback(void* data, int argc, char** argv, char** azColName);
