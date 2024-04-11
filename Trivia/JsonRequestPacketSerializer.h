@@ -18,7 +18,7 @@ public:
 	static Buffer serializeResponse(GetPlayersInRoomResponse res);
 	static Buffer serializeResponse(JoinRoomResponse res);
 	static Buffer serializeResponse(CreateRoomResponse res);
-	static Buffer serializeResponse(GetHighScoreResponse res);
+	static Buffer serializeResponse(GetHighScoresResponse res);
 	static Buffer serializeResponse(GetPersonalStatsResponse res);
 
 private:

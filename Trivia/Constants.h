@@ -22,7 +22,7 @@ enum class MessageCode : Byte
 
 	GetRoomsResponseCode,
 	GetPlayersInRoomResponseCode,
-	GetHighScoreResponseCode,
+	GetHighScoresResponseCode,
 	GetPersonalStatsResponseCode
 };
 

@@ -48,11 +48,11 @@ Buffer JsonRequestPacketSerializer::serializeResponse(CreateRoomResponse res)
 	return buildBuffer(MessageCode::CreateRoomResponseCode, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::serializeResponse(GetHighScoreResponse res)
+Buffer JsonRequestPacketSerializer::serializeResponse(GetHighScoresResponse res)
 {
 	/* format: { "HighScores": [ [name1, score1], [name2, score2] ... ] } */
 	json jsonObj{ { "HighScores", res.highScores } };
-	return buildBuffer(MessageCode::GetHighScoreResponseCode, jsonObj);
+	return buildBuffer(MessageCode::GetHighScoresResponseCode, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(GetPersonalStatsResponse res)
