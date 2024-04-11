@@ -117,7 +117,12 @@ int SqliteDatabase::getNumOfCorrectAnswers(const std::string& userName)
 
 int SqliteDatabase::getPlayerScore(const std::string& userName)
 {
-	return 0;
+	int answer;
+	std::string query = "SELECT score FROM SCORES WHERE username = '" + userName + "'";
+
+	execQuery(query, getCountCallback, &answer);
+
+	return answer;
 }
 
 int SqliteDatabase::getNumOfTotalAnswers(const std::string& userName)
