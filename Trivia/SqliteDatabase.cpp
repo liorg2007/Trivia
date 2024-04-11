@@ -30,7 +30,8 @@ bool SqliteDatabase::open()
 			"email TEXT NOT NULL,"
 			"address TEXT NOT NULL, "
 			"phoneNumber TEXT NOT NULL, "
-			"birthDate TEXT NOT NULL); ";
+			"birthDate TEXT NOT NULL, "
+			"score INTEGER); ";
 
 		execQuery(tableQuery, nullptr, nullptr);
 
@@ -43,14 +44,6 @@ bool SqliteDatabase::open()
 			"time REAL,"
 			"FOREIGN KEY(username) REFERENCES USERS(username), "
 			"FOREIGN KEY(gameId) REFERENCES GAME(id));";
-
-		execQuery(tableQuery, nullptr, nullptr);
-
-		//create score table if it doesnt exists
-		tableQuery = "CREATE TABLE IF DOESNT EXISTS SCORES ("
-			"username TEXT NOT NULL PRIMARY KEY, "
-			"score INTEGER,"
-			"FOREIGN KEY(username) REFERENCES USERS(username));";
 
 		execQuery(tableQuery, nullptr, nullptr);
 	}
@@ -69,8 +62,8 @@ bool SqliteDatabase::close()
 
 void SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email, const std::string& address, const std::string& phoneNumber, const std::string& birthDate)
 {
-	std::string query = "INSERT INTO USERS(username, password, email, address, phoneNumber, birthDate) "
-		"VALUES('" + username + "', '" + password + "', '" + email + "', '" + address + "', '" + phoneNumber + "', '" + birthDate + "')";
+	std::string query = "INSERT INTO USERS(username, password, email, address, phoneNumber, birthDate, score) "
+		"VALUES('" + username + "', '" + password + "', '" + email + "', '" + address + "', '" + phoneNumber + "', '" + birthDate + "' + 0)";
 
 	execQuery(query, nullptr, nullptr);
 }
@@ -118,7 +111,7 @@ int SqliteDatabase::getNumOfCorrectAnswers(const std::string& userName)
 int SqliteDatabase::getPlayerScore(const std::string& userName)
 {
 	int answer;
-	std::string query = "SELECT score FROM SCORES WHERE username = '" + userName + "'";
+	std::string query = "SELECT score FROM USERS WHERE username = '" + userName + "'";
 
 	execQuery(query, getCountCallback, &answer);
 
@@ -128,7 +121,7 @@ int SqliteDatabase::getPlayerScore(const std::string& userName)
 std::vector<std::string, int> SqliteDatabase::getHighScores()
 {
 	std::vector<std::string, int> answer;
-	std::string query = "SELECT * FROM SCORES ORDER BY score LIMIT 5";
+	std::string query = "SELECT username, score FROM USERS ORDER BY score LIMIT 5";
 
 	execQuery(query, getHighScoresCallback, &answer);
 
