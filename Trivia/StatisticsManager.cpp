@@ -5,14 +5,19 @@ StatisticsManager::StatisticsManager()
 {
 }
 
-std::vector<std::string> StatisticsManager::getHighScore() const
+ScoreList StatisticsManager::getHighScores() const
 {
-    return std::vector<std::string>();
+    return _database->getHighScores();
 }
 
-std::vector<std::string> StatisticsManager::getUserStatistics(const std::string& username) const
+UserStatistics StatisticsManager::getUserStatistics(const std::string& username) const
 {
-    return std::vector<std::string>();
+    UserStatistics stats;
+    stats.averageAnswerTime = _database->getPlayerAverageAnswerTime(username);
+    stats.correctAnswers = _database->getNumOfCorrectAnswers(username);
+    stats.score = _database->getPlayerScore(username);
+    stats.totalAnswers = _database->getNumOfTotalAnswers(username);
+    return stats;
 }
 
 StatisticsManager& StatisticsManager::getInstance()

@@ -60,10 +60,10 @@ Buffer JsonRequestPacketSerializer::serializeResponse(GetPersonalStatsResponse r
 	json jsonObj
 	{
 		{ "UserStatistics",
-			{ "score", res.score },
-			{ "averageAnswerTime", res.averageAnswerTime},
-			{ "correctAnswers", res.correctAnswers },
-			{ "totalAnswers", res.totalAnswers }
+			{ "score", res.statistics.score },
+			{ "averageAnswerTime", res.statistics.averageAnswerTime},
+			{ "correctAnswers", res.statistics.correctAnswers },
+			{ "totalAnswers", res.statistics.totalAnswers }
 		} 
 	};
 	return buildBuffer(MessageCode::GetPersonalStatsResponseCode, jsonObj);
