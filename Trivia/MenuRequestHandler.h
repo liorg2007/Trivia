@@ -23,5 +23,14 @@ private:
 	-  createRoom(RequestInfo): RequestResult
 	*/
 
-	RequestHandlerFactory& _handlerFactory;
+	static constexpr std::array<RequestCode, 6> VALID_CODES =
+	{
+		RequestCode::Logout,
+		RequestCode::CreateRoom,
+		RequestCode::JoinRoom,
+		RequestCode::GetPlayersInRoom,
+		RequestCode::GetRooms,
+		RequestCode::GetStatistics,
+	};
+	RequestHandlerFactory & _handlerFactory;
 };
