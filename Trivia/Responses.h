@@ -5,6 +5,20 @@
 #include "RoomData.h"
 #include "Constants.h"
 
+enum class ResponseCode : Byte
+{
+	Error,
+	Login,
+	Signup,
+	Logout,
+	JoinRoom,
+	CreateRoom,
+	GetRooms,
+	GetPlayersInRoom,
+	GetHighScores,
+	GetPersonalStats
+};
+
 struct LoginResponse
 {
 	unsigned int status;

@@ -7,7 +7,10 @@ MenuRequestHandler::MenuRequestHandler(RequestHandlerFactory& handlerFactory)
 
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo& req)
 {
-	return false;
+	switch (req.id)
+	{
+		case req
+	}
 }
 
 RequestResult MenuRequestHandler::handleRequest(const RequestInfo& req)
