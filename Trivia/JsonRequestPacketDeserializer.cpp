@@ -43,11 +43,24 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(co
 
 json JsonRequestPacketDeserializer::deserializeJsonObject(const Buffer& buff)
 {
+	if (buff.size() <= HEADER_FIELD_LENGTH)
+	{
+		throw std::exception("Recieved buffer is too short");
+	}
 	int msgSize;
 	std::memcpy(&msgSize, &buff.at(CODE_FIELD_LENGTH), SIZE_FIELD_LENGTH);
 	if (msgSize > buff.size() - HEADER_FIELD_LENGTH)
 	{
 		throw std::exception("Recieved message size is longer than message");
 	}
-	return json::parse(std::string((char*)&buff.at(HEADER_FIELD_LENGTH), msgSize));
+
+	std::string jsonStr((char*)&buff.at(HEADER_FIELD_LENGTH), msgSize);
+	try
+	{
+		return json::parse(jsonStr);
+	}
+	catch (const json::parse_error& e)
+	{
+		throw std::exception("Error parsing JSON");
+	}
 }
