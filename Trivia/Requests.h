@@ -16,7 +16,8 @@ enum class RequestCode : Byte
 	JoinRoom,
 	GetRooms,
 	GetPlayersInRoom,
-	GetStatistics
+	GetHighScores,
+	GetPersonalStats,
 };
 
 struct RequestInfo

@@ -4,6 +4,7 @@
 
 class RequestHandlerFactory;
 
+
 class MenuRequestHandler : public IRequestHandler {
 public:
 	MenuRequestHandler(RequestHandlerFactory& handlerFactory);
@@ -12,25 +13,15 @@ public:
 	RequestResult handleRequest(const RequestInfo& req) override;
 
 private:
-	/*
-	* Private functions to implement however we need:
-	-  signout(RequestInfo): RequestResult
-	-  getRooms(RequestInfo): RequestResult
-	-  getPlayersInRoom(RequestInfo): RequestResult
-	-  getPersonalStats(RequestInfo): RequestResult
-	-  getHighScore(RequestInfo): RequestResult
-	-  joinRoom(RequestInfo): RequestResult
-	-  createRoom(RequestInfo): RequestResult
-	*/
+	RequestResult logout(const RequestInfo& req);
+	RequestResult getRooms(const RequestInfo& req);
+	RequestResult createRoom(const RequestInfo& req);
+	RequestResult joinRoom(const RequestInfo& req);
+	RequestResult getPlayersInRoom(const RequestInfo& req);
+	RequestResult getPersonalStats(const RequestInfo& req);
+	RequestResult getHighScore(const RequestInfo& req);
 
-	static constexpr std::array<RequestCode, 6> VALID_CODES =
-	{
-		RequestCode::Logout,
-		RequestCode::CreateRoom,
-		RequestCode::JoinRoom,
-		RequestCode::GetPlayersInRoom,
-		RequestCode::GetRooms,
-		RequestCode::GetStatistics,
-	};
+	using HandlerFunction = RequestResult(MenuRequestHandler::*)(const RequestInfo&);
+	std::unordered_map<RequestCode, HandlerFunction> codeToFunction;
 	RequestHandlerFactory & _handlerFactory;
 };
