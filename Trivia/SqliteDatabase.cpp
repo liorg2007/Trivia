@@ -135,7 +135,7 @@ int SqliteDatabase::getPlayerScore(const std::string& userName)
 	return answer;
 }
 
-std::vector<std::pair<std::string,int>> SqliteDatabase::getHighScores()
+ScoreList SqliteDatabase::getHighScores()
 {
 	ScoreList answer;
 	std::string query = "SELECT username, score FROM USERS ORDER BY score DESC LIMIT 5";
