@@ -18,7 +18,7 @@ public:
 	LoginRequestHandler* createLoginRequestHandler();
 	LoginManager& getLoginManager();
 
-	MenuRequestHandler* createMenuRequestHandler();
+	MenuRequestHandler* createMenuRequestHandler(const LoggedUser& user);
 	StatisticsManager& getStatisticsManager();
 	RoomManager& getRoomManager();
 

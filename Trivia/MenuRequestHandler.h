@@ -4,15 +4,15 @@
 
 class RequestHandlerFactory;
 
-
 class MenuRequestHandler : public IRequestHandler {
 public:
-	MenuRequestHandler(RequestHandlerFactory& handlerFactory);
+	MenuRequestHandler(RequestHandlerFactory& handlerFactory, const LoggedUser& user);
 
 	bool isRequestRelevant(const RequestInfo& req) override;
 	RequestResult handleRequest(const RequestInfo& req) override;
 
 private:
+	using HandlerFunction = RequestResult(MenuRequestHandler::*)(const RequestInfo&);
 	RequestResult logout(const RequestInfo& req);
 	RequestResult getRooms(const RequestInfo& req);
 	RequestResult createRoom(const RequestInfo& req);
@@ -21,7 +21,7 @@ private:
 	RequestResult getPersonalStats(const RequestInfo& req);
 	RequestResult getHighScore(const RequestInfo& req);
 
-	using HandlerFunction = RequestResult(MenuRequestHandler::*)(const RequestInfo&);
-	std::unordered_map<RequestCode, HandlerFunction> codeToFunction;
+	static const std::unordered_map<RequestCode, HandlerFunction> codeToFunction;
+	LoggedUser _user;
 	RequestHandlerFactory & _handlerFactory;
 };

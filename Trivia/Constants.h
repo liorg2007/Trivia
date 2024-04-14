@@ -9,6 +9,9 @@ using ScoreList = std::vector<std::pair<std::string, int>>;
 static constexpr auto SUCCESS = 1;
 static constexpr auto FAILURE = 0;
 
+static constexpr auto ACTIVE_ROOM = 1;
+static constexpr auto INACTIVE_ROOM = 0;
+
 static constexpr auto CODE_FIELD_LENGTH = 1;
 static constexpr auto SIZE_FIELD_LENGTH = 4;
 static constexpr auto HEADER_FIELD_LENGTH = CODE_FIELD_LENGTH + SIZE_FIELD_LENGTH;

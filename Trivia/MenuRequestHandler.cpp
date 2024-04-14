@@ -3,9 +3,9 @@
 #include "JsonRequestPacketDeserializer.h"
 
 const std::unordered_map<RequestCode, MenuRequestHandler::HandlerFunction> MenuRequestHandler::codeToFunction = {
-		{ RequestCode::Logout, &MenuRequestHandler::logout }, 
+		{ RequestCode::Logout, &MenuRequestHandler::logout },
 		{ RequestCode::CreateRoom, &MenuRequestHandler::createRoom },
-		{ RequestCode::JoinRoom, &MenuRequestHandler::createRoom }, 
+		{ RequestCode::JoinRoom, &MenuRequestHandler::createRoom },
 		{ RequestCode::GetPlayersInRoom, &MenuRequestHandler::getPlayersInRoom },
 		{ RequestCode::GetRooms, &MenuRequestHandler::getRooms },
 		{ RequestCode::GetPersonalStats, &MenuRequestHandler::getPersonalStats },
@@ -69,7 +69,28 @@ RequestResult MenuRequestHandler::getRooms(const RequestInfo& req)
 
 RequestResult MenuRequestHandler::createRoom(const RequestInfo& req)
 {
-	return RequestResult();
+	RequestResult result;
+	CreateRoomRequest request = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(req.buffer);
+	CreateRoomResponse response;
+	RoomData newRoomData;
+	newRoomData.id = 0; // will be set in RoomManager's createRoom
+	newRoomData.isActive = ACTIVE_ROOM;
+	newRoomData.maxPlayers = request.maxUsers;
+	newRoomData.name = std::move(request.roomName);
+	newRoomData.numOfQuestionsInGame = request.questionCount;
+	newRoomData.timerPerQuestion = request.answerTimeout;
+	try
+	{
+		_handlerFactory.getRoomManager().createRoom(_user, std::move(newRoomData));
+		response.status = SUCCESS;
+	}
+	catch (...)
+	{
+		response.status = FAILURE;
+	}
+	result.response = JsonRequestPacketSerializer::serializeResponse(response);
+	result.newHandler = this;
+	return result;
 }
 
 RequestResult MenuRequestHandler::joinRoom(const RequestInfo& req)

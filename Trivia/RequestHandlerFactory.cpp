@@ -24,9 +24,9 @@ LoginManager& RequestHandlerFactory::getLoginManager()
 	return _loginManager;
 }
 
-MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler()
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& user)
 {
-	return new MenuRequestHandler(*this);
+	return new MenuRequestHandler(*this, user);
 }
 
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()

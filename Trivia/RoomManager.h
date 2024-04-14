@@ -10,7 +10,7 @@ private:
 public:
 	static RoomManager& getInstance();
 
-	void createRoom(const LoggedUser& user, const RoomData& roomData);
+	void createRoom(const LoggedUser& user, RoomData&& roomData);
 	void deleteRoom(int roomId);
 	unsigned int getRoomState(int roomId) const;
 	std::vector<RoomData> getRooms() const;

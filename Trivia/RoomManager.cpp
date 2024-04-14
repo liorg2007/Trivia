@@ -10,8 +10,9 @@ RoomManager& RoomManager::getInstance()
 	return instance;
 }
 
-void RoomManager::createRoom(const LoggedUser& user, const RoomData& roomData)
+void RoomManager::createRoom(const LoggedUser& user, RoomData&& roomData)
 {
+	roomData.id = _rooms.size();
 	_rooms.emplace(std::piecewise_construct, std::forward_as_tuple(roomData.id), std::forward_as_tuple(roomData, user));
 }
 
