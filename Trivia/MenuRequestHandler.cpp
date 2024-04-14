@@ -33,14 +33,10 @@ RequestResult MenuRequestHandler::logout(const RequestInfo& req)
 	RequestResult result;
 	LogoutResponse response;
 	if (_handlerFactory.getLoginManager().logout(_user.getUsername()))
-	{
 		response.status = SUCCESS;
-	}
 	else
-	{
-		// maybe throw an exception?
-		response.status = FAILURE;
-	}
+		throw(std::exception("Cannot logout non-existing user"));
+
 	result.newHandler = _handlerFactory.createLoginRequestHandler();
 	result.response = JsonRequestPacketSerializer::serializeResponse(response);
 	return result;
