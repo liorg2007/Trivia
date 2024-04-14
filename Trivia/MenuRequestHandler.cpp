@@ -25,10 +25,7 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo& req)
 RequestResult MenuRequestHandler::handleRequest(const RequestInfo& req)
 {
 	auto it = codeToFunction.find(req.id);
-	if (it != codeToFunction.end())
-	{
-		return (this->*(it->second))(req);
-	}
+	return (this->*(it->second))(req);
 }
 
 RequestResult MenuRequestHandler::logout(const RequestInfo& req)
