@@ -95,20 +95,50 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& req)
 
 RequestResult MenuRequestHandler::joinRoom(const RequestInfo& req)
 {
-	return RequestResult();
+	JoinRoomRequest request = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(req.buffer);
+	JoinRoomResponse response;
+	RequestResult result;
+	try
+	{
+		_handlerFactory.getRoomManager().getRoom(request.roomId).addUser(_user);
+		response.status = SUCCESS;
+	}
+	catch (...)
+	{
+		response.status = FAILURE;
+	}
+	result.response = JsonRequestPacketSerializer::serializeResponse(response);
+	result.newHandler = this;
+	return result;
 }
 
 RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& req)
 {
-	return RequestResult();
+	GetPlayersInRoomRequest request = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(req.buffer);
+	GetPlayersInRoomResponse response;
+	RequestResult result;
+	response.players = _handlerFactory.getRoomManager().getRoom(request.roomId).getAllUsers();
+	result.response = JsonRequestPacketSerializer::serializeResponse(response);
+	result.newHandler = this;
+	return result;
 }
 
 RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& req)
 {
-	return RequestResult();
+	GetPersonalStatsResponse response;
+	RequestResult result;
+	response.statistics = _handlerFactory.getStatisticsManager().getUserStatistics(_user.getUsername());
+	result.response = JsonRequestPacketSerializer::serializeResponse(response);
+	result.newHandler = this;
+	return result;
 }
 
 RequestResult MenuRequestHandler::getHighScore(const RequestInfo& req)
 {
-	return RequestResult();
+	GetHighScoresResponse response;
+	RequestResult result;
+	response.highScores = _handlerFactory.getStatisticsManager().getHighScores();
+	result.response = JsonRequestPacketSerializer::serializeResponse(response);
+	result.newHandler = this;
+	return result;
 }
