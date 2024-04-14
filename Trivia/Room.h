@@ -9,7 +9,7 @@ private:
 	std::vector<LoggedUser> _users;
 
 public:
-	Room(const RoomData& roomData, const LoggedUser& user);
+	Room(RoomData&& roomData, const LoggedUser& user);
 
 	const RoomData& getRoomData() const;
 

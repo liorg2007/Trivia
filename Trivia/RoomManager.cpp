@@ -13,7 +13,7 @@ RoomManager& RoomManager::getInstance()
 void RoomManager::createRoom(const LoggedUser& user, RoomData&& roomData)
 {
 	roomData.id = _rooms.size();
-	_rooms.emplace(std::piecewise_construct, std::forward_as_tuple(roomData.id), std::forward_as_tuple(roomData, user));
+	_rooms.emplace(std::piecewise_construct, std::forward_as_tuple(roomData.id), std::forward_as_tuple(std::move(roomData), user));
 }
 
 void RoomManager::deleteRoom(int roomId)
