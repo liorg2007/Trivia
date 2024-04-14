@@ -23,16 +23,18 @@ bool SqliteDatabase::open()
 	else {
 		std::cout << "Sqlite database opened!" << std::endl;
 
-		//create table if it doesnt exists
-		std::string tableQuery = "CREATE TABLE IF NOT EXISTS USERS ("
-			"id INTEGER PRIMARY KEY,"
-			"username TEXT UNIQUE NOT NULL,"
+		// create user table if it doesnt exists
+		std::string tableQuery = 
+			"CREATE TABLE IF NOT EXISTS USERS ("
+			"username TEXT NOT NULL PRIMARY KEY,"
 			"password TEXT NOT NULL,"
 			"email TEXT NOT NULL,"
 			"address TEXT NOT NULL, "
 			"phoneNumber TEXT NOT NULL, "
-			"birthDate TEXT NOT NULL);"
+			"birthDate TEXT NOT NULL, "
+			"score INTEGER); "
 			
+		// create questions table if it doesnt exists
 			"CREATE TABLE IF NOT EXISTS QUESTIONS ("
 			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"question TEXT UNIQUE NOT NULL,"
@@ -40,7 +42,17 @@ bool SqliteDatabase::open()
 			"answer_2 TEXT NOT NULL,"
 			"answer_3 TEXT NOT NULL,"
 			"answer_4 TEXT NOT NULL,"
-			"correctAnswerId INTEGER NOT NULL);";
+			"correctAnswerId INTEGER NOT NULL); "
+
+		// create statistics table if it doesnt exists
+			"CREATE TABLE IF NOT EXISTS STATISTICS ("
+			"gameId INTEGER, "
+			"username TEXT NOT NULL, "
+			"questionId INTEGER, "
+			"isCorrect INTEGER, "
+			"time REAL, "
+			"FOREIGN KEY(username) REFERENCES USERS(username), "
+			"FOREIGN KEY(gameId) REFERENCES GAMES(id));";
 
 		execQuery(tableQuery, nullptr, nullptr);
 	}
@@ -88,7 +100,7 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
 std::list<Question> SqliteDatabase::getQuestions(int amount)
 {
 	std::list<Question> questions;
-	auto query = "SELECT * FROM QUESTIONS LIMIT " + std::to_string(amount) + ';';
+	auto query = "SELECT * FROM QUESTIONS ORDER BY RANDOM() LIMIT " + std::to_string(amount) + ';';
 	execQuery(query, getQuestionsCallback, &questions);
 	return questions;
 }
@@ -103,6 +115,12 @@ void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, i
 		sqlite3_free(errmsg);
 		throw exception;
 	}
+}
+
+void SqliteDatabase::insertNewQuestions()
+{
+	// https://opentdb.com/api.php?amount=10&type=multiple
+
 }
 
 int SqliteDatabase::getCountCallback(void* data, int argc, char** argv, char** azColName)

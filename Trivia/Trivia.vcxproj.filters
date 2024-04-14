@@ -99,6 +99,9 @@
     <ClCompile Include="Question.cpp">
       <Filter>Source Files\Room</Filter>
     </ClCompile>
+    <ClCompile Include="QuestionsRetriever.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h">
@@ -175,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="Question.h">
       <Filter>Header Files\Room</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionsRetriever.h">
+      <Filter>Source Files\Database</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

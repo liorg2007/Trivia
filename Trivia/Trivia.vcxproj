@@ -139,6 +139,7 @@
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="MenuRequestHandler.cpp" />
     <ClCompile Include="Question.cpp" />
+    <ClCompile Include="QuestionsRetriever.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="Room.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="JsonRequestPacketSerializer.h" />
     <ClInclude Include="MenuRequestHandler.h" />
     <ClInclude Include="Question.h" />
+    <ClInclude Include="QuestionsRetriever.h" />
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="Requests.h" />
     <ClInclude Include="Responses.h" />
