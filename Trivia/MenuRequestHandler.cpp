@@ -1,10 +1,8 @@
 #include "MenuRequestHandler.h"
-#include <array>
-#include <utility>
+#include "JsonRequestPacketSerializer.h"
+#include "JsonRequestPacketDeserializer.h"
 
-MenuRequestHandler::MenuRequestHandler(RequestHandlerFactory& handlerFactory, const LoggedUser& user)
-	: _handlerFactory(handlerFactory), _user(user),
-	codeToFunction{ 
+const std::unordered_map<RequestCode, MenuRequestHandler::HandlerFunction> MenuRequestHandler::codeToFunction = {
 		{ RequestCode::Logout, &MenuRequestHandler::logout }, 
 		{ RequestCode::CreateRoom, &MenuRequestHandler::createRoom },
 		{ RequestCode::JoinRoom, &MenuRequestHandler::createRoom }, 
@@ -12,7 +10,10 @@ MenuRequestHandler::MenuRequestHandler(RequestHandlerFactory& handlerFactory, co
 		{ RequestCode::GetRooms, &MenuRequestHandler::getRooms },
 		{ RequestCode::GetPersonalStats, &MenuRequestHandler::getPersonalStats },
 		{ RequestCode::GetHighScores, &MenuRequestHandler::getHighScore }
-	 }
+};
+
+MenuRequestHandler::MenuRequestHandler(RequestHandlerFactory& handlerFactory, const LoggedUser& user)
+	: _handlerFactory(handlerFactory), _user(user)
 {
 }
 
@@ -32,12 +33,38 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& req)
 
 RequestResult MenuRequestHandler::logout(const RequestInfo& req)
 {
-	_handlerFactory.getLoginManager().logout(_user.getUsername());
+	RequestResult result;
+	LogoutResponse response;
+	if (_handlerFactory.getLoginManager().logout(_user.getUsername()))
+	{
+		response.status = SUCCESS;
+	}
+	else
+	{
+		// maybe throw an exception?
+		response.status = FAILURE;
+	}
+	result.newHandler = _handlerFactory.createLoginRequestHandler();
+	result.response = JsonRequestPacketSerializer::serializeResponse(response);
+	return result;
 }
 
 RequestResult MenuRequestHandler::getRooms(const RequestInfo& req)
 {
-	return RequestResult();
+	RequestResult result;
+	GetRoomsResponse response;
+	try
+	{
+		response.rooms = _handlerFactory.getRoomManager().getRooms();
+		response.status = SUCCESS;
+	}
+	catch (...)
+	{
+		response.status = FAILURE;
+	}
+	result.response = JsonRequestPacketSerializer::serializeResponse(response);
+	result.newHandler = this;
+	return result;
 }
 
 RequestResult MenuRequestHandler::createRoom(const RequestInfo& req)
