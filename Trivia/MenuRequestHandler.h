@@ -1,6 +1,8 @@
 #pragma once
 #include "IRequestHandler.h"
 #include "RequestHandlerFactory.h"
+#include "LoggedUser.h"
+#include <unordered_map>
 
 class RequestHandlerFactory;
 
