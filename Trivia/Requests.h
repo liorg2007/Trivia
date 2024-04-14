@@ -4,7 +4,28 @@
 #include "Constants.h"
 #include "IRequestHandler.h"
 
-class IRequestHandler;
+enum class RequestCode : Byte
+{
+	/* Login State */
+	Login,
+	Signup,
+
+	/* Menu State*/
+	Logout,
+	CreateRoom,
+	JoinRoom,
+	GetRooms,
+	GetPlayersInRoom,
+	GetHighScores,
+	GetPersonalStats,
+};
+
+struct RequestInfo
+{
+	RequestCode id;
+	std::time_t receivalTime;
+	Buffer buffer;
+};
 
 struct LoginRequest
 {
@@ -22,13 +43,7 @@ struct SignupRequest
 	std::string birthDate;
 };
 
-struct RequestInfo
-{
-	MessageCode id;
-	std::time_t receivalTime;
-	Buffer buffer;
-};
-
+class IRequestHandler;
 struct RequestResult
 {
 	Buffer response;

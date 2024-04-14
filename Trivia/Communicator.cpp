@@ -123,7 +123,7 @@ RequestInfo Communicator::recieveData(SOCKET clientSocket) const
 	{
 		throw std::exception("Packet length is not as expected");
 	}
-	req.id = (MessageCode)req.buffer.at(0);
+	req.id = (RequestCode)req.buffer.at(0);
 	req.receivalTime = std::time(0);
 	// std::cout << "Client says: " << (char*)&req.buffer.at(0) << std::endl;
 	return req;

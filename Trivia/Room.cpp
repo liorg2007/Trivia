@@ -1,8 +1,8 @@
 #include "Room.h"
 
 
-Room::Room(const RoomData& roomData, const LoggedUser& user)
-	: _roomData(roomData)
+Room::Room(RoomData&& roomData, const LoggedUser& user)
+	: _roomData(std::move(roomData))
 {
 	_users.push_back(user);
 }
