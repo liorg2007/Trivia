@@ -5,8 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="380"
+        AllowsTransparency="True" Background="Transparent"
+        WindowStyle="None" ResizeMode="NoResize">
+        
     <Grid>
-
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <!-- Color settings -->
+            <Border CornerRadius="10" Grid.RowSpan="2">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#C33764" Offset="0.0"/>
+                        <GradientStop Color="#1D2671" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            
+            <!-- Logo with name setting -->
+            <StackPanel>
+                <Image Source="Images/logo.png"/>
+                <TextBlock/>
+            </StackPanel>
+                
+                
+        </Grid>
     </Grid>
 </Window>
