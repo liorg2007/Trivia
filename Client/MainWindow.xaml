@@ -8,7 +8,12 @@
         Title="MainWindow" Height="450" Width="380"
         AllowsTransparency="True" Background="Transparent"
         WindowStyle="None" ResizeMode="NoResize">
-        
+
+    <Window.Resources>
+        <FontFamily x:Key="Chella-Black">pack://application:,,,/Client;component/Fonts/Chella-Black.ttf#Chella Black</FontFamily>
+    </Window.Resources>
+
+
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -27,11 +32,22 @@
             </Border>
             
             <!-- Logo with name setting -->
-            <StackPanel>
-                <Image Source="Images/logo.png"/>
-                <TextBlock/>
-            </StackPanel>
+
+            <Image Source="pack://application:,,,/Images/logo.png" Margin="0,0,0,217" Grid.RowSpan="2"/>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <TextBox FontFamily="{StaticResource Chella-Black}" Text="Username"
+                         FontWeight="Light"
+                         FontSize="20"
+                         HorizontalAlignment="Center"
+                         Foreground="white"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Width="235"
+                         HorizontalContentAlignment="left"
+                         Opacity="0.5"/>
                 
+            </StackPanel>
                 
         </Grid>
     </Grid>

@@ -9,7 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Images\" />
+    <None Remove="Fonts\Chella-Black.ttf" />
+    <None Remove="Images\logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\Chella-Black.ttf" />
+    <Resource Include="Images\logo.png" />
   </ItemGroup>
 
 </Project>
