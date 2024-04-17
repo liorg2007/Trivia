@@ -11,6 +11,7 @@
 
     <Window.Resources>
         <FontFamily x:Key="Chella-Black">pack://application:,,,/Client;component/Fonts/Chella-Black.ttf#Chella Black</FontFamily>
+        <FontFamily x:Key="face-plate-saguage">pack://application:,,,/Client;component/Fonts/face-plate-saguage.otf#face plate saguage</FontFamily>
     </Window.Resources>
 
 
@@ -20,7 +21,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            
+
             <!-- Color settings -->
             <Border CornerRadius="10" Grid.RowSpan="2">
                 <Border.Background>
@@ -30,10 +31,28 @@
                     </LinearGradientBrush>
                 </Border.Background>
             </Border>
-            
+
             <!-- Logo with name setting -->
 
-            <Image Source="pack://application:,,,/Images/logo.png" Margin="0,0,0,217" Grid.RowSpan="2"/>
+            <!-- Image Source="pack://application:,,,/Images/logo.png" Margin="0,0,0,217" Grid.RowSpan="2" -->
+            <StackPanel Orientation="Vertical" Grid.RowSpan="2">
+                <Grid>
+                    <Image Source="pack://application:,,,/Images/logoPic.png" Height="97" Width="136" Margin="10,0,10,10" VerticalAlignment="Top" Stretch="Uniform"/>
+
+                    <TextBlock Text="Goon Genius" FontSize="40" 
+                               FontFamily="{StaticResource Chella-Black}"
+                               HorizontalAlignment="Center"
+                               Margin="0,78,0,0" VerticalAlignment="Top"
+                               />
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" RenderTransformOrigin="0.441,1.56" Margin="54,133,54,0" Height="44">
+                        <Line Stretch="Uniform" Stroke="Black" X1="10" Width="95" Height="44"/>
+                        <TextBlock Margin="10" Text="QUIZ" FontSize="25" FontFamily="{StaticResource face-plate-saguage}" Width="59" VerticalAlignment="Center"/>
+                        <Line Stretch="Uniform" Stroke="Black" X2="10" Width="95" Height="44"/>
+
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <TextBox FontFamily="{StaticResource Chella-Black}" Text="Username"
@@ -46,9 +65,9 @@
                          Width="235"
                          HorizontalContentAlignment="left"
                          Opacity="0.5"/>
-                
+
             </StackPanel>
-                
+
         </Grid>
     </Grid>
 </Window>
