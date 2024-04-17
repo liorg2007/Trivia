@@ -65,5 +65,12 @@ namespace Client
 
             return true;
         }
+
+        public void sendMessage(string message)
+        {
+            byte[] buffer = new ASCIIEncoding().GetBytes(message);
+            _socket.Write(buffer, 0, buffer.Length);
+            _socket.Flush();
+        }
     }
 }
