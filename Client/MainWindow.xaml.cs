@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -8,6 +9,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Byte;
+using static Client.Helper;
 
 namespace Client
 {
@@ -20,6 +23,13 @@ namespace Client
         {
             InitializeComponent();
         }
+
+
+        private void LoginPress(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
