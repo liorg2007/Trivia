@@ -3,7 +3,10 @@ using System.Data;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.IO;
+using static Client.Server;
 using static Client.Helper;
+using System.Diagnostics;
+using System.Threading;
 
 namespace Client
 {
@@ -12,19 +15,18 @@ namespace Client
     /// </summary>
     /// 
 
-    struct ServerData
-    {
-        public string ip;
-        public int port;
-    }
-
     public partial class App : Application
     {
+        private Server _server { get; set; }
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            ServerData connDetails = new ServerData();
+            _server = new Server();
+
             try
             {
-                ServerData connDetails = getServerConnData();
+                connDetails = _server.getServerConnData();
             }
             catch(Exception ex)
             {
@@ -32,33 +34,18 @@ namespace Client
                 System.Environment.Exit(0);
             }
 
-            MainWindow mainWindow = new MainWindow();
+            if (!_server.connectToServer(connDetails))
+            {
+                raiseErrorBox("Can't connect to server");
+                System.Environment.Exit(0);
+            }
 
+
+            MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }
 
-        private ServerData getServerConnData()
-        {
-            const string serverDataFileName = "serverConfig.txt";
-            var serverData = new ServerData();
-
-            if (!File.Exists(serverDataFileName))
-                throw new Exception("No serverConfig.txt file!");
-
-            string[] data = File.ReadAllLines(serverDataFileName);
-
-            try
-            {
-                serverData.ip = data[0];
-                serverData.port = int.Parse(data[1]);
-            }
-            catch
-            {
-                throw new Exception("Can't read from config file!");
-            }
-
-            return serverData;
-        }
+        
     }
 
 }
