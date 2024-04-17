@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <FontFamily x:Key="Chella-Black">pack://application:,,,/Client;component/Fonts/Chella-Black.ttf#Chella Black</FontFamily>
+    <FontFamily x:Key="face-plate-saguage">pack://application:,,,/Client;component/Fonts/face-plate-saguage.otf#face plate saguage</FontFamily>
+    <FontFamily x:Key="Nunito-Light">pack://application:,,,/Client;component/Fonts/Nunito-Light.ttf#Nunito Light</FontFamily>
+
+</ResourceDictionary>

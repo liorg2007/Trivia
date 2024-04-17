@@ -8,22 +8,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="380"
         AllowsTransparency="True" Background="Transparent"
-        WindowStyle="None" ResizeMode="NoResize">
-
-
-    <Window.Resources>
-        <FontFamily x:Key="Chella-Black">pack://application:,,,/Client;component/Fonts/Chella-Black.ttf#Chella Black</FontFamily>
-        <FontFamily x:Key="face-plate-saguage">pack://application:,,,/Client;component/Fonts/face-plate-saguage.otf#face plate saguage</FontFamily>
-    </Window.Resources>
-
+        WindowStyle="None" ResizeMode="NoResize"
+        MouseDown="Window_MouseDown">
 
     <Grid>
+        
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-
+            
             <!-- Color settings -->
             <Border CornerRadius="10" Grid.RowSpan="2">
                 <Border.Background>
@@ -34,10 +29,32 @@
                 </Border.Background>
             </Border>
 
-            <!-- Logo with name setting -->
 
-            <!-- Image Source="pack://application:,,,/Images/logo.png" Margin="0,0,0,217" Grid.RowSpan="2" -->
-            <StackPanel Orientation="Vertical" Grid.RowSpan="2">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Height="20" 
+                                                                            VerticalAlignment="Top">
+                <Button Width="20" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" Click="MinimizeWindow">
+                    <Button.Content>
+                        <Viewbox>
+                            <iconPacks:PackIconCoolicons Kind="MinusCircle" HorizontalAlignment="Center" Height="20" VerticalAlignment="Center" Width="21"/>
+                        </Viewbox>
+                    </Button.Content>
+
+                </Button>
+                <Button Width="20" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" Click="CloseWindow">
+                    <Button.Content>
+                        <Viewbox>
+                            <iconPacks:PackIconCoolicons Kind="OffClose" HorizontalAlignment="Center" Height="20" VerticalAlignment="Center" Width="21"/>
+                        </Viewbox>
+                    </Button.Content>
+
+                </Button>
+            </StackPanel>
+
+            <!-- Logo with name setting -->
+            
+                <!-- Image Source="pack://application:,,,/Images/logo.png" Margin="0,0,0,217" Grid.RowSpan="2" -->
+            <StackPanel Orientation="Vertical" Grid.RowSpan="2" Margin="0, 10,0,0">
+                
                 <Grid>
                     <Image Source="pack://application:,,,/Images/logoPic.png" Height="97" Width="136" Margin="10,0,10,10" VerticalAlignment="Top" Stretch="Uniform"/>
 
@@ -57,7 +74,7 @@
             </StackPanel>
                 <StackPanel  Grid.Row="1">
                     <StackPanel Orientation="Horizontal">
-                    <TextBox FontFamily="{StaticResource Chella-Black}" Text="Username"
+                    <TextBox FontFamily="{StaticResource Nunito-Light}" Text="Username"
                              FontWeight="Light"
                              FontSize="20"
                              Foreground="white"
@@ -81,7 +98,7 @@
                         Opacity="0.5"/>
 
                 <StackPanel Orientation="Horizontal" Margin="0, 20, 0, 0">
-                    <PasswordBox FontFamily="{StaticResource Chella-Black}"
+                    <PasswordBox FontFamily="{StaticResource Nunito-Light}"
                                  Password="Password"
                         FontWeight="Light"
                         FontSize="20"
@@ -104,8 +121,14 @@
                 Height="2"
                 Background="White"
                 Opacity="0.5"/>
+
+
+                <StackPanel Orientation="Horizontal" Margin="0, 50, 0,0">
+                    <Button Width="100" Height="40" Content="Login" Margin="60, 0, 50,0" Style="{StaticResource LoginSignup}"/>
+                    <Button Width="100" Height="40" Content="Register" Style="{StaticResource LoginSignup}"/>
+                </StackPanel>    
              </StackPanel>
-            
+
             
 
         </Grid>

@@ -20,6 +20,8 @@
 
   <ItemGroup>
     <Resource Include="Fonts\Chella-Black.ttf" />
+    <Resource Include="Fonts\Nunito-Light.ttf" />
+    <Resource Include="Fonts\face-plate-saguage.otf" />
     <Resource Include="Images\logo.png" />
 	  <Resource Include="Images\logoPic.png" />
   </ItemGroup>
