@@ -84,7 +84,9 @@
                              HorizontalContentAlignment="left"
                              Opacity="0.5"
                              Height="32"
-                             Margin="63, 0,0,0"/>
+                             Margin="63, 0,0,0"
+                             GotFocus="UsernameGotFocus"
+                             LostFocus="UsernameLostFocus"/>
 
                     <iconPacks:PackIconMaterialLight Kind="Account" 
                                                  VerticalAlignment="Center"

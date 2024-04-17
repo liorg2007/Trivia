@@ -38,5 +38,17 @@ namespace Client
         {
             this.WindowState = WindowState.Minimized;
         }
+
+        private void UsernameGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (((TextBox)sender).Text == "Username")
+                ((TextBox)sender).Text = "";
+        }
+
+        private void UsernameLostFocus(object sender, RoutedEventArgs e)
+        {
+            if(((TextBox)sender).Text == "")
+                ((TextBox)sender).Text = "Username";
+        }
     }
 }
