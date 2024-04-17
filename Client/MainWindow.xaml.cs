@@ -50,5 +50,17 @@ namespace Client
             if(((TextBox)sender).Text == "")
                 ((TextBox)sender).Text = "Username";
         }
+
+        private void PasswordGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (((PasswordBox)sender).Password == "Password")
+                ((PasswordBox)sender).Password = "";
+        }
+
+        private void PasswordLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (((PasswordBox)sender).Password == "")
+                ((PasswordBox)sender).Password = "Password";
+        }
     }
 }

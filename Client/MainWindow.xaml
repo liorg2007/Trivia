@@ -111,7 +111,9 @@
                         HorizontalContentAlignment="left"
                         Opacity="0.5"
                         Height="32"
-                        Margin="63, 0,0,0"/>
+                        Margin="63, 0,0,0"
+                        GotFocus="PasswordGotFocus"
+                         LostFocus="PasswordLostFocus"/>
 
                     <iconPacks:PackIconMaterialLight Kind="Lock" 
                                  VerticalAlignment="Center"
