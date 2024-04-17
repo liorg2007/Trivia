@@ -14,6 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MahApps.Metro.IconPacks.Coolicons" Version="4.11.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks.MaterialLight" Version="4.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Fonts\Chella-Black.ttf" />
     <Resource Include="Images\logo.png" />
 	  <Resource Include="Images\logoPic.png" />
