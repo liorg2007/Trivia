@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using static Client.Requests;
 using static Client.Helper;
 using System.Text.Json;
+using static Client.JsonPacketDeserializer;
+using System.Diagnostics;
 
 namespace Client
 {
@@ -21,6 +23,18 @@ namespace Client
 
             string json = JsonSerializer.Serialize(loginRequest);
             return Helper.createProtocol(json, (int)Codes.Login);
+
+        }
+
+        public static bool CheckLogin(ServerResponse response)
+        {
+            if (response.code == 1)
+            {
+                LoginResponse res = DeserializeLoginResponse(response.message);
+                return res.status == 1;
+            }
+
+            throw new Exception("Problem with server");
         }
     }
 }

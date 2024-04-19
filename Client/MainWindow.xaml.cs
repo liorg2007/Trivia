@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
@@ -13,6 +14,7 @@ using System.Windows.Shapes;
 using static System.Byte;
 using static Client.Helper;
 using static Client.LoginSignup;
+using static Client.Requests;
 
 namespace Client
 {
@@ -36,12 +38,25 @@ namespace Client
 
             ((App)Application.Current)._server.sendMessage(message);
 
-            var message = ((App)Application.Current)._server.receiveMessage();
+            ServerResponse response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
 
-            
+            try
+            {
+                if (CheckLogin(response))
+                {
+                    raiseErrorBox("Login good");
+                }
+                else
+                {
+                    raiseErrorBox("Login bad");
+                }
+            }
+            catch (Exception ex)
+            {
+                raiseErrorBox(ex.Message);
+                System.Environment.Exit(0);
+            }
 
-
-            raiseErrorBox("OK");
         }
 
 

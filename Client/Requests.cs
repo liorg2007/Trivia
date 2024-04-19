@@ -21,13 +21,13 @@ namespace Client
 
         public struct LoginRequest
         {
-            public string username;
-            public string password;
+            public string username { get; set; }
+            public string password { get; set; }
         }
 
         public struct LoginResponse
         {
-            public uint code;
+            public int status { get; set; }
         }
         
     }
