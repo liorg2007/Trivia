@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using static Client.Requests;
 
 
 namespace Client
@@ -36,6 +37,19 @@ namespace Client
             messageBytes.CopyTo(buffer, HEADER_LENGTH);
 
             return buffer;
+        }
+
+        public static ServerResponse decodeProtocol(byte[] buffer)
+        {
+            byte code = buffer[0];
+            uint messageLength = BitConverter.ToUInt32(buffer, 1);
+
+            byte[] messageBuffer = new byte[messageLength];
+            Array.Copy(buffer, 5, messageBuffer, 0, messageLength);
+
+            string message = Encoding.UTF8.GetString(messageBuffer);
+
+            return new ServerResponse() { code = code, message = message };
         }
     }
 }

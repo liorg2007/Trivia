@@ -18,7 +18,7 @@ namespace Client
 
     public partial class App : Application
     {
-        private Server _server { get; set; }
+        public Server _server;
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {

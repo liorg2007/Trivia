@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,6 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static System.Byte;
 using static Client.Helper;
+using static Client.LoginSignup;
 
 namespace Client
 {
@@ -27,6 +29,19 @@ namespace Client
 
         private void LoginPress(object sender, RoutedEventArgs e)
         {
+            string username = usernameBox.Text;
+            string password = passwordBox.Password;
+
+            var message = LoginSignup.CreateLoginRequest(username, password);
+
+            ((App)Application.Current)._server.sendMessage(message);
+
+            var message = ((App)Application.Current)._server.receiveMessage();
+
+            
+
+
+            raiseErrorBox("OK");
         }
 
 

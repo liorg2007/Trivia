@@ -75,6 +75,7 @@
                 <StackPanel  Grid.Row="1">
                     <StackPanel Orientation="Horizontal">
                     <TextBox FontFamily="{StaticResource Nunito-Light}" Text="Username"
+                             Name ="usernameBox"
                              FontWeight="Light"
                              FontSize="20"
                              Foreground="white"
@@ -102,6 +103,7 @@
                 <StackPanel Orientation="Horizontal" Margin="0, 20, 0, 0">
                     <PasswordBox FontFamily="{StaticResource Nunito-Light}"
                                  Password="Password"
+                                 Name ="passwordBox"
                         FontWeight="Light"
                         FontSize="20"
                         Foreground="white"

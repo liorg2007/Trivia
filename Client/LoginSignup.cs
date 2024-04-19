@@ -17,7 +17,7 @@ namespace Client
             {
                 username = username,
                 password = password
-        };
+            };
 
             string json = JsonSerializer.Serialize(loginRequest);
             return Helper.createProtocol(json, (int)Codes.Login);

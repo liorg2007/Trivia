@@ -12,11 +12,23 @@ namespace Client
             Login
         }
 
-
-        public class LoginRequest
+        public struct ServerResponse
         {
-            public string username { get; set; }
-            public string password { get; set; }
+            public uint code;
+            public string message;
         }
+
+
+        public struct LoginRequest
+        {
+            public string username;
+            public string password;
+        }
+
+        public struct LoginResponse
+        {
+            public uint code;
+        }
+        
     }
 }
