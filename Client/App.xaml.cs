@@ -7,6 +7,7 @@ using static Client.Server;
 using static Client.Helper;
 using System.Diagnostics;
 using System.Threading;
+using static Client.Requests;
 
 namespace Client
 {

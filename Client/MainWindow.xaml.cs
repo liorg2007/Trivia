@@ -27,7 +27,6 @@ namespace Client
 
         private void LoginPress(object sender, RoutedEventArgs e)
         {
-            
         }
 
 
