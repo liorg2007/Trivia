@@ -37,10 +37,13 @@ namespace Client
 
         private void LoginPress(object sender, RoutedEventArgs e)
         {
-            string username = usernameBox.Text;
-            string password = passwordBox.Password;
+            LoginRequest request = new LoginRequest()
+            {
+                password = passwordBox.Password,
+                username = usernameBox.Text
+            };
 
-            var message = LoginSignup.CreateLoginRequest(username, password);
+            var message = LoginSignup.CreateLoginRequest(request);
 
             ((App)Application.Current)._server.sendMessage(message);
 

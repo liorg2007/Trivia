@@ -13,17 +13,10 @@ namespace Client
 {
     internal static class LoginSignup
     {
-        public static byte[] CreateLoginRequest(string username, string password)
+        public static byte[] CreateLoginRequest(LoginRequest loginRequest)
         {
-            LoginRequest loginRequest = new LoginRequest()
-            {
-                username = username,
-                password = password
-            };
-
             string json = JsonSerializer.Serialize(loginRequest);
             return Helper.createProtocol(json, (int)Codes.Login);
-
         }
 
         public static bool CheckLogin(ServerResponse response)
@@ -37,7 +30,7 @@ namespace Client
             throw new Exception("Problem with server");
         }
 
-        public static byte[] CreateSignupRequests(SignupRequest userData)
+        public static byte[] CreateSignupRequest(SignupRequest userData)
         {
             string json = JsonSerializer.Serialize(userData);
             return Helper.createProtocol(json, (int)Codes.Signup);

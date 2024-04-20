@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static Client.Helper;
+using static Client.LoginSignup;
 using static Client.Requests;
 
 namespace Client
@@ -34,31 +36,22 @@ namespace Client
 
         private void RegisterPress(object sender, RoutedEventArgs e)
         {
-            
+            SignupRequest request = new SignupRequest()
+            {
+                username = Username.Text,
+                password = passwordBox.Password,
+                address = Address.Text,
+                phoneNumber = PhoneNumber.Text,
+                email = Email.Text,
+                birthDate = BirthDate.Text
+            };
 
-            var message = LoginSignup.CreateLoginRequest(username, password);
+
+            var message = LoginSignup.CreateSignupRequest(request);
 
             ((App)Application.Current)._server.sendMessage(message);
 
             ServerResponse response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
-
-            try
-            {
-                if (CheckLogin(response))
-                {
-                    raiseErrorBox("Login good");
-                }
-                else
-                {
-                    raiseErrorBox("Login bad");
-                }
-            }
-            catch (Exception ex)
-            {
-                raiseErrorBox(ex.Message);
-                System.Environment.Exit(0);
-            }
-
         }
 
 
