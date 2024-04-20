@@ -52,6 +52,24 @@ namespace Client
             ((App)Application.Current)._server.sendMessage(message);
 
             ServerResponse response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+
+            try
+            {
+                if (CheckSignup(response))
+                {
+                    raiseErrorBox("Signup good");
+                }
+                else
+                {
+                    raiseErrorBox("Signup bad");
+                }
+            }
+            catch (Exception ex)
+            {
+                raiseErrorBox(ex.Message);
+                System.Environment.Exit(0);
+            }
+
         }
 
 

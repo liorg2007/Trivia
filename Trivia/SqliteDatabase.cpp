@@ -72,7 +72,7 @@ bool SqliteDatabase::close()
 void SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email, const std::string& address, const std::string& phoneNumber, const std::string& birthDate)
 {
 	std::string query = "INSERT INTO USERS(username, password, email, address, phoneNumber, birthDate, score) "
-		"VALUES('" + username + "', '" + password + "', '" + email + "', '" + address + "', '" + phoneNumber + "', '" + birthDate + "' + 0)";
+		"VALUES('" + username + "', '" + password + "', '" + email + "', '" + address + "', '" + phoneNumber + "', '" + birthDate + "', 0)";
 
 	execQuery(query, nullptr, nullptr);
 }

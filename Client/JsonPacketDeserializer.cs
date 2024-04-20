@@ -14,5 +14,10 @@ namespace Client
         {
             return JsonSerializer.Deserialize<LoginResponse>(message);
         }
+
+        public static SignupResponse DeserializeSignupResponse(string message)
+        {
+            return JsonSerializer.Deserialize<SignupResponse>(message);
+        }
     }
 }

@@ -40,5 +40,10 @@ namespace Client
             public string phoneNumber { get; set; }
             public string birthDate { get; set; }
         }
+
+        public struct SignupResponse
+        {
+            public int status { get; set; }
+        }
     }
 }

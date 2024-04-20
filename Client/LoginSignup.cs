@@ -35,5 +35,16 @@ namespace Client
             string json = JsonSerializer.Serialize(userData);
             return Helper.createProtocol(json, (int)Codes.Signup);
         }
+
+        public static bool CheckSignup(ServerResponse response)
+        {
+            if (response.code == 2)
+            {
+                SignupResponse res = DeserializeSignupResponse(response.message);
+                return res.status == 1;
+            }
+
+            throw new Exception("Problem with server");
+        }
     }
 }
