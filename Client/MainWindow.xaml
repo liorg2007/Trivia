@@ -131,7 +131,7 @@
 
                 <StackPanel Orientation="Horizontal" Margin="0, 50, 0,0">
                     <Button Width="100" Height="40" Content="Login" Margin="60, 0, 50,0" Style="{StaticResource LoginSignup}" Click="LoginPress"/>
-                    <Button Width="100" Height="40" Content="Register" Style="{StaticResource LoginSignup}"/>
+                    <Button Width="100" Height="40" Content="Register" Style="{StaticResource LoginSignup}" Click="RegisterPress"/>
                 </StackPanel>    
              </StackPanel>
 

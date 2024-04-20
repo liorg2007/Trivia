@@ -28,6 +28,12 @@ namespace Client
             InitializeComponent();
         }
 
+        private void RegisterPress(object sender, RoutedEventArgs e)
+        {
+            SignupWindow window = new SignupWindow();
+            window.Show();
+            this.Close();
+        }
 
         private void LoginPress(object sender, RoutedEventArgs e)
         {
