@@ -6,8 +6,8 @@
 class StatisticsManager
 {
 public:
-	std::vector<std::string> getHighScore() const;
-	std::vector<std::string> getUserStatistics(const std::string& username) const;
+	ScoreList getHighScores() const;
+	UserStatistics getUserStatistics(const std::string& username) const;
 
 	static StatisticsManager& getInstance();
 	StatisticsManager(StatisticsManager&) = delete;

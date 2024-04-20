@@ -2,17 +2,29 @@
 #include <vector>
 #include <string>
 
-typedef uint8_t Byte;
-typedef std::vector<Byte> Buffer;
+using Byte = uint8_t;
+using Buffer = std::vector<Byte>;
+using ScoreList = std::vector<std::pair<std::string, int>>;
 
 enum class MessageCode : Byte
 {
 	LoginRequestCode,
 	SignupRequestCode,
+	LogoutRequestCode,
+
+	ErrorResponseCode,
 
 	LoginResponseCode,
 	SignupResponseCode,
-	ErrorResponseCode
+	LogoutResponseCode,
+
+	JoinRoomResponseCode,
+	CreateRoomResponseCode,
+
+	GetRoomsResponseCode,
+	GetPlayersInRoomResponseCode,
+	GetHighScoresResponseCode,
+	GetPersonalStatsResponseCode
 };
 
 static constexpr auto SUCCESS = 1;
@@ -23,3 +35,11 @@ static constexpr auto SIZE_FIELD_LENGTH = 4;
 static constexpr auto HEADER_FIELD_LENGTH = CODE_FIELD_LENGTH + SIZE_FIELD_LENGTH;
 
 static constexpr auto DATABASE_FILE_NAME = "UsersDB.sqlite";
+
+struct UserStatistics
+{
+	double averageAnswerTime;
+	int correctAnswers;
+	int totalAnswers;
+	int score;
+};
