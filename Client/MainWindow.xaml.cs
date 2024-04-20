@@ -53,6 +53,7 @@ namespace Client
             {
                 if (CheckLogin(response))
                 {
+                    //go to room window
                     raiseErrorBox("Login good");
                 }
                 else

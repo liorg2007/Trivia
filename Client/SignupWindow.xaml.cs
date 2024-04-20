@@ -57,6 +57,7 @@ namespace Client
             {
                 if (CheckSignup(response))
                 {
+                    //go to room window
                     raiseErrorBox("Signup good");
                 }
                 else
