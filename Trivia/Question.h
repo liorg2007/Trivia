@@ -5,7 +5,7 @@
 class Question
 {
 public:
-	Question(std::string&& question, const std::vector<std::string>& answers, int correctAnsId);
+	Question(std::string&& question, std::vector<std::string>&& answers, int correctAnsId);
 
 	const std::string& getQuestion() const;
 	const std::vector<std::string>& getPossibleAnswers() const;

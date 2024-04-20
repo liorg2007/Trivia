@@ -6,10 +6,8 @@
 
 std::vector<Question> QuestionsRetriever::retrieveQuestions()
 {
-	std::vector<Question> ans;
-	Buffer httpBuffer = HTTPSRequest("https://www.opentdb.com/api.php?amount=10&type=multiple");
-	
-	return ans;
+	Buffer requestBuffer = HTTPSRequest("https://www.opentdb.com/api.php?amount=10&type=multiple");
+	return deserializeQuestionsJson(requestBuffer);
 }
 
 Buffer QuestionsRetriever::HTTPSRequest(const std::string& url)
@@ -29,9 +27,11 @@ Buffer QuestionsRetriever::HTTPSRequest(const std::string& url)
 	DWORD curr = 0;
 	DWORD bytesRead;
 	while (InternetReadFile(hConnect, &response.data()[curr], INIT_BUFFER_SIZE, &bytesRead) && bytesRead > 0) {
-		curr += INIT_BUFFER_SIZE;
-		response.resize(curr + INIT_BUFFER_SIZE);
+		curr += bytesRead;
+		response.resize(curr + bytesRead);
 	}
+	response.resize(curr + 1); // + 1 for the string terminating NULL char
+	response.push_back(0);
 
 	InternetCloseHandle(hConnect);
 	InternetCloseHandle(hInternet);
@@ -39,7 +39,31 @@ Buffer QuestionsRetriever::HTTPSRequest(const std::string& url)
 	return response;
 }
 
-json QuestionsRetriever::deserializeQuestionsJson(const Buffer& buff)
+std::vector<Question> QuestionsRetriever::deserializeQuestionsJson(const Buffer& buff)
 {
-	return json();
+	std::vector<Question> questionsVec;
+	std::cout << (char*)buff.data() << std::endl;
+	try
+	{
+		json questions = json::parse((char*)buff.data());
+		if (questions.at("response_code") != 0)
+		{
+			throw std::runtime_error("Server responded with invalid response code");
+		}
+		for (auto& question : questions.at("results"))
+		{
+			std::vector<std::string> answers;
+			answers.push_back(std::move(question.at("correct_answer")));
+			for (auto& incorrect_answer : question.at("incorrect_answers"))
+			{
+				answers.push_back(std::move(incorrect_answer));
+			}
+			questionsVec.emplace_back(std::move(question.at("question")), std::move(answers), 0);
+		}
+	}
+	catch (const json::exception& e)
+	{
+		throw std::runtime_error("Error while parsing json: " + std::string(e.what()));
+	}
+	return questionsVec;
 }

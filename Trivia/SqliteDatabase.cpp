@@ -234,6 +234,6 @@ int SqliteDatabase::getQuestionsCallback(void* data, int argc, char** argv, char
 			correctAnswerId = std::stoi(argv[i]);
 		}
 	}
-	questions.emplace_back(questionPromptPtr, answers, correctAnswerId);
+	questions.emplace_back(questionPromptPtr, std::move(answers), correctAnswerId);
 	return 0;
 }
