@@ -9,7 +9,8 @@ namespace Client
     internal static class Requests
     {
         public enum Codes {
-            Login
+            Login,
+            Signup
         }
 
         public struct ServerResponse
@@ -30,5 +31,14 @@ namespace Client
             public int status { get; set; }
         }
         
+        public struct SignupRequest
+        {
+            public string username { get; set; }
+            public string password { get; set; }
+            public string email { get; set; }
+            public string address { get; set; }
+            public string phoneNumber { get; set; }
+            public string birthDate { get; set; }
+        }
     }
 }

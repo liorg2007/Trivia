@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static Client.Requests;
 
 namespace Client
 {
@@ -29,6 +30,35 @@ namespace Client
             MainWindow window = new MainWindow();
             window.Show();
             this.Close();
+        }
+
+        private void RegisterPress(object sender, RoutedEventArgs e)
+        {
+            
+
+            var message = LoginSignup.CreateLoginRequest(username, password);
+
+            ((App)Application.Current)._server.sendMessage(message);
+
+            ServerResponse response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+
+            try
+            {
+                if (CheckLogin(response))
+                {
+                    raiseErrorBox("Login good");
+                }
+                else
+                {
+                    raiseErrorBox("Login bad");
+                }
+            }
+            catch (Exception ex)
+            {
+                raiseErrorBox(ex.Message);
+                System.Environment.Exit(0);
+            }
+
         }
 
 

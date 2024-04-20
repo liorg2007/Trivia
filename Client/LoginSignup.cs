@@ -36,5 +36,11 @@ namespace Client
 
             throw new Exception("Problem with server");
         }
+
+        public static byte[] CreateSignupRequests(SignupRequest userData)
+        {
+            string json = JsonSerializer.Serialize(userData);
+            return Helper.createProtocol(json, (int)Codes.Signup);
+        }
     }
 }
