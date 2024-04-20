@@ -2,14 +2,17 @@
 #include "SqliteDatabase.h"
 #include "Question.h"
 #include "Constants.h"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 class QuestionsRetriever
 {
 public:
 	static std::vector<Question> retrieveQuestions();
 private:
-	static Buffer httpRequest(const std::string& urlHost, const std::string& urlParams);
+	static Buffer HTTPSRequest(const std::string& url);
+	static json deserializeQuestionsJson(const Buffer& buff);
 
 	static constexpr auto INIT_BUFFER_SIZE = 1024;
-	static constexpr auto HTTP_PORT = 80;
 };

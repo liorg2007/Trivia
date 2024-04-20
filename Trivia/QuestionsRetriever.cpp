@@ -1,46 +1,45 @@
 #include "QuestionsRetriever.h"
 #include <Windows.h>
+#include <wininet.h>
+
+#pragma comment(lib, "wininet.lib")
 
 std::vector<Question> QuestionsRetriever::retrieveQuestions()
 {
 	std::vector<Question> ans;
-	// Buffer httpBuffer = httpRequest("www.opentdb.com", "/api.php?amount=10&type=multiple");
+	Buffer httpBuffer = HTTPSRequest("https://www.opentdb.com/api.php?amount=10&type=multiple");
+	
 	return ans;
 }
 
-// opentdb probably only uses HTTPS, so we will might have to replace this function
-Buffer QuestionsRetriever::httpRequest(const std::string& urlHost, const std::string& urlParams)
+Buffer QuestionsRetriever::HTTPSRequest(const std::string& url)
 {
-	SOCKET s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	SOCKADDR_IN SockAddr;
-	struct hostent* host;
-
-	//HTTP GET
-	std::string get_http = "GET /" + urlParams + "HTTP / 1.1\r\nHost: " + urlHost + "\r\nConnection: close\r\n\r\n";
-
-	host = gethostbyname(urlHost.c_str());
-
-	SockAddr.sin_port = htons(HTTP_PORT);
-	SockAddr.sin_family = AF_INET;
-	SockAddr.sin_addr.s_addr = *((unsigned long*)host->h_addr);
-
-	if (connect(s, (SOCKADDR*)(&SockAddr), sizeof(SockAddr)) != 0)
-	{
-		throw std::exception("Couldn't retrieve trivia questions to database");
+	HINTERNET hInternet = InternetOpen(L"HTTPS Request", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
+	if (!hInternet) {
+		throw std::exception("InternetOpen failed");
 	}
 
-	// send GET / HTTP
-	send(s, get_http.c_str(), strlen(get_http.c_str()), 0);
-
-
-	int currSize = 0;
-	Buffer buff(INIT_BUFFER_SIZE);
-	// recieve html
-	while (recv(s, (char*)buff.at(currSize), INIT_BUFFER_SIZE, 0) > 0) {
-		currSize += INIT_BUFFER_SIZE;
-		buff.resize(currSize);
+	HINTERNET hConnect = InternetOpenUrlA(hInternet, url.c_str(), NULL, 0, INTERNET_FLAG_SECURE, 0);
+	if (!hConnect) {
+		InternetCloseHandle(hInternet);
+		throw std::exception("InternetOpenUrl failed");
 	}
 
-	closesocket(s);
-	return buff;
+	Buffer response(INIT_BUFFER_SIZE);
+	DWORD curr = 0;
+	DWORD bytesRead;
+	while (InternetReadFile(hConnect, &response.data()[curr], INIT_BUFFER_SIZE, &bytesRead) && bytesRead > 0) {
+		curr += INIT_BUFFER_SIZE;
+		response.resize(curr + INIT_BUFFER_SIZE);
+	}
+
+	InternetCloseHandle(hConnect);
+	InternetCloseHandle(hInternet);
+
+	return response;
+}
+
+json QuestionsRetriever::deserializeQuestionsJson(const Buffer& buff)
+{
+	return json();
 }

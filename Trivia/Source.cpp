@@ -2,20 +2,16 @@
 #include "WSAInitializer.h"
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonRequestPacketSerializer.h"
+#include "QuestionsRetriever.h"
 
 int main()
 {
-	WSAInitializer wsaInit;
+	QuestionsRetriever::retrieveQuestions();
+	/*WSAInitializer wsaInit;
+	Server& server = Server::getInstance();
+	
+	server.run();
 
-	try {
-		Server& server = Server::getInstance();
-		server.run();
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << e.what() << "\n";
-	}
-
-	system("PAUSE");
+	system("PAUSE");*/
 	return 0;
 }
