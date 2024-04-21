@@ -4,5 +4,6 @@
     <FontFamily x:Key="Chella-Black">pack://application:,,,/Client;component/Fonts/Chella-Black.ttf#Chella Black</FontFamily>
     <FontFamily x:Key="face-plate-saguage">pack://application:,,,/Client;component/Fonts/face-plate-saguage.otf#face plate saguage</FontFamily>
     <FontFamily x:Key="Nunito-Light">pack://application:,,,/Client;component/Fonts/Nunito-Light.ttf#Nunito Light</FontFamily>
+    <FontFamily x:Key="Blanka">pack://application:,,,/Client;component/Fonts/Blanka.otf#Blanka</FontFamily>
 
 </ResourceDictionary>

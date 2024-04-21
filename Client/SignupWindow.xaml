@@ -57,10 +57,10 @@
                     <Image Source="pack://application:,,,/Images/logoPic.png" Height="97" Width="136" Margin="10,0,10,10" VerticalAlignment="Top" Stretch="Uniform"/>
 
                     <TextBlock Text="Goon Genius" FontSize="40" 
-                        FontFamily="{StaticResource Chella-Black}"
-                        HorizontalAlignment="Center"
-                        Margin="0,78,0,0" VerticalAlignment="Top"
-                        />
+                    FontFamily="{StaticResource Blanka}"
+                    HorizontalAlignment="Center"
+                    Margin="0,85,0,0" VerticalAlignment="Top"
+                        />          
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top"  Margin="54,133,54,0" Height="44">
                         <Line Stretch="Uniform" Stroke="Black" X1="10" Width="95" Height="44" Margin="185, 0,0,0"/>

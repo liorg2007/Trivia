@@ -59,9 +59,9 @@
                     <Image Source="pack://application:,,,/Images/logoPic.png" Height="97" Width="136" Margin="10,0,10,10" VerticalAlignment="Top" Stretch="Uniform"/>
 
                     <TextBlock Text="Goon Genius" FontSize="40" 
-                               FontFamily="{StaticResource Chella-Black}"
+                               FontFamily="{StaticResource Blanka}"
                                HorizontalAlignment="Center"
-                               Margin="0,78,0,0" VerticalAlignment="Top"
+                               Margin="0,85,0,0" VerticalAlignment="Top"
                                />
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" RenderTransformOrigin="0.441,1.56" Margin="54,133,54,0" Height="44">
