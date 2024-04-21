@@ -6,8 +6,7 @@
         xmlns:iconPacks = "http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:Client"
         WindowStyle="None" ResizeMode="NoResize"
-                AllowsTransparency="True" Background="Transparent"
-
+        AllowsTransparency="True" Background="Transparent"
         MouseDown="Window_MouseDown"
         mc:Ignorable="d"
         Title="SignupWindow" Height="550" Width="760">

@@ -11,6 +11,13 @@
   <ItemGroup>
     <None Remove="Fonts\Chella-Black.ttf" />
     <None Remove="Images\logo.png" />
+    <None Remove="Music\Theme1.mp3" />
+    <None Remove="Music\Theme2.mp3" />
+    <None Remove="Music\Theme3.mp3" />
+    <None Remove="Music\Theme4.mp3" />
+    <None Remove="Music\Theme5.mp3" />
+    <None Remove="Music\Theme6.mp3" />
+    <None Remove="Music\Theme7.mp3" />
   </ItemGroup>
 
   <ItemGroup>

@@ -8,6 +8,10 @@ using static Client.Helper;
 using System.Diagnostics;
 using System.Threading;
 using static Client.Requests;
+using System.Media;
+using System.ComponentModel;
+using System.Windows.Media;
+using System.Windows.Controls;
 
 namespace Client
 {
@@ -18,6 +22,7 @@ namespace Client
 
     public partial class App : Application
     {
+        public BackgroundWorker _musicWorker = null;
         public Server _server;
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -29,11 +34,14 @@ namespace Client
             {
                 connDetails = _server.getServerConnData();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 raiseErrorBox(ex.Message);
                 System.Environment.Exit(0);
             }
+
+            // ((App)Application.Current)._sound.Stop();
+            //   _musicWorker.CancelAsync();
 
             if (!_server.connectToServer(connDetails))
             {
@@ -41,12 +49,34 @@ namespace Client
                 System.Environment.Exit(0);
             }
 
+            _musicWorker = new BackgroundWorker();
+            _musicWorker.WorkerSupportsCancellation = true;
+            _musicWorker.WorkerReportsProgress = false;
+            _musicWorker.DoWork += music_player;
+
+            _musicWorker.RunWorkerAsync();
 
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }
 
-        
+
+        static void music_player(object sender, DoWorkEventArgs e)
+        {
+            SoundPlayer player = new SoundPlayer("../../../Music/Fein.wav");
+            player.Play();
+
+            while (true)
+            {
+                if (((App)Application.Current)._musicWorker.CancellationPending)
+                {
+                    player.Stop();
+                    e.Cancel = true;
+                    break;
+                }
+                Thread.Sleep(50);
+            }
+        }
     }
 
 }
