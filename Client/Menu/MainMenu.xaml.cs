@@ -19,10 +19,13 @@ namespace Client
     /// </summary>
     public partial class MainMenu : Window
     {
+        string _username;
+
         public MainMenu(string username)
         {
             InitializeComponent();
-            helloUserTxt.Text = "Hello " + username;
+            _username = username;
+            helloUserTxt.Text = "Hello " + _username;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -44,5 +47,13 @@ namespace Client
         {
             this.WindowState = WindowState.Minimized;
         }
+
+
+        /* CLICK EVENTS */
+        private void PersonalScoreClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }

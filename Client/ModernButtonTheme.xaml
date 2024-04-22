@@ -5,6 +5,8 @@
     <FontFamily x:Key="Nunito-Light">pack://application:,,,/Client;component/Fonts/Nunito-Light.ttf#Nunito Light</FontFamily>
     <FontFamily x:Key="Blanka">pack://application:,,,/Client;component/Fonts/Blanka.otf#Blanka</FontFamily>
     <FontFamily x:Key="ELIXIA">pack://application:,,,/Client;component/Fonts/ELIXIA.ttf#ELIXIA</FontFamily>
+    <FontFamily x:Key="Azonix">pack://application:,,,/Client;component/Fonts/Azonix.otf#Azonix</FontFamily>
+
 
 
     <Style TargetType="Button" x:Key="LoginSignup">

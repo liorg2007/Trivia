@@ -8,6 +8,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ModernButtonTheme.xaml"/>
+                <ResourceDictionary Source="Fonts.xaml"/>
+                <ResourceDictionary Source="Menu/StatsStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
