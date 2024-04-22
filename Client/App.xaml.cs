@@ -63,7 +63,11 @@ namespace Client
 
         static void music_player(object sender, DoWorkEventArgs e)
         {
-            SoundPlayer player = new SoundPlayer("../../../Music/Fein.wav");
+            var rand = new Random();
+            var files = Directory.GetFiles("../../../Music", "*.wav");
+            var selected = files[rand.Next(files.Length)];
+
+            SoundPlayer player = new SoundPlayer(selected);
             player.Play();
 
             while (true)

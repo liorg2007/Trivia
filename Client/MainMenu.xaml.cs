@@ -19,9 +19,30 @@ namespace Client
     /// </summary>
     public partial class MainMenu : Window
     {
-        public MainMenu()
+        public MainMenu(string username)
         {
             InitializeComponent();
+            helloUserTxt.Text = "Hello " + username;
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            ((App)Application.Current)._musicWorker.CancelAsync();
+            Thread.Sleep(50);
+            Close();
+        }
+
+        private void MinimizeWindow(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
         }
     }
 }

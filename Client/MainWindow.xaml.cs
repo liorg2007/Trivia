@@ -53,8 +53,9 @@ namespace Client
             {
                 if (CheckLogin(response))
                 {
-                    //go to room window
-                    raiseErrorBox("Login good");
+                    MainMenu window = new MainMenu(request.username);
+                    window.Show();
+                    this.Close();
                 }
                 else
                 {
