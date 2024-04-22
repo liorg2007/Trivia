@@ -56,7 +56,7 @@ RequestResult MenuRequestHandler::getRooms(const RequestInfo& req)
 		response.status = FAILURE;
 	}
 	result.response = JsonRequestPacketSerializer::serializeResponse(response);
-	result.newHandler = this;
+	result.newHandler = nullptr;
 	return result;
 }
 
@@ -82,7 +82,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& req)
 		response.status = FAILURE;
 	}
 	result.response = JsonRequestPacketSerializer::serializeResponse(response);
-	result.newHandler = this;
+	result.newHandler = nullptr;
 	return result;
 }
 
@@ -101,7 +101,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& req)
 		response.status = FAILURE;
 	}
 	result.response = JsonRequestPacketSerializer::serializeResponse(response);
-	result.newHandler = this;
+	result.newHandler = nullptr;
 	return result;
 }
 
@@ -112,7 +112,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& req)
 	RequestResult result;
 	response.players = _handlerFactory.getRoomManager().getRoom(request.roomId).getAllUsers();
 	result.response = JsonRequestPacketSerializer::serializeResponse(response);
-	result.newHandler = this;
+	result.newHandler = nullptr;
 	return result;
 }
 
@@ -122,7 +122,7 @@ RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& req)
 	RequestResult result;
 	response.statistics = _handlerFactory.getStatisticsManager().getUserStatistics(_user.getUsername());
 	result.response = JsonRequestPacketSerializer::serializeResponse(response);
-	result.newHandler = this;
+	result.newHandler = nullptr;
 	return result;
 }
 
@@ -132,6 +132,6 @@ RequestResult MenuRequestHandler::getHighScore(const RequestInfo& req)
 	RequestResult result;
 	response.highScores = _handlerFactory.getStatisticsManager().getHighScores();
 	result.response = JsonRequestPacketSerializer::serializeResponse(response);
-	result.newHandler = this;
+	result.newHandler = nullptr;
 	return result;
 }
