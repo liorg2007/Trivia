@@ -50,6 +50,7 @@ private:
 	/* Callbacks */
 	static int getCountCallback(void* data, int argc, char** argv, char** azColName);
 	static int getSingleStringCallback(void* data, int argc, char** argv, char** azColName);
+	static int getDoubleCallback(void* data, int argc, char** argv, char** azColName);
 	static int getQuestionsCallback(void* data, int argc, char** argv, char** azColName);
 	static int getHighScoresCallback(void* data, int argc, char** argv, char** azColName);
 

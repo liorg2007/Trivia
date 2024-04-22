@@ -9,14 +9,14 @@ LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory)
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& req)
 {
-	return req.id == MessageCode::LoginRequestCode
-		|| req.id == MessageCode::SignupRequestCode;
+	return req.id == RequestCode::Login
+		|| req.id == RequestCode::Signup;
 }
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo& req)
 {
 	RequestResult result;
-	if (req.id == MessageCode::LoginRequestCode)
+	if (req.id == RequestCode::Login)
 		result = login(req);
 	else
 		result = signup(req);
@@ -33,7 +33,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& req)
 
 	if (loginManager.login(loginData.username, loginData.password)) {
 		loginResponse.status = SUCCESS;
-		result.newHandler = _handlerFactory.createMenuRequestHandler();
+		result.newHandler = _handlerFactory.createMenuRequestHandler(loginData.username);
 	}
 	else {
 		loginResponse.status = FAILURE;
@@ -57,7 +57,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& req)
 
 	if (isDataValid && loginManager.signup(signupData.username, signupData.password, signupData.email, signupData.address, signupData.phoneNumber, signupData.birthDate)) {
 		signupResponse.status = SUCCESS;
-		result.newHandler = _handlerFactory.createMenuRequestHandler();
+		result.newHandler = _handlerFactory.createMenuRequestHandler(signupData.username);
 	}
 	else {
 		signupResponse.status = FAILURE;

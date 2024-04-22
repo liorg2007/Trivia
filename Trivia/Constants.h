@@ -6,29 +6,11 @@ using Byte = uint8_t;
 using Buffer = std::vector<Byte>;
 using ScoreList = std::vector<std::pair<std::string, int>>;
 
-enum class MessageCode : Byte
-{
-	LoginRequestCode,
-	SignupRequestCode,
-	LogoutRequestCode,
-
-	ErrorResponseCode,
-
-	LoginResponseCode,
-	SignupResponseCode,
-	LogoutResponseCode,
-
-	JoinRoomResponseCode,
-	CreateRoomResponseCode,
-
-	GetRoomsResponseCode,
-	GetPlayersInRoomResponseCode,
-	GetHighScoresResponseCode,
-	GetPersonalStatsResponseCode
-};
-
 static constexpr auto SUCCESS = 1;
 static constexpr auto FAILURE = 0;
+
+static constexpr auto ACTIVE_ROOM = 1;
+static constexpr auto INACTIVE_ROOM = 0;
 
 static constexpr auto CODE_FIELD_LENGTH = 1;
 static constexpr auto SIZE_FIELD_LENGTH = 4;

@@ -109,12 +109,12 @@ std::list<Question> SqliteDatabase::getQuestions(int amount)
 
 double SqliteDatabase::getPlayerAverageAnswerTime(const std::string& userName)
 {
-	std::string answer;
+	double answer;
 	std::string query = "SELECT AVG(time) FROM STATISTICS WHERE username = '" + userName + "'";
 
-	execQuery(query, getSingleStringCallback, &answer);
+	execQuery(query, getDoubleCallback, &answer);
 
-	return std::stod(answer);
+	return answer;
 }
 
 int SqliteDatabase::getNumOfCorrectAnswers(const std::string& userName)
@@ -243,6 +243,15 @@ int SqliteDatabase::getCountCallback(void* data, int argc, char** argv, char** a
 int SqliteDatabase::getSingleStringCallback(void* data, int argc, char** argv, char** azColName)
 {
 	*((std::string*)data) = argv[FIRST_VALUE];
+	return 0;
+}
+
+int SqliteDatabase::getDoubleCallback(void* data, int argc, char** argv, char** azColName)
+{
+	if (*argv == NULL)
+		*((double*)data) = 0;
+	else
+		*((double*)data) = std::stod(argv[FIRST_VALUE]);
 	return 0;
 }
 
