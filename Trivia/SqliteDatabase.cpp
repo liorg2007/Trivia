@@ -202,7 +202,10 @@ int SqliteDatabase::getSingleStringCallback(void* data, int argc, char** argv, c
 
 int SqliteDatabase::getDoubleCallback(void* data, int argc, char** argv, char** azColName)
 {
-	*((double*)data) = std::stod(argv[FIRST_VALUE]);
+	if (*argv == NULL)
+		*((double*)data) = 0;
+	else
+		*((double*)data) = std::stod(argv[FIRST_VALUE]);
 	return 0;
 }
 
