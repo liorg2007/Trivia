@@ -14,7 +14,7 @@ public:
 	bool open() override;
 	bool close() override;
 
-	/* Login/Signup Queris */
+	/* Login/Signup Queries */
 	void addNewUser(const std::string& username, const std::string& password, const std::string& email, const std::string& address, const std::string& phoneNumber, const std::string& birthDate) override;
 	bool doesUserExist(const std::string& username) override;
 	bool doesPasswordMatch(const std::string& username, const std::string& password) override;
@@ -36,13 +36,15 @@ private:
 	std::mutex _mtx;
 
 	void execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out);
+	// callback-less execQuery
+	inline void execQuery(const std::string& query);
 
 	/* Score Components Weights */
 	static constexpr double CORRECT_ANSWER_WEIGHT = 0.6;
 	static constexpr double ANSWER_TIME_WEIGHT = 0.4;
 
 	int calculateScore(const std::string& userName);
-	void insertNewQuestions();
+	void insertNewQuestions(int amount);
 
 	/* Callbacks */
 	static int getCountCallback(void* data, int argc, char** argv, char** azColName);

@@ -9,14 +9,16 @@ using json = nlohmann::json;
 class QuestionsRetriever
 {
 public:
-	static std::vector<Question> retrieveQuestions();
+	static std::vector<Question> retrieveQuestions(int amount);
 private:
 	static Buffer HTTPSRequest(const std::string& url);
-	static std::vector<Question> deserializeQuestionsJson(Buffer& buff);
+	static std::vector<Question> deserializeQuestionsJson(Buffer& buff, int questionAmount);
 	static std::vector<std::string> getAnswersFromQuestion(json& question, int& correctAnswerIndex);
+	
 	static constexpr auto ANSWER_AMOUNT = 4;
 
-	/* Buffer size for HTTPS recieve */
+	/* HTTPS constants */
+	static constexpr auto DATABASE_API_URL = "https://www.opentdb.com/api.php?type=multiple&amount=";
 	static constexpr auto INIT_BUFFER_SIZE = 1024;
 
 	/* JSON Headers for the opentdb api */

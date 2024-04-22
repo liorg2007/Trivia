@@ -1,4 +1,5 @@
 #include "SqliteDatabase.h"
+#include "QuestionsRetriever.h"
 
 SqliteDatabase::SqliteDatabase(const std::string& dbName)
 	: _dbFileName(dbName), _db(nullptr)
@@ -24,7 +25,7 @@ bool SqliteDatabase::open()
 		std::cout << "Sqlite database opened!" << std::endl;
 
 		// create user table if it doesnt exists
-		std::string tableQuery = 
+		std::string tableQuery =
 			"CREATE TABLE IF NOT EXISTS USERS ("
 			"username TEXT NOT NULL PRIMARY KEY,"
 			"password TEXT NOT NULL,"
@@ -33,8 +34,8 @@ bool SqliteDatabase::open()
 			"phoneNumber TEXT NOT NULL, "
 			"birthDate TEXT NOT NULL, "
 			"score INTEGER); "
-			
-		// create questions table if it doesnt exists
+
+			// create questions table if it doesnt exists
 			"CREATE TABLE IF NOT EXISTS QUESTIONS ("
 			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"question TEXT UNIQUE NOT NULL,"
@@ -44,7 +45,7 @@ bool SqliteDatabase::open()
 			"answer_4 TEXT NOT NULL,"
 			"correctAnswerId INTEGER NOT NULL); "
 
-		// create statistics table if it doesnt exists
+			// create statistics table if it doesnt exists
 			"CREATE TABLE IF NOT EXISTS STATISTICS ("
 			"gameId INTEGER, "
 			"username TEXT NOT NULL, "
@@ -54,7 +55,7 @@ bool SqliteDatabase::open()
 			"FOREIGN KEY(username) REFERENCES USERS(username), "
 			"FOREIGN KEY(gameId) REFERENCES GAMES(id));";
 
-		execQuery(tableQuery, nullptr, nullptr);
+		execQuery(tableQuery);
 	}
 	return true;
 }
@@ -74,7 +75,7 @@ void SqliteDatabase::addNewUser(const std::string& username, const std::string& 
 	std::string query = "INSERT INTO USERS(username, password, email, address, phoneNumber, birthDate, score) "
 		"VALUES('" + username + "', '" + password + "', '" + email + "', '" + address + "', '" + phoneNumber + "', '" + birthDate + "' + 0)";
 
-	execQuery(query, nullptr, nullptr);
+	execQuery(query);
 }
 
 bool SqliteDatabase::doesUserExist(const std::string& username)
@@ -135,7 +136,7 @@ int SqliteDatabase::getPlayerScore(const std::string& userName)
 	return answer;
 }
 
-std::vector<std::pair<std::string,int>> SqliteDatabase::getHighScores()
+ScoreList SqliteDatabase::getHighScores()
 {
 	ScoreList answer;
 	std::string query = "SELECT username, score FROM USERS ORDER BY score DESC LIMIT 5";
@@ -165,6 +166,11 @@ int SqliteDatabase::getNumOfPlayerGames(const std::string& userName)
 	return std::stoi(answer);
 }
 
+inline void SqliteDatabase::execQuery(const std::string& query)
+{
+	execQuery(query, nullptr, nullptr);
+}
+
 void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out)
 {
 	std::lock_guard<std::mutex> lock(_mtx);
@@ -177,9 +183,8 @@ void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, i
 	}
 }
 
-void SqliteDatabase::insertNewQuestions()
+void SqliteDatabase::insertNewQuestions(int amount)
 {
-	// https://opentdb.com/api.php?amount=10&type=multiple
 
 }
 

@@ -5,10 +5,10 @@
 
 #pragma comment(lib, "wininet.lib")
 
-std::vector<Question> QuestionsRetriever::retrieveQuestions()
+std::vector<Question> QuestionsRetriever::retrieveQuestions(int amount)
 {
-	Buffer requestBuffer = HTTPSRequest("https://www.opentdb.com/api.php?amount=10&type=multiple");
-	return deserializeQuestionsJson(requestBuffer);
+	Buffer requestBuffer = HTTPSRequest(DATABASE_API_URL + std::to_string(amount));
+	return deserializeQuestionsJson(requestBuffer, amount);
 }
 
 Buffer QuestionsRetriever::HTTPSRequest(const std::string& url)
@@ -41,9 +41,10 @@ Buffer QuestionsRetriever::HTTPSRequest(const std::string& url)
 	return response;
 }
 
-std::vector<Question> QuestionsRetriever::deserializeQuestionsJson(Buffer& buff)
+std::vector<Question> QuestionsRetriever::deserializeQuestionsJson(Buffer& buff, int questionAmount)
 {
 	std::vector<Question> questionsVec;
+	questionsVec.reserve(questionAmount);
 	try
 	{
 		json questions = json::parse((char*)buff.data());
