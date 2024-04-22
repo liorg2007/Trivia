@@ -75,6 +75,7 @@
                 <StackPanel  Grid.Row="1">
                     <StackPanel Orientation="Horizontal">
                     <TextBox FontFamily="{StaticResource Nunito-Light}" Text="Username"
+                             Name ="usernameBox"
                              FontWeight="Light"
                              FontSize="20"
                              Foreground="white"
@@ -102,6 +103,7 @@
                 <StackPanel Orientation="Horizontal" Margin="0, 20, 0, 0">
                     <PasswordBox FontFamily="{StaticResource Nunito-Light}"
                                  Password="Password"
+                                 Name ="passwordBox"
                         FontWeight="Light"
                         FontSize="20"
                         Foreground="white"
@@ -128,7 +130,7 @@
 
 
                 <StackPanel Orientation="Horizontal" Margin="0, 50, 0,0">
-                    <Button Width="100" Height="40" Content="Login" Margin="60, 0, 50,0" Style="{StaticResource LoginSignup}"/>
+                    <Button Width="100" Height="40" Content="Login" Margin="60, 0, 50,0" Style="{StaticResource LoginSignup}" Click="LoginPress"/>
                     <Button Width="100" Height="40" Content="Register" Style="{StaticResource LoginSignup}"/>
                 </StackPanel>    
              </StackPanel>
