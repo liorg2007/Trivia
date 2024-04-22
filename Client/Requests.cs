@@ -12,7 +12,7 @@ namespace Client
         public enum Codes {
             Login,
             Signup,
-            Stats = 9
+            Stats = 8
         }
 
         public struct ServerResponse

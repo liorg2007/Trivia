@@ -60,6 +60,13 @@ namespace Client
             avgTime.Text = userStatistics.averageAnswerTime.ToString();
         }
 
+
+        private void exitPress(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
