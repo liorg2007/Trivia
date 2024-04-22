@@ -19,7 +19,7 @@ namespace Client
     /// </summary>
     public partial class MainMenu : Window
     {
-        string _username;
+        private string _username;
 
         public MainMenu(string username)
         {
@@ -52,7 +52,8 @@ namespace Client
         /* CLICK EVENTS */
         private void PersonalScoreClick(object sender, RoutedEventArgs e)
         {
-
+            PersonalStats window = new PersonalStats(_username);
+            window.Show();
         }
 
     }

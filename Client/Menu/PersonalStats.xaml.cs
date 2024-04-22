@@ -11,6 +11,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static System.Byte;
+using static Client.Helper;
+using static Client.Requests;
+using static Client.Menu.Statistics;
+using static Client.DataStructs;
 
 namespace Client
 {
@@ -19,9 +24,40 @@ namespace Client
     /// </summary>
     public partial class PersonalStats : Window
     {
-        public PersonalStats()
+        private string _username;
+
+        public PersonalStats(string username)
         {
             InitializeComponent();
+            _username = username;
+
+            ShowStats();
+        }
+
+        private void ShowStats()
+        {
+            UserStatistics userStatistics = new UserStatistics();
+            var message = CreateStatsRequest();
+
+            ((App)Application.Current)._server.sendMessage(message);
+
+            ServerResponse response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+
+            try
+            {
+                userStatistics = GetStats(response);
+            }
+            catch (Exception ex)
+            {
+                raiseErrorBox(ex.Message);
+                System.Environment.Exit(0);
+            }
+
+            //Put stats in labels
+            score.Text = userStatistics.score.ToString();
+            rightAns.Text = userStatistics.correctAnswers.ToString();
+            wrongAns.Text = (userStatistics.totalAnswers - userStatistics.correctAnswers).ToString();
+            avgTime.Text = userStatistics.averageAnswerTime.ToString();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

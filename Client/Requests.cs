@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Client.DataStructs;
 
 namespace Client
 {
@@ -10,7 +11,8 @@ namespace Client
     {
         public enum Codes {
             Login,
-            Signup
+            Signup,
+            Stats = 9
         }
 
         public struct ServerResponse
@@ -44,6 +46,17 @@ namespace Client
         public struct SignupResponse
         {
             public int status { get; set; }
+        }
+
+
+        public struct StatsRequest
+        {
+            public uint code { get; set; }
+        }
+
+        public struct StatsResponse
+        {
+            public UserStatistics statistics { get; set; }
         }
     }
 }
