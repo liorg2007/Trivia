@@ -1,6 +1,7 @@
 #include "QuestionsRetriever.h"
 #include <Windows.h>
 #include <wininet.h>
+#include <random>
 
 #pragma comment(lib, "wininet.lib")
 
@@ -24,14 +25,15 @@ Buffer QuestionsRetriever::HTTPSRequest(const std::string& url)
 	}
 
 	Buffer response(INIT_BUFFER_SIZE);
-	DWORD curr = 0;
-	DWORD bytesRead;
-	while (InternetReadFile(hConnect, &response.data()[curr], INIT_BUFFER_SIZE, &bytesRead) && bytesRead > 0) {
-		curr += bytesRead;
-		response.resize(curr + bytesRead);
+	DWORD currBytesRead = 0;
+	DWORD lastBytesRead = 0;
+	while (InternetReadFile(hConnect, &response.at(response.size() - INIT_BUFFER_SIZE), INIT_BUFFER_SIZE, &currBytesRead) && currBytesRead > 0) {
+		response.resize(response.size() + INIT_BUFFER_SIZE);
+		lastBytesRead = currBytesRead;
 	}
-	response.resize(curr + 1); // + 1 for the string terminating NULL char
-	response.push_back(0);
+	// trim the buffer size (+1 to save space for the string terminating NULL char)
+	response.resize(response.size() - INIT_BUFFER_SIZE * 2 + lastBytesRead + 1);
+	response.back() = '\0'; // string terminating NULL char
 
 	InternetCloseHandle(hConnect);
 	InternetCloseHandle(hInternet);
@@ -39,7 +41,7 @@ Buffer QuestionsRetriever::HTTPSRequest(const std::string& url)
 	return response;
 }
 
-std::vector<Question> QuestionsRetriever::deserializeQuestionsJson(const Buffer& buff)
+std::vector<Question> QuestionsRetriever::deserializeQuestionsJson(Buffer& buff)
 {
 	std::vector<Question> questionsVec;
 	try
@@ -51,14 +53,9 @@ std::vector<Question> QuestionsRetriever::deserializeQuestionsJson(const Buffer&
 		}
 		for (auto& question : questions.at(RESULTS_JSON))
 		{
-			std::vector<std::string> answers;
-			answers.push_back(std::move(question.at(CORRECT_ANSWER_JSON)));
-			for (auto& incorrect_answer : question.at(INCORRECT_ANSWERS_ARRAY_JSON))
-			{
-				answers.push_back(std::move(incorrect_answer));
-			}
-			questionsVec.emplace_back(std::move(question.at(QUESTION_STRING_JSON)), std::move(answers), 0);
-
+			int correctAnswerIndex; // gets set by the getAnswers function
+			auto answers = getAnswersFromQuestion(question, correctAnswerIndex);
+			questionsVec.emplace_back(std::move(question.at(QUESTION_STRING_JSON)), std::move(answers), correctAnswerIndex);
 		}
 	}
 	catch (const json::exception& e)
@@ -66,4 +63,35 @@ std::vector<Question> QuestionsRetriever::deserializeQuestionsJson(const Buffer&
 		throw std::runtime_error("Error while parsing json: " + std::string(e.what()));
 	}
 	return questionsVec;
+}
+
+std::vector<std::string> QuestionsRetriever::getAnswersFromQuestion(json& question, int& correctAnswerIndex)
+{
+	/* For randomily organizing the answers.
+	 * (Has to be static since all shuffles must have the random same engine) */
+	static auto randomEngine = std::default_random_engine();
+	static std::uniform_int_distribution<> randomAnswerIndexGenerator(0, ANSWER_AMOUNT - 1);
+
+	std::vector<std::string> answers;
+	answers.reserve(ANSWER_AMOUNT);
+
+	correctAnswerIndex = randomAnswerIndexGenerator(randomEngine);
+	json& correctAnswer = question.at(CORRECT_ANSWER_JSON);
+
+	json& incorrectAnswers = question.at(INCORRECT_ANSWERS_ARRAY_JSON);
+	std::shuffle(incorrectAnswers.begin(), incorrectAnswers.end(), randomEngine);
+	auto incorrectAnswerIt = incorrectAnswers.begin();
+	
+	for (int i = 0; i < ANSWER_AMOUNT; ++i)
+	{
+		if (i == correctAnswerIndex)
+		{
+			answers.emplace_back(std::move(correctAnswer));
+		}
+		else if (incorrectAnswerIt != incorrectAnswers.end())
+		{
+			answers.emplace_back(std::move(*(incorrectAnswerIt++)));
+		}
+	}
+	return answers;
 }

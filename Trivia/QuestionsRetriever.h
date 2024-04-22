@@ -12,7 +12,9 @@ public:
 	static std::vector<Question> retrieveQuestions();
 private:
 	static Buffer HTTPSRequest(const std::string& url);
-	static std::vector<Question> deserializeQuestionsJson(const Buffer& buff);
+	static std::vector<Question> deserializeQuestionsJson(Buffer& buff);
+	static std::vector<std::string> getAnswersFromQuestion(json& question, int& correctAnswerIndex);
+	static constexpr auto ANSWER_AMOUNT = 4;
 
 	/* Buffer size for HTTPS recieve */
 	static constexpr auto INIT_BUFFER_SIZE = 1024;
