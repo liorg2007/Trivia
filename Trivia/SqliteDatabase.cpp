@@ -193,7 +193,14 @@ void SqliteDatabase::insertNewQuestionsIfNeeded(int amount)
 	auto questionsCount = std::stoi(questionsCountString);
 	if (questionsCount < amount)
 	{
-		insertNewQuestions(amount - questionsCount);
+		try
+		{
+			insertNewQuestions(amount - questionsCount);
+		}
+		catch (const std::exception& e)
+		{
+			std::cerr << "Error recieving questions from api: " << e.what() << std::endl;
+		}
 	}
 }
 
@@ -203,7 +210,7 @@ void SqliteDatabase::insertNewQuestions(int amount)
 	std::string query = "BEGIN;";
 	for (const auto& question : QuestionsRetriever::retrieveQuestions(amount))
 	{
-		query += "INSERT INTO QUESTIONS(question, correctAnswerId, answer_1, answer_2, answer_3, answer_4) "
+		query += "INSERT OR IGNORE INTO QUESTIONS(question, correctAnswerId, answer_1, answer_2, answer_3, answer_4) "
 			"VALUES(\"" + question.getQuestion() + "\", " + std::to_string(question.getCorrectAnswerId());
 		for (const auto& answer : question.getPossibleAnswers())
 		{

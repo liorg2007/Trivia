@@ -4,9 +4,22 @@
 #include "JsonRequestPacketSerializer.h"
 #include "QuestionsRetriever.h"
 
+#include "time.h"
+
 int main()
 {
 	SqliteDatabase db(DATABASE_FILE_NAME);
-	db.getQuestions(10);
+	Sleep(1000);
+	db.getQuestions(100);
+	Sleep(1000);
+	db.getQuestions(100);
+	Sleep(1000);
+	db.getQuestions(100);
+	Sleep(1000);
+	db.getQuestions(100);
+	Sleep(1000);
+	db.getQuestions(100);
+	Sleep(1000);
+	db.getQuestions(100);
 	return 0;
 }

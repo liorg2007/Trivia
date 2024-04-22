@@ -17,9 +17,11 @@ private:
 	
 	static constexpr auto ANSWER_AMOUNT = 4;
 
-	/* HTTPS constants */
+	/* Request constants */
 	static constexpr auto DATABASE_API_URL = "https://www.opentdb.com/api.php?type=multiple&amount=";
 	static constexpr auto INIT_BUFFER_SIZE = 1024;
+	// Only allow sending requests if this amount of seconds hasn't been passed since the last request
+	static constexpr auto REQUEST_TIMEOUT_SECONDS = 2;
 
 	/* JSON Headers for the opentdb api */
 	static constexpr auto RESPONSE_CODE_JSON = "response_code";
