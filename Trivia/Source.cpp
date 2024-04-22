@@ -6,12 +6,7 @@
 
 int main()
 {
-	QuestionsRetriever::retrieveQuestions();
-	/*WSAInitializer wsaInit;
-	Server& server = Server::getInstance();
-	
-	server.run();
-
-	system("PAUSE");*/
+	SqliteDatabase db(DATABASE_FILE_NAME);
+	db.insertNewQuestions(10);
 	return 0;
 }

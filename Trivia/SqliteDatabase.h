@@ -29,13 +29,14 @@ public:
 	int getPlayerScore(const std::string& userName) override;
 	ScoreList getHighScores() override;
 
+	void insertNewQuestions(int amount);
 private:
 	/* Private Members */
 	std::string _dbFileName;
 	sqlite3* _db;
 	std::mutex _mtx;
 
-	void execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out);
+	inline void execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out);
 	// callback-less execQuery
 	inline void execQuery(const std::string& query);
 
@@ -44,7 +45,6 @@ private:
 	static constexpr double ANSWER_TIME_WEIGHT = 0.4;
 
 	int calculateScore(const std::string& userName);
-	void insertNewQuestions(int amount);
 
 	/* Callbacks */
 	static int getCountCallback(void* data, int argc, char** argv, char** azColName);

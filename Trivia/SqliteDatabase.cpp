@@ -178,6 +178,7 @@ void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, i
 	if (sqlite3_exec(_db, query.c_str(), callback, out, &errmsg) != SQLITE_OK)
 	{
 		DatabaseException exception(errmsg);
+		std::cerr << "Database exception: " << exception.what() << std::endl;
 		sqlite3_free(errmsg);
 		throw exception;
 	}
@@ -185,7 +186,21 @@ void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, i
 
 void SqliteDatabase::insertNewQuestions(int amount)
 {
-
+	// the begin keyword is for starting a transaction (https://www.geeksforgeeks.org/sqlite-transaction/)
+	std::string query = "BEGIN;";
+	for (const auto& question : QuestionsRetriever::retrieveQuestions(amount))
+	{
+		query += "INSERT INTO QUESTIONS(question, correctAnswerId, answer_1, answer_2, answer_3, answer_4) "
+			"VALUES(\"" + question.getQuestion() + "\", " + std::to_string(question.getCorrectAnswerId());
+		for (const auto& answer : question.getPossibleAnswers())
+		{
+			query += ",\"" + answer + '"';
+		}
+		query += ");";
+	}
+	// ending the transaction
+	query += "END;";
+	execQuery(query);
 }
 
 int SqliteDatabase::calculateScore(const std::string& userName)
