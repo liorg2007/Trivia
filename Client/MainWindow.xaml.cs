@@ -44,8 +44,15 @@ namespace Client
             };
 
             var message = LoginSignup.CreateLoginRequest(request);
-
-            ((App)Application.Current)._server.sendMessage(message);
+            try
+            {
+                ((App)Application.Current)._server.sendMessage(message);
+            }
+            catch
+            {
+                raiseErrorBox("Server problem");
+                System.Environment.Exit(0);
+            }
 
             ServerResponse response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
 
