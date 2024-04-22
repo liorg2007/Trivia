@@ -100,7 +100,7 @@
       <Filter>Source Files\Room</Filter>
     </ClCompile>
     <ClCompile Include="QuestionsRetriever.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Database</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -180,7 +180,7 @@
       <Filter>Header Files\Room</Filter>
     </ClInclude>
     <ClInclude Include="QuestionsRetriever.h">
-      <Filter>Source Files\Database</Filter>
+      <Filter>Header Files\Database</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

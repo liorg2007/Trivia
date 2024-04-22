@@ -42,23 +42,23 @@ Buffer QuestionsRetriever::HTTPSRequest(const std::string& url)
 std::vector<Question> QuestionsRetriever::deserializeQuestionsJson(const Buffer& buff)
 {
 	std::vector<Question> questionsVec;
-	std::cout << (char*)buff.data() << std::endl;
 	try
 	{
 		json questions = json::parse((char*)buff.data());
-		if (questions.at("response_code") != 0)
+		if (questions.at(RESPONSE_CODE_JSON) != 0)
 		{
 			throw std::runtime_error("Server responded with invalid response code");
 		}
-		for (auto& question : questions.at("results"))
+		for (auto& question : questions.at(RESULTS_JSON))
 		{
 			std::vector<std::string> answers;
-			answers.push_back(std::move(question.at("correct_answer")));
-			for (auto& incorrect_answer : question.at("incorrect_answers"))
+			answers.push_back(std::move(question.at(CORRECT_ANSWER_JSON)));
+			for (auto& incorrect_answer : question.at(INCORRECT_ANSWERS_ARRAY_JSON))
 			{
 				answers.push_back(std::move(incorrect_answer));
 			}
-			questionsVec.emplace_back(std::move(question.at("question")), std::move(answers), 0);
+			questionsVec.emplace_back(std::move(question.at(QUESTION_STRING_JSON)), std::move(answers), 0);
+
 		}
 	}
 	catch (const json::exception& e)
