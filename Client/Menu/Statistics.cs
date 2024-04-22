@@ -21,7 +21,7 @@ namespace Client.Menu
 
         public static UserStatistics GetStats(ServerResponse response)
         {
-            if (response.code == 1)
+            if (response.code == 9)
             {
                 UserStatistics res = DeserializeStatsResponse(response.message);
                 return res;
