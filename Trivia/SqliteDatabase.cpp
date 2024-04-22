@@ -54,8 +54,8 @@ bool SqliteDatabase::open()
 			"time REAL, "
 			"FOREIGN KEY(username) REFERENCES USERS(username), "
 			"FOREIGN KEY(gameId) REFERENCES GAMES(id));";
-
 		execQuery(tableQuery);
+		insertNewQuestionsIfNeeded(QUESTIONS_MINIMUM_AMOUNT);
 	}
 	return true;
 }
@@ -100,6 +100,7 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
 
 std::list<Question> SqliteDatabase::getQuestions(int amount)
 {
+	insertNewQuestionsIfNeeded(amount);
 	std::list<Question> questions;
 	auto query = "SELECT * FROM QUESTIONS ORDER BY RANDOM() LIMIT " + std::to_string(amount) + ';';
 	execQuery(query, getQuestionsCallback, &questions);
@@ -181,6 +182,18 @@ void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, i
 		std::cerr << "Database exception: " << exception.what() << std::endl;
 		sqlite3_free(errmsg);
 		throw exception;
+	}
+}
+
+void SqliteDatabase::insertNewQuestionsIfNeeded(int amount)
+{
+	auto query = "SELECT COUNT(*) FROM QUESTIONS;";
+	std::string questionsCountString;
+	execQuery(query, getSingleStringCallback, &questionsCountString);
+	auto questionsCount = std::stoi(questionsCountString);
+	if (questionsCount < amount)
+	{
+		insertNewQuestions(amount - questionsCount);
 	}
 }
 

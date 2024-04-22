@@ -5,7 +5,7 @@
 
 #pragma comment(lib, "wininet.lib")
 
-std::vector<Question> QuestionsRetriever::retrieveQuestions(int amount)
+std::forward_list<Question> QuestionsRetriever::retrieveQuestions(int amount)
 {
 	Buffer requestBuffer = HTTPSRequest(DATABASE_API_URL + std::to_string(amount));
 	return deserializeQuestionsJson(requestBuffer, amount);
@@ -24,6 +24,8 @@ Buffer QuestionsRetriever::HTTPSRequest(const std::string& url)
 		throw std::exception("InternetOpenUrl failed");
 	}
 
+	// TODO: Fix bug that occurs when the questions amount is big (>50)
+	//		(buffer gets filled with 0's at the middle)
 	Buffer response(INIT_BUFFER_SIZE);
 	DWORD currBytesRead = 0;
 	DWORD lastBytesRead = 0;
@@ -41,12 +43,12 @@ Buffer QuestionsRetriever::HTTPSRequest(const std::string& url)
 	return response;
 }
 
-std::vector<Question> QuestionsRetriever::deserializeQuestionsJson(Buffer& buff, int questionAmount)
+std::forward_list<Question> QuestionsRetriever::deserializeQuestionsJson(Buffer& buff, int questionAmount)
 {
-	std::vector<Question> questionsVec;
-	questionsVec.reserve(questionAmount);
+	std::forward_list<Question> questionsList;
 	try
 	{
+		std::cout << (char*)buff.data() << std::endl;
 		json questions = json::parse((char*)buff.data());
 		if (questions.at(RESPONSE_CODE_JSON) != 0)
 		{
@@ -56,14 +58,14 @@ std::vector<Question> QuestionsRetriever::deserializeQuestionsJson(Buffer& buff,
 		{
 			int correctAnswerIndex; // gets set by the getAnswers function
 			auto answers = getAnswersFromQuestion(question, correctAnswerIndex);
-			questionsVec.emplace_back(std::move(question.at(QUESTION_STRING_JSON)), std::move(answers), correctAnswerIndex);
+			questionsList.emplace_front(std::move(question.at(QUESTION_STRING_JSON)), std::move(answers), correctAnswerIndex);
 		}
 	}
 	catch (const json::exception& e)
 	{
 		throw std::runtime_error("Error while parsing json: " + std::string(e.what()));
 	}
-	return questionsVec;
+	return questionsList;
 }
 
 std::vector<std::string> QuestionsRetriever::getAnswersFromQuestion(json& question, int& correctAnswerIndex)

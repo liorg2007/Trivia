@@ -7,6 +7,6 @@
 int main()
 {
 	SqliteDatabase db(DATABASE_FILE_NAME);
-	db.insertNewQuestions(10);
+	db.getQuestions(10);
 	return 0;
 }

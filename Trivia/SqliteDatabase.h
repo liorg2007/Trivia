@@ -29,13 +29,14 @@ public:
 	int getPlayerScore(const std::string& userName) override;
 	ScoreList getHighScores() override;
 
-	void insertNewQuestions(int amount);
 private:
 	/* Private Members */
 	std::string _dbFileName;
 	sqlite3* _db;
 	std::mutex _mtx;
 
+	void insertNewQuestionsIfNeeded(int amount);
+	void insertNewQuestions(int amount);
 	inline void execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out);
 	// callback-less execQuery
 	inline void execQuery(const std::string& query);
@@ -51,6 +52,9 @@ private:
 	static int getSingleStringCallback(void* data, int argc, char** argv, char** azColName);
 	static int getQuestionsCallback(void* data, int argc, char** argv, char** azColName);
 	static int getHighScoresCallback(void* data, int argc, char** argv, char** azColName);
+
+	/* Questions table count */
+	static constexpr auto QUESTIONS_MINIMUM_AMOUNT = 10;
 
 	/* Callbacks constants */
 	static constexpr auto FIRST_VALUE = 0;
