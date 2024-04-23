@@ -22,7 +22,7 @@ namespace Client
 
     public partial class App : Application
     {
-        public BackgroundWorker _musicWorker = null;
+        public BackgroundWorker? _musicWorker = null;
         public Server _server;
 
         private void Application_Startup(object sender, StartupEventArgs e)

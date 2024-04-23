@@ -21,7 +21,6 @@ namespace Client
             public string message;
         }
 
-
         public struct LoginRequest
         {
             public string username { get; set; }
@@ -47,7 +46,6 @@ namespace Client
         {
             public int status { get; set; }
         }
-
 
         public struct StatsRequest
         {

@@ -45,7 +45,7 @@ namespace Client
             uint messageLength = BitConverter.ToUInt32(buffer, 1);
 
             byte[] messageBuffer = new byte[messageLength];
-            Array.Copy(buffer, 5, messageBuffer, 0, messageLength);
+            Array.Copy(buffer, HEADER_LENGTH, messageBuffer, 0, messageLength);
 
             string message = Encoding.UTF8.GetString(messageBuffer);
 
