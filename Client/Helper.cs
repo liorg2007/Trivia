@@ -21,6 +21,13 @@ namespace Client
             MessageBox.Show(message, "Error", button, icon, MessageBoxResult.Yes);
         }
 
+        public static void raiseSuccessBox(string message)
+        {
+            MessageBoxButton button = MessageBoxButton.OK;
+            MessageBoxImage icon = MessageBoxImage.Asterisk;
+            MessageBox.Show(message, "Ok", button, icon, MessageBoxResult.Yes);
+        }
+
         public static byte[] createProtocol(string message, int code)
         {
             int messagelength = message.Length;

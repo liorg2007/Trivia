@@ -11,6 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static Client.DataStructs;
+using static Client.Requests;
+using static Client.Helper;
+using static Client.JsonPacketDeserializer;
 
 namespace Client
 {
@@ -56,5 +60,33 @@ namespace Client
             window.Show();
         }
 
+        private void SignoutClick(object sender, RoutedEventArgs e)
+        {
+            var message = Helper.createProtocol("", (int)Codes.Logout);
+
+            ((App)Application.Current)._server.sendMessage(message);
+
+            ServerResponse response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+
+            if(response.code == (int)Codes.Logout + 1)
+            {
+                LogoutResponse res = JsonPacketDeserializer.DeserializeLogoutResponse(response.message);
+
+                if (res.status != 1)
+                    raiseErrorBox("Problem with server");
+                else
+                {
+                    MainWindow window = new MainWindow();
+                    window.Show();
+                    this.Close();
+                    raiseSuccessBox("Thanks for playing!");
+                }
+            }
+        }
+
+        private void Signout()
+        {
+
+        }
     }
 }

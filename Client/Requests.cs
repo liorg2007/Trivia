@@ -9,9 +9,11 @@ namespace Client
 {
     internal static class Requests
     {
-        public enum Codes {
+        public enum Codes
+        {
             Login,
             Signup,
+            Logout,
             Stats = 8
         }
 
@@ -31,7 +33,7 @@ namespace Client
         {
             public int status { get; set; }
         }
-        
+
         public struct SignupRequest
         {
             public string username { get; set; }
@@ -55,6 +57,16 @@ namespace Client
         public struct StatsResponse
         {
             public UserStatistics statistics { get; set; }
+        }
+
+        public struct LogoutRequest
+        {
+            public uint code { get; set; }
+        }
+
+        public struct LogoutResponse
+        {
+            public uint status { get; set; }
         }
     }
 }
