@@ -8,18 +8,19 @@
 
 int main()
 {
-	SqliteDatabase db(DATABASE_FILE_NAME);
-	Sleep(1000);
-	db.getQuestions(100);
-	Sleep(1000);
-	db.getQuestions(100);
-	Sleep(1000);
-	db.getQuestions(100);
-	Sleep(1000);
-	db.getQuestions(100);
-	Sleep(1000);
-	db.getQuestions(100);
-	Sleep(1000);
-	db.getQuestions(100);
+	WSAInitializer wsaInit;
+
+	try {
+		Server& server = Server::getInstance();
+		server.run();
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << e.what() << "\n";
+	}
+
+	system("PAUSE");
+
+
 	return 0;
 }
