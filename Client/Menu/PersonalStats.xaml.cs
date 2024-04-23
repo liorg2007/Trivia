@@ -54,10 +54,10 @@ namespace Client
             }
 
             //Put stats in labels
-            score.Text = userStatistics.score.ToString();
-            rightAns.Text = userStatistics.correctAnswers.ToString();
-            wrongAns.Text = (userStatistics.totalAnswers - userStatistics.correctAnswers).ToString();
-            avgTime.Text = userStatistics.averageAnswerTime.ToString();
+            score.Text = "Score: " + userStatistics.score.ToString();
+            rightAns.Text = "Correct Answers: " + userStatistics.correctAnswers.ToString();
+            wrongAns.Text = "Wrong Answers: " +  (userStatistics.totalAnswers - userStatistics.correctAnswers).ToString();
+            avgTime.Text = "Average Time: " +   userStatistics.averageAnswerTime.ToString();
         }
 
 
