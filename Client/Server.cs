@@ -31,7 +31,7 @@ namespace Client
             var serverData = new ServerData();
 
             if (!File.Exists(serverDataFileName))
-                throw new Exception("No serverConfig.txt file!");
+                throw new Exception("No " + serverDataFileName + " file!");
 
             string[] data = File.ReadAllLines(serverDataFileName);
 
