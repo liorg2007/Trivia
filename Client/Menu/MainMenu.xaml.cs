@@ -84,9 +84,12 @@ namespace Client
             }
         }
 
-        private void Signout()
+        private void QuitClick(object sender, RoutedEventArgs e)
         {
+            string result = raiseQuestionBox("Are you sure you want to quit?");
 
+            if (result == "Yes")
+                CloseWindow(sender, e);
         }
     }
 }
