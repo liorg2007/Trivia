@@ -92,8 +92,8 @@
                     <Button Width="200" Height="80" Content="Best Scores" Style="{StaticResource Menu}" />
 
                     <StackPanel Orientation="Horizontal" Margin="0,30,0,0" HorizontalAlignment="Center">
-                        <Button FontSize ="20" Width="100" Height="80" Margin="0,0,500,0"  Content="Signout" Style="{StaticResource Menu}" />
-                        <Button  FontSize="20" Width="100" Height="80" Content="Quit" Style="{StaticResource Menu}" />
+                        <Button FontSize ="20" Width="100" Height="80" Margin="0,0,500,0"  Content="Signout" Style="{StaticResource Menu}" Click="SignoutClick"/>
+                        <Button  FontSize="20" Width="100" Height="80" Content="Quit" Style="{StaticResource Menu}" Click="QuitClick"/>
                     </StackPanel>
 
                 </StackPanel>

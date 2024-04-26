@@ -60,5 +60,10 @@ namespace Client
 
             return stats;
         }
+
+        public static LogoutResponse DeserializeLogoutResponse(string message)
+        {
+            return JsonSerializer.Deserialize<LogoutResponse>(message);
+        }
     }
 }
