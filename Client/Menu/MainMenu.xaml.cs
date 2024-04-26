@@ -15,6 +15,7 @@ using static Client.DataStructs;
 using static Client.Requests;
 using static Client.Helper;
 using static Client.JsonPacketDeserializer;
+using Client.Menu;
 
 namespace Client
 {
@@ -57,6 +58,12 @@ namespace Client
         private void PersonalScoreClick(object sender, RoutedEventArgs e)
         {
             PersonalStats window = new PersonalStats(_username);
+            window.Show();
+        }
+
+        private void BestScoresClick(object sender, RoutedEventArgs e)
+        {
+            BestScores window = new BestScores();
             window.Show();
         }
 
