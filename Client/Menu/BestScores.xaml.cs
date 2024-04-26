@@ -51,6 +51,13 @@ namespace Client.Menu
             }
 
             //Put stats in labels
+            int listLength = highScores.bestScores.Count;
+
+
+            for (int i = 0; i < listLength; i++)
+            {
+                ((ListBoxItem)champList.Items[i + 1]).Content = highScores.bestScores[i].Item1 + " - " + highScores.bestScores[i].Item2; //item1 is name item2 is score
+            }
         }
 
         private void exitPress(object sender, RoutedEventArgs e)

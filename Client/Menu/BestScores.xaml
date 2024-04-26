@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client.Menu"
         mc:Ignorable="d"
-        Title="BestScores" Height="570" Width="380"
+        Title="BestScores" Height="650" Width="430"
         xmlns:iconPacks = "http://metro.mahapps.com/winfx/xaml/iconpacks"
         AllowsTransparency="True" Background="Transparent"
         WindowStyle="None" ResizeMode="NoResize"
@@ -61,10 +61,10 @@
                        Margin="0,85,0,0" VerticalAlignment="Top"
                        />
 
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" RenderTransformOrigin="0.441,1.56" Margin="54,133,54,0" Height="44">
-                        <Line Stretch="Uniform" Stroke="Black" X1="10" Width="95" Height="44"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="54,133,54,0" Height="44">
+                        <Line Stretch="Uniform" Stroke="Black" X1="10" Width="95" Height="44" Margin="25,0,0,0"/>
                         <TextBlock Margin="10" Text="QUIZ" FontSize="25" FontFamily="{StaticResource face-plate-saguage}" Width="59" VerticalAlignment="Center"/>
-                        <Line Stretch="Uniform" Stroke="Black" X2="10" Width="95" Height="44"/>
+                        <Line Stretch="Uniform" Stroke="Black" X2="10" Width="95" Height="44" />
 
                     </StackPanel>
                 </Grid>
@@ -73,7 +73,7 @@
 
 
 
-                <ListBox x:Name="champList" HorizontalAlignment="Center" VerticalAlignment="Top" Width="380" Height="280" Background="Transparent">
+                <ListBox x:Name="champList" HorizontalAlignment="Center" VerticalAlignment="Top" Width="380" Height="330" Background="Transparent" BorderBrush="Transparent">
                     <ListBox.Resources>
                         <Style TargetType="{x:Type ListBoxItem}">
                             <Setter Property="Background" Value="Transparent" />
@@ -88,11 +88,11 @@
                         </Style>
                     </ListBox.Resources>
                     <ListBoxItem Content="Champs" Margin="0,0,0,20" FontSize="40"/>
-                    <ListBoxItem Content="First Item" Foreground="Gold"/>
-                    <ListBoxItem Content="Second Item" Foreground="Silver"/>
-                    <ListBoxItem Content="Third Item" Foreground="#CD7F32"/>
-                    <ListBoxItem Content="Fourth Item" Foreground="#A34827"/>
-                    <ListBoxItem Content="Fifth Item" Margin="0,0,0,0" Foreground="#d3d4d5"/>
+                    <ListBoxItem Content="none" Foreground="Gold"/>
+                    <ListBoxItem Content="none" Foreground="Silver"/>
+                    <ListBoxItem Content="none" Foreground="#CD7F32"/>
+                    <ListBoxItem Content="none" Foreground="#A34827"/>
+                    <ListBoxItem Content="none" Margin="0,0,0,0" Foreground="#ececec"/>
                 </ListBox>
 
 
