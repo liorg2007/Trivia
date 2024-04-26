@@ -39,7 +39,7 @@ namespace Client.Menu
 
         public static TopPlayers GetHighScores(ServerResponse response)
         {
-            if (response.code == 9)
+            if (response.code == 8)
             {
                 TopPlayers res = DeserializeHighScoresResponse(response.message);
                 return res;

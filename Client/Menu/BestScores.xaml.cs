@@ -33,7 +33,7 @@ namespace Client.Menu
 
         public void ShowBestScores()
         {
-            TopPlayers userStatistics = new TopPlayers();
+            TopPlayers highScores = new TopPlayers();
             var message = CreateHighScoresRequest();
 
             ((App)Application.Current)._server.sendMessage(message);
@@ -42,7 +42,7 @@ namespace Client.Menu
 
             try
             {
-                userStatistics = GetStats(response);
+                highScores = GetHighScores(response);
             }
             catch (Exception ex)
             {

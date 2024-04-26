@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using static Client.Requests;
 using System.Text.Json;
 using static Client.DataStructs;
+using Client.Menu;
 
 namespace Client
 {
@@ -68,7 +69,27 @@ namespace Client
 
         public static TopPlayers DeserializeHighScoresResponse(string message)
         {
-            return JsonSerializer.Deserialize<TopPlayers>(message);
+            JsonDocument document = JsonDocument.Parse(message);
+
+            var highScoresArray = document.RootElement.GetProperty("HighScores").EnumerateArray();
+
+            List<Tuple<string, int>> highScoresList = new List<Tuple<string, int>>();
+
+            foreach (var element in highScoresArray)
+            {
+                JsonElement nameElement = element[0];
+                JsonElement scoreElement = element[1];
+
+                string name = nameElement.GetString();
+                int score = scoreElement.GetInt32();
+
+                highScoresList.Add(new Tuple<string, int>(name, score));
+            }
+
+            TopPlayers topPlayers = new TopPlayers();
+            topPlayers.bestScores = highScoresList;
+
+            return topPlayers;
         }
     }
 }
