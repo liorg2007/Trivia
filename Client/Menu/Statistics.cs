@@ -29,5 +29,23 @@ namespace Client.Menu
 
             throw new Exception("Problem with server");
         }
+
+
+        public static byte[] CreateHighScoresRequest()
+        {
+            string json = "";
+            return Helper.createProtocol(json, (int)Codes.HighScores);
+        }
+
+        public static TopPlayers GetHighScores(ServerResponse response)
+        {
+            if (response.code == 9)
+            {
+                TopPlayers res = DeserializeHighScoresResponse(response.message);
+                return res;
+            }
+
+            throw new Exception("Problem with server");
+        }
     }
 }

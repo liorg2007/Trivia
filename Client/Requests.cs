@@ -14,7 +14,8 @@ namespace Client
             Login,
             Signup,
             Logout,
-            Stats = 8
+            HighScores = 7,
+            Stats
         }
 
         public struct ServerResponse

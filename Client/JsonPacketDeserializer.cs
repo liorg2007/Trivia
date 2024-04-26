@@ -65,5 +65,10 @@ namespace Client
         {
             return JsonSerializer.Deserialize<LogoutResponse>(message);
         }
+
+        public static TopPlayers DeserializeHighScoresResponse(string message)
+        {
+            return JsonSerializer.Deserialize<TopPlayers>(message);
+        }
     }
 }

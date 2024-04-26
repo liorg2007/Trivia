@@ -15,5 +15,10 @@ namespace Client
             public int correctAnswers { get; set; }
             public int totalAnswers { get; set; }
         }
+
+        public struct TopPlayers
+        {
+            public List<Tuple<string, int>> bestScores;
+        }
     }
 }
