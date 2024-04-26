@@ -119,11 +119,12 @@ RequestInfo Communicator::recieveData(SOCKET clientSocket) const
 	}
 	std::memcpy(&msgSize, &req.buffer.at(CODE_FIELD_LENGTH), SIZE_FIELD_LENGTH);
 	req.buffer.resize(HEADER_FIELD_LENGTH + msgSize);
-	if (recv(clientSocket, (char*)&req.buffer.at(HEADER_FIELD_LENGTH), msgSize, 0) != msgSize)
-	{
-		throw std::exception("Packet length is not as expected");
-	}
-	req.id = (MessageCode)req.buffer.at(0);
+	if(msgSize > 0)
+		if (recv(clientSocket, (char*)&req.buffer.at(HEADER_FIELD_LENGTH), msgSize, 0) != msgSize)
+		{
+			throw std::exception("Packet length is not as expected");
+		}
+	req.id = (RequestCode)req.buffer.at(0);
 	req.receivalTime = std::time(0);
 	// std::cout << "Client says: " << (char*)&req.buffer.at(0) << std::endl;
 	return req;

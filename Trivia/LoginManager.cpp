@@ -18,9 +18,10 @@ bool LoginManager::signup(const std::string& username, const std::string& passwo
 		{
 			std::lock_guard<std::mutex> lock(_loggedUserMtx);
 
-		_database->AddUser(username, password, email, address, phoneNumber, birthDate);
-		_loggedUsers.emplace_back(username);
-		return true;
+			_database->addNewUser(username, password, email, address, phoneNumber, birthDate);
+			_loggedUsers.emplace_back(username);
+			return true;
+		}
 	}
 	catch (const DatabaseException& e) {
 		std::cerr << e.what() << std::endl;
@@ -33,12 +34,13 @@ bool LoginManager::signup(const std::string& username, const std::string& passwo
 bool LoginManager::login(const std::string& username, const std::string& password)
 {
 	std::lock_guard<std::mutex> lock(_loggedUserMtx);
-
-	if (std::find(_loggedUsers.begin(), _loggedUsers.end(), username) == _loggedUsers.end()
-		&& _database->IsPasswordOk(username, password))
-	{
-		_loggedUsers.emplace_back(username);
-		return true;
+	try {
+		if (std::find(_loggedUsers.begin(), _loggedUsers.end(), username) == _loggedUsers.end()
+			&& _database->doesPasswordMatch(username, password))
+		{
+			_loggedUsers.emplace_back(username);
+			return true;
+		}
 	}
 	catch (const DatabaseException& e)
 	{

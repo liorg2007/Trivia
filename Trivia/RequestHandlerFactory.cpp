@@ -1,31 +1,40 @@
 #include "RequestHandlerFactory.h"
 
 RequestHandlerFactory::RequestHandlerFactory()
-    : _database(IDatabase::getInstance()), _loginManager(LoginManager::getInstance())
+	: _database(IDatabase::getInstance()),
+	_loginManager(LoginManager::getInstance()),
+	_roomManager(RoomManager::getInstance()),
+	_statisticsManager(StatisticsManager::getInstance())
 {
 }
 
 RequestHandlerFactory& RequestHandlerFactory::getInstance()
 {
-    static RequestHandlerFactory instance;
-    return instance;
+	static RequestHandlerFactory instance;
+	return instance;
 }
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
-    LoginRequestHandler* reqHandler = new LoginRequestHandler(*this);
-    // do a bunch of stuff
-    return reqHandler;
+	return new LoginRequestHandler(*this);
 }
 
 LoginManager& RequestHandlerFactory::getLoginManager()
 {
-  return _loginManager;
+	return _loginManager;
 }
 
-MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler()
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& user)
 {
-  MenuRequestHandler* reqHandler = new MenuRequestHandler(*this);
-  // do a bunch of stuff
-  return reqHandler;
+	return new MenuRequestHandler(*this, user);
+}
+
+StatisticsManager& RequestHandlerFactory::getStatisticsManager()
+{
+	return _statisticsManager;
+}
+
+RoomManager& RequestHandlerFactory::getRoomManager()
+{
+	return _roomManager;
 }
