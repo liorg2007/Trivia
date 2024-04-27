@@ -25,3 +25,21 @@ struct UserStatistics
 	int totalAnswers;
 	int score;
 };
+
+enum class ProtocolCode : Byte
+{
+	/* Error Code */
+	Error,
+	/* Login State */
+	Login,
+	Signup,
+
+	/* Menu State */
+	Logout,
+	CreateRoom,
+	JoinRoom,
+	GetRooms,
+	GetPlayersInRoom,
+	GetHighScores,
+	GetPersonalStats,
+};

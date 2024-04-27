@@ -3,56 +3,56 @@
 Buffer JsonRequestPacketSerializer::serializeResponse(ErrorResponse res)
 {
 	json jsonObj{ { "message", res.message } };
-	return buildBuffer(ResponseCode::Error, jsonObj);
+	return buildBuffer(ProtocolCode::Error, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(LoginResponse res)
 {
 	json jsonObj{ { "status", res.status } };
-	return buildBuffer(ResponseCode::Login, jsonObj);
+	return buildBuffer(ProtocolCode::Login, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(SignupResponse res)
 {
 	json jsonObj{ { "status", res.status } };
-	return buildBuffer(ResponseCode::Signup, jsonObj);
+	return buildBuffer(ProtocolCode::Signup, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(LogoutResponse res)
 {
 	json jsonObj{ { "status", res.status } };
-	return buildBuffer(ResponseCode::Logout, jsonObj);
+	return buildBuffer(ProtocolCode::Logout, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(GetRoomsResponse res)
 {
 	json jsonObj{ {"Rooms", res.rooms} };
-	return buildBuffer(ResponseCode::GetRooms, jsonObj);
+	return buildBuffer(ProtocolCode::GetRooms, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(GetPlayersInRoomResponse res)
 {
 	json jsonObj{ {"PlayersInRoom", res.players} };
-	return buildBuffer(ResponseCode::GetPlayersInRoom, jsonObj);
+	return buildBuffer(ProtocolCode::GetPlayersInRoom, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(JoinRoomResponse res)
 {
 	json jsonObj{ { "status", res.status} };
-	return buildBuffer(ResponseCode::JoinRoom, jsonObj);
+	return buildBuffer(ProtocolCode::JoinRoom, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(CreateRoomResponse res)
 {
 	json jsonObj{ { "status", res.status} };
-	return buildBuffer(ResponseCode::CreateRoom, jsonObj);
+	return buildBuffer(ProtocolCode::CreateRoom, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(GetHighScoresResponse res)
 {
 	/* format: { "HighScores": [ [name1, score1], [name2, score2] ... ] } */
 	json jsonObj{ { "HighScores", res.highScores } };
-	return buildBuffer(ResponseCode::GetHighScores, jsonObj);
+	return buildBuffer(ProtocolCode::GetHighScores, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(GetPersonalStatsResponse res)
@@ -66,10 +66,10 @@ Buffer JsonRequestPacketSerializer::serializeResponse(GetPersonalStatsResponse r
 			{ "totalAnswers", res.statistics.totalAnswers }
 		} 
 	};
-	return buildBuffer(ResponseCode::GetPersonalStats, jsonObj);
+	return buildBuffer(ProtocolCode::GetPersonalStats, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::buildBuffer(ResponseCode resCode, const json& jsonObj)
+Buffer JsonRequestPacketSerializer::buildBuffer(ProtocolCode resCode, const json& jsonObj)
 {
 	auto msg = jsonObj.dump();
 	int msgSize = msg.length();
