@@ -23,7 +23,7 @@ private:
 	RequestResult getPersonalStats(const RequestInfo& req);
 	RequestResult getHighScore(const RequestInfo& req);
 
-	static const std::unordered_map<RequestCode, HandlerFunction> codeToFunction;
+	static const std::unordered_map<ProtocolCode, HandlerFunction> codeToFunction;
 	LoggedUser _user;
 	RequestHandlerFactory & _handlerFactory;
 };

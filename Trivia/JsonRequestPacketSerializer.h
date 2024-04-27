@@ -22,5 +22,5 @@ public:
 	static Buffer serializeResponse(GetPersonalStatsResponse res);
 
 private:
-	static Buffer buildBuffer(ResponseCode resCode, const json& jsonObj);
+	static Buffer buildBuffer(ProtocolCode resCode, const json& jsonObj);
 };
