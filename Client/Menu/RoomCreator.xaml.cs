@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using static Client.DataStructs;
 using static Client.Requests;
 using static System.Formats.Asn1.AsnWriter;
+using static Client.Helper;
+using static Client.Menu.RoomManagement;
 
 namespace Client.Menu
 {
@@ -47,7 +49,36 @@ namespace Client.Menu
 
         private void CreateRoom()
         {
-            
+            CreateRoomRequest request = new CreateRoomRequest()
+            {
+                name = RoomName.Text,
+                maxPlayers = int.Parse(MaxPlayers.SelectedItem.ToString()),
+                amountOfQuestions = int.Parse(NumOfQuestions.SelectedItem.ToString()),
+                answerTime = int.Parse(QuestionTime.SelectedItem.ToString()),
+            };
+
+            var message = RoomManagement.CreateCreateRoomRequest(request);
+            try
+            {
+                ((App)Application.Current)._server.sendMessage(message);
+            }
+            catch
+            {
+                raiseErrorBox("Server problem");
+                System.Environment.Exit(0);
+            }
+
+            ServerResponse response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+
+            try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                raiseErrorBox(ex.Message);
+                System.Environment.Exit(0);
+            }
         }
 
         private void BoxGotFocus(object sender, RoutedEventArgs e)

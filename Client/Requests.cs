@@ -69,5 +69,13 @@ namespace Client
         {
             public uint status { get; set; }
         }
+
+        public struct CreateRoomRequest
+        {
+            public string name { get; set; }
+            public int maxPlayers { get; set; }
+            public int amountOfQuestions { get; set; }
+            public int answerTime { get; set; }
+        }
     }
 }
