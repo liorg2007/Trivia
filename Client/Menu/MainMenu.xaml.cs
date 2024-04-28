@@ -93,7 +93,7 @@ namespace Client
 
         private void CreateRoomClick(object sender, RoutedEventArgs e)
         {
-            RoomCreator window = new RoomCreator(_username);
+            RoomCreator window = new RoomCreator();
             window.Show();
         }
 

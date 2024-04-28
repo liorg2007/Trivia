@@ -23,5 +23,35 @@ namespace Client.Menu
         {
             InitializeComponent();
         }
+
+        private void BoxGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (((TextBox)sender).Text == "Room Name")
+                ((TextBox)sender).Text = "";
+        }
+
+        private void BoxLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (((TextBox)sender).Text == "")
+                ((TextBox)sender).Text = "Room Name";
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void MinimizeWindow(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
     }
 }

@@ -72,8 +72,8 @@
             </StackPanel>
             <StackPanel  Grid.Row="1">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox FontFamily="{StaticResource Nunito-Light}" Text="Name"
-      Name ="Name"
+                    <TextBox FontFamily="{StaticResource Nunito-Light}" Text="Room Name"
+      Name ="RoomName"
       FontWeight="Light"
       FontSize="20"
       Foreground="white"
@@ -92,14 +92,14 @@
                           HorizontalAlignment="Center"
                           Foreground="White"/>
                     <TextBlock Text="Max Players" FontSize="20" 
-                        Margin="60,0,140,0"
+                        Margin="80,0,140,0"
                      FontFamily="{StaticResource Nunito-Light}"
                      Foreground="White"
                                Background="Transparent"
                                Opacity="0.5"/>
 
 
-                    <ComboBox Name="MaxPlayers" Text="Max Players" Background="Transparent" Foreground="Transparent" Width="30">
+                    <ComboBox Name="MaxPlayers" Text="Max Players" Background="Transparent"  Width="50">
                         <ComboBoxItem>5</ComboBoxItem>
                         <ComboBoxItem>10</ComboBoxItem>
                         <ComboBoxItem>15</ComboBoxItem>
@@ -126,11 +126,11 @@
            Opacity="0.5"/>
 
 
-                    <ComboBox Name="NumOfQuestions" Text="Max Players" Background="Transparent" Foreground="Transparent" Width="30">
-                        <ComboBoxItem>5</ComboBoxItem>
-                        <ComboBoxItem>7</ComboBoxItem>
-                        <ComboBoxItem>9</ComboBoxItem>
-                        <ComboBoxItem>11</ComboBoxItem>
+                    <ComboBox Name="NumOfQuestions" Text="Max Players" Background="Transparent" Width="50">
+                        <ComboBoxItem Content="5"/>
+                        <ComboBoxItem Content="7"/>
+                        <ComboBoxItem Content="9"/>
+                        <ComboBoxItem Content="11"/>
                     </ComboBox>
                     
                     
@@ -142,7 +142,7 @@
                        Opacity="0.5"/>
 
 
-                    <ComboBox Name="QuestionTime" Text="Max Players" Background="Transparent" Foreground="Transparent" Width="30">
+                    <ComboBox Name="QuestionTime" Text="Max Players" Background="Transparent" Width="50">
                         <ComboBoxItem>5</ComboBoxItem>
                         <ComboBoxItem>10</ComboBoxItem>
                         <ComboBoxItem>15</ComboBoxItem>
@@ -157,8 +157,8 @@
 
 
                 <StackPanel Orientation="Horizontal" Margin="0, 50, 0,0">
-                    <Button Width="100" Height="40" Content="Cancel" Margin="250, 0, 50,0" Style="{StaticResource LoginSignup}" Click="CancelBtn" />
-                    <Button Width="100" Height="40" Content="Create" Style="{StaticResource LoginSignup}" Click="CreateRoom"/>
+                    <Button Width="100" Height="40" Content="Cancel" Margin="250, 0, 50,0" Style="{StaticResource LoginSignup}"  />
+                    <Button Width="100" Height="40" Content="Create" Style="{StaticResource LoginSignup}"/>
                 </StackPanel>
             </StackPanel>
 
