@@ -11,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static Client.DataStructs;
+using static Client.Requests;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Client.Menu
 {
@@ -19,9 +22,32 @@ namespace Client.Menu
     /// </summary>
     public partial class RoomCreator : Window
     {
-        public RoomCreator()
+        private string _username;
+
+
+        public RoomCreator(string username)
         {
+            _username = username;
             InitializeComponent();
+        }
+
+
+        /* BUTTON CLICKS */
+        private void CancelBtn(object sender, RoutedEventArgs e)
+        {
+            MainMenu window = new MainMenu(_username);
+            window.Show();
+            this.Close();
+        }
+
+        private void CreateRoomBtn(object sender, RoutedEventArgs e)
+        {
+            CreateRoom();
+        }
+
+        private void CreateRoom()
+        {
+            
         }
 
         private void BoxGotFocus(object sender, RoutedEventArgs e)
