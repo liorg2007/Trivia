@@ -91,6 +91,12 @@ namespace Client
             }
         }
 
+        private void CreateRoomClick(object sender, RoutedEventArgs e)
+        {
+            RoomCreator window = new RoomCreator(_username);
+            window.Show();
+        }
+
         private void QuitClick(object sender, RoutedEventArgs e)
         {
             string result = raiseQuestionBox("Are you sure you want to quit?");
