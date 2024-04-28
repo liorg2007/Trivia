@@ -95,6 +95,7 @@ namespace Client
         {
             RoomCreator window = new RoomCreator();
             window.Show();
+            this.Close();
         }
 
         private void QuitClick(object sender, RoutedEventArgs e)

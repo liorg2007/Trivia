@@ -46,6 +46,8 @@ namespace Client.Menu
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
+            ((App)Application.Current)._musicWorker.CancelAsync();
+            Thread.Sleep(50);
             Close();
         }
 
