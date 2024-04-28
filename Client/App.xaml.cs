@@ -56,7 +56,7 @@ namespace Client
 
             _musicWorker.RunWorkerAsync();
 
-            MainWindow mainWindow = new MainWindow();
+            LoginWindow mainWindow = new LoginWindow();
             mainWindow.Show();
         }
 

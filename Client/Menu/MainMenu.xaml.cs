@@ -83,7 +83,7 @@ namespace Client
                     raiseErrorBox("Problem with server");
                 else
                 {
-                    MainWindow window = new MainWindow();
+                    LoginWindow window = new LoginWindow();
                     window.Show();
                     this.Close();
                     raiseSuccessBox("Thanks for playing!");
