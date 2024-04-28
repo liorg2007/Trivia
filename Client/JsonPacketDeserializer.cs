@@ -91,5 +91,10 @@ namespace Client
 
             return topPlayers;
         }
+
+        public static CreateRoomResponse DeserializeCreateRoomResponseResponse(string message)
+        {
+            return JsonSerializer.Deserialize<CreateRoomResponse>(message);
+        }
     }
 }

@@ -14,6 +14,7 @@ namespace Client
             Login,
             Signup,
             Logout,
+            CreateRoom,
             HighScores = 7,
             Stats
         }
@@ -72,10 +73,15 @@ namespace Client
 
         public struct CreateRoomRequest
         {
-            public string name { get; set; }
-            public int maxPlayers { get; set; }
-            public int amountOfQuestions { get; set; }
-            public int answerTime { get; set; }
+            public string roomName { get; set; }
+            public uint maxUsers { get; set; }
+            public uint questionCount { get; set; }
+            public uint answerTimeout { get; set; }
+        }
+
+        public struct CreateRoomResponse
+        {
+            public uint status { get; set; }
         }
     }
 }

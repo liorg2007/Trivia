@@ -16,6 +16,7 @@ using static Client.Requests;
 using static System.Formats.Asn1.AsnWriter;
 using static Client.Helper;
 using static Client.Menu.RoomManagement;
+using static Client.JsonPacketDeserializer;
 
 namespace Client.Menu
 {
@@ -51,10 +52,10 @@ namespace Client.Menu
         {
             CreateRoomRequest request = new CreateRoomRequest()
             {
-                name = RoomName.Text,
-                maxPlayers = int.Parse(MaxPlayers.SelectedItem.ToString()),
-                amountOfQuestions = int.Parse(NumOfQuestions.SelectedItem.ToString()),
-                answerTime = int.Parse(QuestionTime.SelectedItem.ToString()),
+                roomName = RoomName.Text,
+                maxUsers = uint.Parse(MaxPlayers.Text),
+                questionCount = uint.Parse(NumOfQuestions.Text),
+                answerTimeout = uint.Parse(QuestionTime.Text),
             };
 
             var message = RoomManagement.CreateCreateRoomRequest(request);
@@ -72,7 +73,14 @@ namespace Client.Menu
 
             try
             {
-                
+                if(response.code != 5  || DeserializeCreateRoomResponseResponse(response.message).status != 1)
+                {
+                    raiseErrorBox("cant create room");
+                }
+                else
+                {
+                    raiseSuccessBox("Room Created!");
+                }
             }
             catch (Exception ex)
             {
