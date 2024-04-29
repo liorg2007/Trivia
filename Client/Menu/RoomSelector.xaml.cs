@@ -162,6 +162,14 @@ namespace Client.Menu
             return playersResponse.PlayersInRoom;
         }
 
+
+        /* CLICK EVENTS */
+        private void RefreshClick(object sender, RoutedEventArgs e)
+        {
+            roomList.Items.Clear();
+            UpdateRoomList();
+        }
+
         private void exitPress(object sender, RoutedEventArgs e)
         {
             MainMenu window = new MainMenu(_username);

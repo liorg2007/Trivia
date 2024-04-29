@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\Arkhip.otf" />
     <None Remove="Fonts\Blanka.otf" />
     <None Remove="Fonts\blkchan.ttf" />
     <None Remove="Fonts\Chella-Black.ttf" />
@@ -31,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Fonts\Arkhip.otf" />
     <Resource Include="Fonts\Blanka.otf" />
     <Resource Include="Fonts\Chella-Black.ttf" />
     <Resource Include="Fonts\ELIXIA.ttf" />

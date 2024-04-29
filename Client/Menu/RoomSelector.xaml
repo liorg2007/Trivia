@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client.Menu"
         mc:Ignorable="d"
-        Title="RoomSelector" Height="850" Width="800"      
+        Title="RoomSelector" Height="850" Width="830"      
         xmlns:iconPacks = "http://metro.mahapps.com/winfx/xaml/iconpacks"
         AllowsTransparency="True"
         Background="Transparent"
@@ -63,7 +63,7 @@
                        />
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="54,133,54,0" Height="44">
-                        <Line Stretch="Uniform" Stroke="Black" X1="10" Width="95" Height="44" Margin="210,0,0,0"/>
+                        <Line Stretch="Uniform" Stroke="Black" X1="10" Width="95" Height="44" Margin="220,0,0,0"/>
                         <TextBlock Margin="10" Text="QUIZ" FontSize="25" FontFamily="{StaticResource face-plate-saguage}" Width="59" VerticalAlignment="Center"/>
                         <Line Stretch="Uniform" Stroke="Black" X2="10" Width="95" Height="44" />
 
@@ -78,12 +78,13 @@
                             Width="136"
                             Height="50"
                             Foreground="Red"
-                            FontSize="25"/>
+                            FontSize="25"
+                            Click="RefreshClick"/>
                 </StackPanel>
 
 
 
-                <ListBox x:Name="roomList" HorizontalAlignment="Center" Width="800"
+                <ListBox x:Name="roomList" HorizontalAlignment="Center" Width="830"
                          Height="446" Background="Transparent" BorderBrush="Transparent"
                          Focusable="False">
 
@@ -92,7 +93,7 @@
                             <Setter Property="FontSize" Value="40"/>
                             <Setter Property="Height" Value="50"/>
                             <Setter Property="Width" Value="400"/>
-                            <Setter Property="FontFamily" Value="{StaticResource Celestia}"/>
+                            <Setter Property="FontFamily" Value="{StaticResource Arkhip}"/>
                         </Style>
                         <Style BasedOn="{StaticResource RoomLobbyStyleBtn}" TargetType="Button"/>
 
