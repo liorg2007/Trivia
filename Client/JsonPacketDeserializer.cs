@@ -103,32 +103,13 @@ namespace Client
             JsonDocument document = JsonDocument.Parse(message);
             GetRoomsResponse response = new GetRoomsResponse();
 
-            var highScoresArray = document.RootElement.GetProperty("Rooms").EnumerateArray();
+            var roomsArray = document.RootElement.GetProperty("Rooms").EnumerateArray();
 
             List<RoomData> rooms = new List<RoomData>();
 
-            foreach (var element in highScoresArray)
+            foreach (var element in roomsArray)
             {
-                JsonElement nameElement = element[0];
-                JsonElement scoreElement = element[1];
-                JsonElement maxPlayersElement = element[0];
-                JsonElement numOfQuestionsInGameElement = element[1];
-                JsonElement timerPerQuestionElement = element[0];
-                JsonElement isActiveElement = element[1];
-
-                uint id = scoreElement.GetUInt32();
-                string name = nameElement.GetString();
-                uint maxPlayers = maxPlayersElement.GetUInt32();
-                uint numOfQuestionsInGame = numOfQuestionsInGameElement.GetUInt32();
-                uint timerPerQuestion = timerPerQuestionElement.GetUInt32();
-                uint isActive = isActiveElement.GetUInt32();
-
-                RoomData roomData = new RoomData() { id = id,
-                                                    name = name, 
-                                                    maxPlayers = maxPlayers, 
-                                                    numOfQuestionsInGame = numOfQuestionsInGame,
-                                                    timerPerQuestion = timerPerQuestion,
-                                                    isActive = isActive };
+                RoomData roomData  = JsonSerializer.Deserialize<RoomData>(element);
 
                 rooms.Add(roomData);
             }
