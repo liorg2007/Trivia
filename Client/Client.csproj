@@ -13,6 +13,7 @@
     <None Remove="Fonts\blkchan.ttf" />
     <None Remove="Fonts\Chella-Black.ttf" />
     <None Remove="Fonts\ELIXIA.ttf" />
+    <None Remove="Fonts\kontanter.otf" />
     <None Remove="Images\logo.png" />
     <None Remove="Music\Theme1.mp3" />
     <None Remove="Music\Theme2.mp3" />
@@ -32,6 +33,7 @@
     <Resource Include="Fonts\Blanka.otf" />
     <Resource Include="Fonts\Chella-Black.ttf" />
     <Resource Include="Fonts\ELIXIA.ttf" />
+    <Resource Include="Fonts\kontanter.otf" />
     <Resource Include="Fonts\Nunito-Light.ttf" />
     <Resource Include="Fonts\face-plate-saguage.otf" />
     <Resource Include="Images\logo.png" />

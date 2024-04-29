@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="ModernButtonTheme.xaml"/>
                 <ResourceDictionary Source="Fonts.xaml"/>
                 <ResourceDictionary Source="Menu/StatsStyle.xaml"/>
+                <ResourceDictionary Source="Menu/RoomLobbyStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
