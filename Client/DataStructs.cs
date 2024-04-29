@@ -33,8 +33,8 @@ namespace Client
 
         public struct Room
         {
-            RoomData roomData { get; set; }
-            List<string> players { get; set; }
+            public RoomData roomData { get; set; }
+            public List<string> players { get; set; }
         }
     }
 }

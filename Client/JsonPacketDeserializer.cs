@@ -118,5 +118,10 @@ namespace Client
 
             return response;
         }
+
+        public static GetUsersInRoomResponse DeseriializeGetUsersInRoomsRequests(string message)
+        {
+            return JsonSerializer.Deserialize<GetUsersInRoomResponse>(message);
+        }
     }
 }

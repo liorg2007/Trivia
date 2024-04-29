@@ -17,7 +17,8 @@ namespace Client
             CreateRoom,
             JoinRoom,
             GetRooms,
-            HighScores = 7,
+            GetPlayersInRoom,
+            HighScores,
             Stats
         }
 
@@ -91,5 +92,16 @@ namespace Client
         {
             public List<RoomData> rooms { get; set; }
         }
+
+        public struct GetUsersInRoomRequest
+        {
+            public uint roomId { get; set; }
+        }
+
+        public struct GetUsersInRoomResponse
+        {
+            public List<string> PlayersInRoom { get; set; }
+        }
+
     }
 }

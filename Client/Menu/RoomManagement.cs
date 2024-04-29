@@ -21,5 +21,11 @@ namespace Client.Menu
         {
             return Helper.createProtocol("", (int)Codes.GetRooms);
         }
+
+        public static byte[] CreateGetUsersInRoomsRequests(GetUsersInRoomRequest request)
+        {
+            string json = JsonSerializer.Serialize(request);
+            return Helper.createProtocol(json, (int)Codes.GetPlayersInRoom);
+        }
     }
 }

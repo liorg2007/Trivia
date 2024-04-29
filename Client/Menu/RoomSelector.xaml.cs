@@ -42,6 +42,16 @@ namespace Client.Menu
         {
             //Get first the rooms 
             List<RoomData> rooms = getExistingRooms();
+            List<Room> roomsWithPeople = new List<Room>();
+
+            //Get each rooms users
+            foreach(var roomData in rooms)
+            {
+                Room room = new Room();
+                room.roomData = roomData;
+                room.players = GetUsersInRoom(roomData.id);
+                roomsWithPeople.Add(room);
+            }
 
             return new List<Room>();
         }
@@ -82,6 +92,47 @@ namespace Client.Menu
             }
 
             return roomsResponse.rooms;
+        }
+
+        private List<string> GetUsersInRoom(uint roomId)
+        {
+            ServerResponse response;
+            GetUsersInRoomRequest getUsersInRoomRequest = new GetUsersInRoomRequest() { roomId = roomId };
+            GetUsersInRoomResponse playersResponse;
+
+            var message = RoomManagement.CreateGetUsersInRoomsRequests(getUsersInRoomRequest);
+
+            try
+            {
+                ((App)Application.Current)._server.sendMessage(message);
+                response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+            }
+            catch
+            {
+                raiseErrorBox("Server problem");
+                System.Environment.Exit(0);
+                return new List<string>();
+            }
+
+            try
+            {
+                if (response.code == 7)
+                {
+                    playersResponse = DeseriializeGetUsersInRoomsRequests(response.message);
+                }
+                else
+                {
+                    throw new Exception("Bad conn");
+                }
+            }
+            catch (Exception ex)
+            {
+                raiseErrorBox(ex.Message);
+                System.Environment.Exit(0);
+                return new List<string>();
+            }
+
+            return playersResponse.PlayersInRoom;
         }
 
         private void exitPress(object sender, RoutedEventArgs e)
