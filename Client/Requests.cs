@@ -103,5 +103,14 @@ namespace Client
             public List<string> PlayersInRoom { get; set; }
         }
 
+        public struct JoinRoomRequest
+        {
+            public uint roomId { get; set; }
+        }
+
+        public struct JoinRoomResponse
+        {
+            public uint status { get; set; }
+        }
     }
 }

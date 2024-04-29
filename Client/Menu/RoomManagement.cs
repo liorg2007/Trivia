@@ -27,5 +27,11 @@ namespace Client.Menu
             string json = JsonSerializer.Serialize(request);
             return Helper.createProtocol(json, (int)Codes.GetPlayersInRoom);
         }
+
+        public static byte[] CreateJoinRoomRequests(JoinRoomRequest request)
+        {
+            string json = JsonSerializer.Serialize(request);
+            return Helper.createProtocol(json, (int)Codes.JoinRoom);
+        }
     }
 }

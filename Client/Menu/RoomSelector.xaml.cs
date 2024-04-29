@@ -16,6 +16,7 @@ using static Client.Helper;
 using static Client.Requests;
 using static Client.JsonPacketDeserializer;
 using System.Security;
+using System.Diagnostics;
 
 namespace Client.Menu
 {
@@ -54,6 +55,8 @@ namespace Client.Menu
 
                 Button joinButton = new Button();
                 joinButton.Content = "Join";
+                joinButton.Click += (sender, e) => JoinClick(sender, e, room.roomData.id);
+
 
                 stackPanel.Children.Add(textBlock1);
                 stackPanel.Children.Add(textBlock2);
@@ -168,6 +171,45 @@ namespace Client.Menu
         {
             roomList.Items.Clear();
             UpdateRoomList();
+        }
+
+        private void JoinClick(object sender, RoutedEventArgs e, uint roomId)
+        {
+            ServerResponse response;
+            JoinRoomRequest joinRoomRequest = new JoinRoomRequest() { roomId = roomId };
+            JoinRoomResponse joinRoomResponse;
+
+            var message = RoomManagement.CreateJoinRoomRequests(joinRoomRequest);
+
+            try
+            {
+                ((App)Application.Current)._server.sendMessage(message);
+                response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+            }
+            catch
+            {
+                raiseErrorBox("Server problem");
+                System.Environment.Exit(0);
+                return;
+            }
+
+            try
+            {
+                if (response.code == 5 && DeserializeJoinRoomResponse(response.message).status == 1)
+                {
+                    raiseSuccessBox("Entered room!");
+                }
+                else
+                {
+                    raiseSuccessBox("Can't enter room!");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                raiseErrorBox(ex.Message);
+                System.Environment.Exit(0);
+            }
         }
 
         private void exitPress(object sender, RoutedEventArgs e)
