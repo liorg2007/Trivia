@@ -53,7 +53,7 @@ namespace Client.Menu
                 roomsWithPeople.Add(room);
             }
 
-            return new List<Room>();
+            return roomsWithPeople;
         }
 
         private List<RoomData> getExistingRooms()
