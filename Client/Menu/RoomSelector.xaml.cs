@@ -23,8 +23,10 @@ namespace Client.Menu
     /// </summary>
     public partial class RoomSelector : Window
     {
-        public RoomSelector()
+        private string _username;
+        public RoomSelector(string username)
         {
+            _username = username;
             InitializeComponent();
             UpdateRoomList();
         }
@@ -62,14 +64,9 @@ namespace Client.Menu
 
             try
             {
-                if (response.code == 5)
+                if (response.code == 6)
                 {
                     roomsResponse = DeserializeGetRoomsResponse(response.message);
-                    
-                    if(roomsResponse.status == 0)
-                    {
-                        raiseErrorBox("Problem");
-                    }
                 }
                 else
                 {
@@ -83,14 +80,13 @@ namespace Client.Menu
                 return new List<RoomData>(); 
             }
 
-            if (roomsResponse.status == 0)
-                throw new Exception("Cant get rooms");
-
             return roomsResponse.rooms;
         }
 
         private void exitPress(object sender, RoutedEventArgs e)
         {
+            MainMenu window = new MainMenu(_username);
+            window.Show();
             this.Close();
         }
 

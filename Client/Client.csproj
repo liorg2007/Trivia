@@ -13,6 +13,7 @@
     <None Remove="Fonts\blkchan.ttf" />
     <None Remove="Fonts\Chella-Black.ttf" />
     <None Remove="Fonts\ELIXIA.ttf" />
+    <None Remove="Fonts\Ferdoka.ttf" />
     <None Remove="Fonts\kontanter.otf" />
     <None Remove="Images\logo.png" />
     <None Remove="Music\Theme1.mp3" />

@@ -98,6 +98,13 @@ namespace Client
             this.Close();
         }
 
+        private void JoinRoomClick(object sender, RoutedEventArgs e)
+        {
+            RoomSelector window = new RoomSelector(_username);
+            window.Show();
+            this.Close();
+        }
+
         private void QuitClick(object sender, RoutedEventArgs e)
         {
             string result = raiseQuestionBox("Are you sure you want to quit?");

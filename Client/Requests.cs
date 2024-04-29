@@ -89,7 +89,6 @@ namespace Client
 
         public struct GetRoomsResponse
         {
-            public uint status { get; set; }
             public List<RoomData> rooms { get; set; }
         }
     }

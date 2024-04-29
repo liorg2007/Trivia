@@ -23,12 +23,12 @@ namespace Client
 
         public struct RoomData
         {
-            uint id { get; set; }
-            string name { get; set; }
-            uint maxPlayers { get; set; }
-            uint numOfQuestionsInGame { get; set; }
-            uint timerPerQuestion { get; set; }
-            uint isActive { get; set; }
+            public uint id { get; set; }
+            public string name { get; set; }
+            public uint maxPlayers { get; set; }
+            public uint numOfQuestionsInGame { get; set; }
+            public uint timerPerQuestion { get; set; }
+            public uint isActive { get; set; }
         }
 
         public struct Room
