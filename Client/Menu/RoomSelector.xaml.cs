@@ -15,6 +15,7 @@ using static Client.DataStructs;
 using static Client.Helper;
 using static Client.Requests;
 using static Client.JsonPacketDeserializer;
+using System.Security;
 
 namespace Client.Menu
 {
