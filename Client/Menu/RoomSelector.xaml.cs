@@ -36,6 +36,33 @@ namespace Client.Menu
         private void UpdateRoomList()
         {
             List<Room> rooms = GetRooms();
+
+            //now display each room in the listBox
+            foreach (Room room in rooms)
+            {
+                ListBoxItem listBoxItem = new ListBoxItem();
+
+                StackPanel stackPanel = new StackPanel();
+                stackPanel.Orientation = Orientation.Horizontal;
+
+                TextBlock textBlock1 = new TextBlock();
+                textBlock1.Text = room.roomData.name;
+
+                TextBlock textBlock2 = new TextBlock();
+                textBlock2.Text = room.players.Count.ToString() + "/" + room.roomData.maxPlayers;
+                textBlock2.Width = 150;
+
+                Button joinButton = new Button();
+                joinButton.Content = "Join";
+
+                stackPanel.Children.Add(textBlock1);
+                stackPanel.Children.Add(textBlock2);
+                stackPanel.Children.Add(joinButton);
+
+                listBoxItem.Content = stackPanel;
+
+                roomList.Items.Add(listBoxItem);
+            }
         }
 
         private List<Room> GetRooms()

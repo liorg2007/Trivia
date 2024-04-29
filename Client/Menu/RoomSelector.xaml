@@ -98,13 +98,6 @@
 
 
                     </ListBox.Resources>
-                    <ListBoxItem>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="EnterMePls"/>
-                            <TextBlock Text="5/20" Width="150"/>
-                            <Button Content="Join"/>
-                        </StackPanel>
-                    </ListBoxItem>
                 </ListBox>
 
 
