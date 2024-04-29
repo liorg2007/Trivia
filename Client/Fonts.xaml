@@ -8,6 +8,7 @@
     <FontFamily x:Key="ELIXIA">pack://application:,,,/Client;component/Fonts/ELIXIA.ttf#ELIXIA</FontFamily>
     <FontFamily x:Key="Azonix">pack://application:,,,/Client;component/Fonts/Azonix.otf#Azonix</FontFamily>
     <FontFamily x:Key="kontanter">pack://application:,,,/Client;component/Fonts/kontanter.otf#kontanter</FontFamily>
+    <FontFamily x:Key="Celestia">pack://application:,,,/Client;component/Fonts/Celestia.otf#Celestia</FontFamily>
 
 
 </ResourceDictionary>
