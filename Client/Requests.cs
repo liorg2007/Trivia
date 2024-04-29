@@ -15,6 +15,8 @@ namespace Client
             Signup,
             Logout,
             CreateRoom,
+            JoinRoom,
+            GetRooms,
             HighScores = 7,
             Stats
         }
@@ -82,6 +84,13 @@ namespace Client
         public struct CreateRoomResponse
         {
             public uint status { get; set; }
+        }
+
+
+        public struct GetRoomsResponse
+        {
+            public uint status { get; set; }
+            public List<RoomData> rooms { get; set; }
         }
     }
 }

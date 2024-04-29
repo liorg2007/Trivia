@@ -17,5 +17,9 @@ namespace Client.Menu
             return Helper.createProtocol(json, (int)Codes.CreateRoom);
         }
 
+        public static byte[] CreateGetRoomsRequests()
+        {
+            return Helper.createProtocol("", (int)Codes.GetRooms);
+        }
     }
 }

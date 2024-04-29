@@ -7,6 +7,7 @@ using static Client.Requests;
 using System.Text.Json;
 using static Client.DataStructs;
 using Client.Menu;
+using System.Security.RightsManagement;
 
 namespace Client
 {
@@ -95,6 +96,11 @@ namespace Client
         public static CreateRoomResponse DeserializeCreateRoomResponseResponse(string message)
         {
             return JsonSerializer.Deserialize<CreateRoomResponse>(message);
+        }
+
+        public static GetRoomsResponse DeserializeGetRoomsResponse(string message)
+        {
+
         }
     }
 }

@@ -11,6 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static Client.DataStructs;
+using static Client.Helper;
+using static Client.Requests;
+using static Client.JsonPacketDeserializer;
 
 namespace Client.Menu
 {
@@ -22,6 +26,67 @@ namespace Client.Menu
         public RoomSelector()
         {
             InitializeComponent();
+            UpdateRoomList();
+        }
+
+        /* Get the rooms and insert the rooms into the list */
+        private void UpdateRoomList()
+        {
+            List<Room> rooms = GetRooms();
+        }
+
+        private List<Room> GetRooms()
+        {
+            //Get first the rooms 
+            List<RoomData> rooms = getExistingRooms();
+
+            return new List<Room>();
+        }
+
+        private List<RoomData> getExistingRooms()
+        {
+            ServerResponse response;
+            GetRoomsResponse roomsResponse;
+            var message = RoomManagement.CreateGetRoomsRequests();
+            try
+            {
+                ((App)Application.Current)._server.sendMessage(message);
+                response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+            }
+            catch
+            {
+                raiseErrorBox("Server problem");
+                System.Environment.Exit(0);
+                return new List<RoomData>();
+            }
+
+            try
+            {
+                if (response.code == 5)
+                {
+                    roomsResponse = DeserializeGetRoomsResponse(response.message);
+                    
+                    if(roomsResponse.status == 0)
+                    {
+                        raiseErrorBox("Problem");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Bad conn");
+                }
+            }
+            catch (Exception ex)
+            {
+                raiseErrorBox(ex.Message);
+                System.Environment.Exit(0);
+                return new List<RoomData>(); 
+            }
+
+            if (roomsResponse.status == 0)
+                throw new Exception("Cant get rooms");
+
+            return roomsResponse.rooms;
         }
 
         private void exitPress(object sender, RoutedEventArgs e)
