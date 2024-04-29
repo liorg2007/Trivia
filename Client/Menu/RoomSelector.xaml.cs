@@ -195,7 +195,7 @@ namespace Client.Menu
 
             try
             {
-                if (response.code == 5 && DeserializeJoinRoomResponse(response.message).status == 1)
+                if (response.code == 4 && DeserializeJoinRoomResponse(response.message).status == 1)
                 {
                     raiseSuccessBox("Entered room!");
                 }

@@ -5,7 +5,7 @@
 const std::unordered_map<RequestCode, MenuRequestHandler::HandlerFunction> MenuRequestHandler::codeToFunction = {
 		{ RequestCode::Logout, &MenuRequestHandler::logout },
 		{ RequestCode::CreateRoom, &MenuRequestHandler::createRoom },
-		{ RequestCode::JoinRoom, &MenuRequestHandler::createRoom },
+		{ RequestCode::JoinRoom, &MenuRequestHandler::joinRoom },
 		{ RequestCode::GetPlayersInRoom, &MenuRequestHandler::getPlayersInRoom },
 		{ RequestCode::GetRooms, &MenuRequestHandler::getRooms },
 		{ RequestCode::GetPersonalStats, &MenuRequestHandler::getPersonalStats },
