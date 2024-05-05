@@ -9,14 +9,14 @@ LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory)
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& req)
 {
-	return req.id == RequestCode::Login
-		|| req.id == RequestCode::Signup;
+	return req.id == ProtocolCode::Login
+		|| req.id == ProtocolCode::Signup;
 }
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo& req)
 {
 	RequestResult result;
-	if (req.id == RequestCode::Login)
+	if (req.id == ProtocolCode::Login)
 		result = login(req);
 	else
 		result = signup(req);
