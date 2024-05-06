@@ -16,19 +16,19 @@ namespace Client
     {
         public static byte[] CreateLoginRequest(LoginRequest loginRequest)
         {
-            string json = JsonSerializer.Serialize(loginRequest);
-            return Helper.createProtocol(json, (int)Codes.Login);
+            var json = JsonSerializer.SerializeToUtf8Bytes(loginRequest);
+            return Helper.createProtocol(Code.Login, json);
         }
 
         public static bool CheckLogin(ServerResponse response)
         {
-            if (response.code == 1)
+            if (response.code == (uint)Code.Login)
             {
                 LoginResponse res = DeserializeLoginResponse(response.message);
                 return res.status == 1;
             }
 
-            throw new Exception("Problem with server");
+            throw new Exception("");
         }
 
         public static bool CheckSignupInput(SignupRequest input)
@@ -43,8 +43,8 @@ namespace Client
 
         public static byte[] CreateSignupRequest(SignupRequest userData)
         {
-            string json = JsonSerializer.Serialize(userData);
-            return Helper.createProtocol(json, (int)Codes.Signup);
+            var json = JsonSerializer.SerializeToUtf8Bytes(userData);
+            return Helper.createProtocol(Code.Signup, json);
         }
 
         public static bool CheckSignup(ServerResponse response)

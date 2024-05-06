@@ -9,17 +9,22 @@ namespace Client
 {
     internal static class Requests
     {
-        public enum Codes
+        /* MUST be identical to the enum at the server side at all times */
+        public enum Code : byte
         {
+            /* Error Code */
+            Error,
+            /* Login State */
             Login,
             Signup,
+            /* Menu State */
             Logout,
             CreateRoom,
             JoinRoom,
             GetRooms,
             GetPlayersInRoom,
-            HighScores,
-            Stats
+            GetHighScores,
+            GetPersonalStats,
         }
 
         public struct ServerResponse

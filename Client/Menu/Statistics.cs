@@ -15,8 +15,7 @@ namespace Client.Menu
     {
         public static byte[] CreateStatsRequest()
         {
-            string json = "";
-            return Helper.createProtocol(json, (int)Codes.Stats);
+            return Helper.createProtocol(Code.GetPersonalStats);
         }
 
         public static UserStatistics GetStats(ServerResponse response)
@@ -33,8 +32,7 @@ namespace Client.Menu
 
         public static byte[] CreateHighScoresRequest()
         {
-            string json = "";
-            return Helper.createProtocol(json, (int)Codes.HighScores);
+            return Helper.createProtocol(Code.GetHighScores);
         }
 
         public static TopPlayers GetHighScores(ServerResponse response)

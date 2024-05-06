@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using static Client.DataStructs;
 using static Client.Requests;
-using static Client.Helper;
 using static Client.JsonPacketDeserializer;
 using Client.Menu;
 
@@ -43,7 +42,7 @@ namespace Client
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            ((App)Application.Current)._musicWorker.CancelAsync();
+            ((App)Application.Current)._musicWorker?.CancelAsync();
             Thread.Sleep(50);
             Close();
         }
@@ -69,24 +68,24 @@ namespace Client
 
         private void SignoutClick(object sender, RoutedEventArgs e)
         {
-            var message = Helper.createProtocol("", (int)Codes.Logout);
+            var message = Helper.createProtocol(Code.Logout);
 
             ((App)Application.Current)._server.sendMessage(message);
 
-            ServerResponse response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+            ServerResponse response = Helper.decodeProtocol(((App)Application.Current)._server.receiveMessage());
 
-            if(response.code == (int)Codes.Logout + 1)
+            if(response.code == (int)Code.Logout + 1)
             {
                 LogoutResponse res = JsonPacketDeserializer.DeserializeLogoutResponse(response.message);
 
                 if (res.status != 1)
-                    raiseErrorBox("Problem with server");
+                    Helper.raiseErrorBox("Problem with server");
                 else
                 {
                     MainWindow window = new MainWindow();
                     window.Show();
                     this.Close();
-                    raiseSuccessBox("Thanks for playing!");
+                    Helper.raiseSuccessBox("Thanks for playing!");
                 }
             }
         }
@@ -107,7 +106,7 @@ namespace Client
 
         private void QuitClick(object sender, RoutedEventArgs e)
         {
-            string result = raiseQuestionBox("Are you sure you want to quit?");
+            string result = Helper.raiseQuestionBox("Are you sure you want to quit?");
 
             if (result == "Yes")
                 CloseWindow(sender, e);

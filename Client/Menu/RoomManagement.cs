@@ -5,7 +5,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static Client.Requests;
-using static Client.Helper;
 
 namespace Client.Menu
 {
@@ -13,25 +12,25 @@ namespace Client.Menu
     {
         public static byte[] CreateCreateRoomRequest(CreateRoomRequest request)
         {
-            string json = JsonSerializer.Serialize(request);
-            return Helper.createProtocol(json, (int)Codes.CreateRoom);
+            var json = JsonSerializer.SerializeToUtf8Bytes(request);
+            return Helper.createProtocol(Code.CreateRoom, json);
         }
 
         public static byte[] CreateGetRoomsRequests()
         {
-            return Helper.createProtocol("", (int)Codes.GetRooms);
+            return Helper.createProtocol(Code.GetRooms);
         }
 
         public static byte[] CreateGetUsersInRoomsRequests(GetUsersInRoomRequest request)
         {
-            string json = JsonSerializer.Serialize(request);
-            return Helper.createProtocol(json, (int)Codes.GetPlayersInRoom);
+            var json = JsonSerializer.SerializeToUtf8Bytes(request);
+            return Helper.createProtocol(Code.GetPlayersInRoom, json);
         }
 
         public static byte[] CreateJoinRoomRequests(JoinRoomRequest request)
         {
-            string json = JsonSerializer.Serialize(request);
-            return Helper.createProtocol(json, (int)Codes.JoinRoom);
+            var json = JsonSerializer.SerializeToUtf8Bytes(request);
+            return Helper.createProtocol(Code.JoinRoom, json);
         }
     }
 }
