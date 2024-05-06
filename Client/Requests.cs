@@ -29,7 +29,7 @@ namespace Client
 
         public struct ServerResponse
         {
-            public uint code;
+            public Code code;
             public string message;
         }
 

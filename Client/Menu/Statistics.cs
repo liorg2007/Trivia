@@ -20,7 +20,7 @@ namespace Client.Menu
 
         public static UserStatistics GetStats(ServerResponse response)
         {
-            if (response.code == 9)
+            if (response.code == Code.GetPersonalStats)
             {
                 UserStatistics res = DeserializeStatsResponse(response.message);
                 return res;
@@ -37,7 +37,7 @@ namespace Client.Menu
 
         public static TopPlayers GetHighScores(ServerResponse response)
         {
-            if (response.code == 8)
+            if (response.code == Code.GetHighScores)
             {
                 TopPlayers res = DeserializeHighScoresResponse(response.message);
                 return res;

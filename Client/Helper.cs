@@ -55,7 +55,7 @@ namespace Client
 
         public static ServerResponse decodeProtocol(byte[] buffer)
         {
-            byte code = buffer[0];
+            var code = (Code)buffer[0];
             uint messageLength = BitConverter.ToUInt32(buffer, 1);
 
             byte[] messageBuffer = new byte[messageLength];

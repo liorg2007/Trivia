@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Client.Requests;
-using static Client.Helper;
 using System.Text.Json;
 using static Client.JsonPacketDeserializer;
 using System.Diagnostics;
@@ -22,7 +21,7 @@ namespace Client
 
         public static bool CheckLogin(ServerResponse response)
         {
-            if (response.code == (uint)Code.Login)
+            if (response.code == Code.Login)
             {
                 LoginResponse res = DeserializeLoginResponse(response.message);
                 return res.status == 1;
@@ -49,7 +48,7 @@ namespace Client
 
         public static bool CheckSignup(ServerResponse response)
         {
-            if (response.code == 2)
+            if (response.code == Code.Signup)
             {
                 SignupResponse res = DeserializeSignupResponse(response.message);
                 return res.status == 1;

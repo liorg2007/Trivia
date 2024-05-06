@@ -73,7 +73,7 @@ namespace Client.Menu
 
             try
             {
-                if(response.code != 5  || DeserializeCreateRoomResponseResponse(response.message).status != 1)
+                if(response.code != Code.JoinRoom  || DeserializeCreateRoomResponseResponse(response.message).status != 1)
                 {
                     raiseErrorBox("cant create room");
                 }

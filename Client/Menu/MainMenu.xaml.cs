@@ -11,9 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using static Client.DataStructs;
 using static Client.Requests;
-using static Client.JsonPacketDeserializer;
 using Client.Menu;
 
 namespace Client
@@ -74,7 +72,7 @@ namespace Client
 
             ServerResponse response = Helper.decodeProtocol(((App)Application.Current)._server.receiveMessage());
 
-            if(response.code == (int)Code.Logout + 1)
+            if(response.code == Code.Logout + 1)
             {
                 LogoutResponse res = JsonPacketDeserializer.DeserializeLogoutResponse(response.message);
 

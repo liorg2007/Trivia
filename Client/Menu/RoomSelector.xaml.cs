@@ -105,7 +105,7 @@ namespace Client.Menu
 
             try
             {
-                if (response.code == 6)
+                if (response.code == Code.GetRooms)
                 {
                     roomsResponse = DeserializeGetRoomsResponse(response.message);
                 }
@@ -146,7 +146,7 @@ namespace Client.Menu
 
             try
             {
-                if (response.code == 7)
+                if (response.code == Code.GetPlayersInRoom)
                 {
                     playersResponse = DeseriializeGetUsersInRoomsRequests(response.message);
                 }
@@ -195,7 +195,7 @@ namespace Client.Menu
 
             try
             {
-                if (response.code == 4 && DeserializeJoinRoomResponse(response.message).status == 1)
+                if (response.code == Code.CreateRoom && DeserializeJoinRoomResponse(response.message).status == 1)
                 {
                     raiseSuccessBox("Entered room!");
                 }
