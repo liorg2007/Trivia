@@ -80,7 +80,7 @@ namespace Client
                     Helper.raiseErrorBox("Problem with server");
                 else
                 {
-                    MainWindow window = new MainWindow();
+                    LoginWindow window = new LoginWindow();
                     window.Show();
                     this.Close();
                     Helper.raiseSuccessBox("Thanks for playing!");

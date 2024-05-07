@@ -33,7 +33,7 @@ namespace Client
 
         private void CancelBtn(object sender, RoutedEventArgs e)
         {
-            MainWindow window = new MainWindow();
+            LoginWindow window = new LoginWindow();
             window.Show();
             this.Close();
         }
@@ -61,7 +61,7 @@ namespace Client
                     "- Birth date is in form DD/MM/YYYY.");
                 return;
             }
-            var message = LoginSignup.CreateSignupRequest(request);
+            var message = CreateSignupRequest(request);
 
             ((App)Application.Current)._server.sendMessage(message);
 

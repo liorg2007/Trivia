@@ -47,7 +47,7 @@ namespace Client
 
             startMusic();
 
-            MainWindow mainWindow = new MainWindow();
+            LoginWindow mainWindow = new LoginWindow();
             mainWindow.Show();
         }
 
