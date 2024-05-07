@@ -11,11 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using static Client.DataStructs;
 using static Client.Requests;
 using static System.Formats.Asn1.AsnWriter;
 using static Client.Helper;
-using static Client.Menu.RoomManagement;
 using static Client.JsonPacketDeserializer;
 
 namespace Client.Menu
@@ -58,6 +56,12 @@ namespace Client.Menu
                 answerTimeout = uint.Parse(QuestionTime.Text),
             };
 
+            if (request.roomName == "")
+            {
+                raiseErrorBox("Invalid room name!");
+                return;
+            }
+
             var message = RoomManagement.CreateCreateRoomRequest(request);
             try
             {
@@ -73,13 +77,14 @@ namespace Client.Menu
 
             try
             {
-                if(response.code != Code.JoinRoom  || DeserializeCreateRoomResponseResponse(response.message).status != 1)
+                if(response.code != Code.CreateRoom  || DeserializeCreateRoomResponseResponse(response.message).status != 1)
                 {
-                    raiseErrorBox("cant create room");
+                    raiseErrorBox("Can't create room");
                 }
                 else
                 {
                     raiseSuccessBox("Room Created!");
+                    // TODO: Move to the room window
                 }
             }
             catch (Exception ex)

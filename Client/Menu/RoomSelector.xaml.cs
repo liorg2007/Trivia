@@ -55,7 +55,7 @@ namespace Client.Menu
 
                 Button joinButton = new Button();
                 joinButton.Content = "Join";
-                joinButton.Click += (sender, e) => JoinClick(sender, e, room.roomData.id);
+                joinButton.Click += (sender, e) => JoinRoom(room.roomData.id);
 
 
                 stackPanel.Children.Add(textBlock1);
@@ -173,11 +173,10 @@ namespace Client.Menu
             UpdateRoomList();
         }
 
-        private void JoinClick(object sender, RoutedEventArgs e, uint roomId)
+        public void JoinRoom(uint roomId)
         {
             ServerResponse response;
             JoinRoomRequest joinRoomRequest = new JoinRoomRequest() { roomId = roomId };
-            JoinRoomResponse joinRoomResponse;
 
             var message = RoomManagement.CreateJoinRoomRequests(joinRoomRequest);
 
@@ -195,7 +194,7 @@ namespace Client.Menu
 
             try
             {
-                if (response.code == Code.CreateRoom && DeserializeJoinRoomResponse(response.message).status == 1)
+                if (response.code == Code.JoinRoom && DeserializeJoinRoomResponse(response.message).status == 1)
                 {
                     raiseSuccessBox("Entered room!");
                 }
