@@ -111,7 +111,7 @@ namespace Client.Menu
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            ((App)Application.Current)._musicWorker.CancelAsync();
+            ((App)Application.Current).stopMusic();
             Thread.Sleep(50);
             Close();
         }

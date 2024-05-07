@@ -22,13 +22,12 @@ namespace Client
 
     public partial class App : Application
     {
-        public BackgroundWorker? _musicWorker = null;
-        public Server _server;
+        public Server _server { get; } = new();
+        private SoundPlayer _musicPlayer = new();
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             ServerData connDetails = new ServerData();
-            _server = new Server();
 
             try
             {
@@ -40,47 +39,35 @@ namespace Client
                 System.Environment.Exit(0);
             }
 
-            // ((App)Application.Current)._sound.Stop();
-            //   _musicWorker.CancelAsync();
-
             if (!_server.connectToServer(connDetails))
             {
                 raiseErrorBox("Can't connect to server");
                 System.Environment.Exit(0);
             }
 
-            _musicWorker = new BackgroundWorker();
-            _musicWorker.WorkerSupportsCancellation = true;
-            _musicWorker.WorkerReportsProgress = false;
-            _musicWorker.DoWork += music_player;
-
-            _musicWorker.RunWorkerAsync();
+            startMusic();
 
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }
 
-
-        static void music_player(object sender, DoWorkEventArgs e)
+        public void startMusic()
         {
-            var rand = new Random();
+            Random rand = new();
             var files = Directory.GetFiles("../../../Music", "*.wav");
-            var selected = files[rand.Next(files.Length)];
+            var selectedMusicFile = files[rand.Next(files.Length)];
+            _musicPlayer.SoundLocation = selectedMusicFile;
+            continueMusic();
+        }
 
-            SoundPlayer player = new SoundPlayer(selected);
-            player.Play();
+        public void continueMusic()
+        {
+            _musicPlayer.Play();
+        }
 
-            while (true)
-            {
-                if (((App)Application.Current)._musicWorker.CancellationPending)
-                {
-                    player.Stop();
-                    e.Cancel = true;
-                    break;
-                }
-                Thread.Sleep(50);
-            }
+        public void stopMusic()
+        {
+            _musicPlayer.Stop();
         }
     }
-
 }
