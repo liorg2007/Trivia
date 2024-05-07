@@ -1,7 +1,7 @@
 #pragma once
 #include "IRequestHandler.h"
 #include "RequestHandlerFactory.h"
-#include "CheckSignupData.h"
+#include "Requests.h"
 
 class RequestHandlerFactory;
 

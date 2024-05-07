@@ -28,6 +28,11 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& req)
 	return (this->*(it->second))(req);
 }
 
+void MenuRequestHandler::handleDisconnect()
+{
+	_handlerFactory.getLoginManager().logout(_user.getUsername());
+}
+
 RequestResult MenuRequestHandler::logout(const RequestInfo& req)
 {
 	RequestResult result;
