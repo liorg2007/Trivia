@@ -9,18 +9,27 @@ namespace Client
 {
     internal static class Requests
     {
-        public enum Codes
+        /* MUST be identical to the enum at the server side at all times */
+        public enum Code : byte
         {
+            /* Error Code */
+            Error,
+            /* Login State */
             Login,
             Signup,
+            /* Menu State */
             Logout,
-            HighScores = 7,
-            Stats
+            CreateRoom,
+            JoinRoom,
+            GetRooms,
+            GetPlayersInRoom,
+            GetHighScores,
+            GetPersonalStats,
         }
 
         public struct ServerResponse
         {
-            public uint code;
+            public Code code;
             public string message;
         }
 
@@ -66,6 +75,45 @@ namespace Client
         }
 
         public struct LogoutResponse
+        {
+            public uint status { get; set; }
+        }
+
+        public struct CreateRoomRequest
+        {
+            public string roomName { get; set; }
+            public uint maxUsers { get; set; }
+            public uint questionCount { get; set; }
+            public uint answerTimeout { get; set; }
+        }
+
+        public struct CreateRoomResponse
+        {
+            public uint status { get; set; }
+        }
+
+
+        public struct GetRoomsResponse
+        {
+            public List<RoomData> rooms { get; set; }
+        }
+
+        public struct GetUsersInRoomRequest
+        {
+            public uint roomId { get; set; }
+        }
+
+        public struct GetUsersInRoomResponse
+        {
+            public List<string> PlayersInRoom { get; set; }
+        }
+
+        public struct JoinRoomRequest
+        {
+            public uint roomId { get; set; }
+        }
+
+        public struct JoinRoomResponse
         {
             public uint status { get; set; }
         }

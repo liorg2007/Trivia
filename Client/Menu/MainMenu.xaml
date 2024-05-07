@@ -84,8 +84,8 @@
                     Margin="0,0,0,30"></TextBlock>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  Margin="0,0,0,30">
-                        <Button Width="200" Height="80" Content="Join Room" Style="{StaticResource Menu}" />
-                        <Button Width="200" Height="80" Margin="50, 0, 50, 0" Content="Create Room" Style="{StaticResource Menu}" />
+                        <Button Width="200" Height="80" Content="Join Room" Style="{StaticResource Menu}" Click="JoinRoomClick"/>
+                        <Button Width="200" Height="80" Margin="50, 0, 50, 0" Content="Create Room" Style="{StaticResource Menu}" Click="CreateRoomClick"/>
                         <Button Width="200" Height="80" Content="My Stats" Style="{StaticResource Menu}" Click="PersonalScoreClick"/>
                     </StackPanel>
                     

@@ -1,4 +1,5 @@
 #include "SqliteDatabase.h"
+#include "QuestionsRetriever.h"
 
 SqliteDatabase::SqliteDatabase(const std::string& dbName)
 	: _dbFileName(dbName), _db(nullptr)
@@ -24,7 +25,7 @@ bool SqliteDatabase::open()
 		std::cout << "Sqlite database opened!" << std::endl;
 
 		// create user table if it doesnt exists
-		std::string tableQuery = 
+		std::string tableQuery =
 			"CREATE TABLE IF NOT EXISTS USERS ("
 			"username TEXT NOT NULL PRIMARY KEY,"
 			"password TEXT NOT NULL,"
@@ -33,8 +34,8 @@ bool SqliteDatabase::open()
 			"phoneNumber TEXT NOT NULL, "
 			"birthDate TEXT NOT NULL, "
 			"score INTEGER); "
-			
-		// create questions table if it doesnt exists
+
+			// create questions table if it doesnt exists
 			"CREATE TABLE IF NOT EXISTS QUESTIONS ("
 			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"question TEXT UNIQUE NOT NULL,"
@@ -44,7 +45,7 @@ bool SqliteDatabase::open()
 			"answer_4 TEXT NOT NULL,"
 			"correctAnswerId INTEGER NOT NULL); "
 
-		// create statistics table if it doesnt exists
+			// create statistics table if it doesnt exists
 			"CREATE TABLE IF NOT EXISTS STATISTICS ("
 			"gameId INTEGER, "
 			"username TEXT NOT NULL, "
@@ -53,8 +54,8 @@ bool SqliteDatabase::open()
 			"time REAL, "
 			"FOREIGN KEY(username) REFERENCES USERS(username), "
 			"FOREIGN KEY(gameId) REFERENCES GAMES(id));";
-
-		execQuery(tableQuery, nullptr, nullptr);
+		execQuery(tableQuery);
+		insertNewQuestionsIfNeeded(QUESTIONS_MINIMUM_AMOUNT);
 	}
 	return true;
 }
@@ -74,7 +75,7 @@ void SqliteDatabase::addNewUser(const std::string& username, const std::string& 
 	std::string query = "INSERT INTO USERS(username, password, email, address, phoneNumber, birthDate, score) "
 		"VALUES('" + username + "', '" + password + "', '" + email + "', '" + address + "', '" + phoneNumber + "', '" + birthDate + "', 0)";
 
-	execQuery(query, nullptr, nullptr);
+	execQuery(query);
 }
 
 bool SqliteDatabase::doesUserExist(const std::string& username)
@@ -99,8 +100,9 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
 
 std::list<Question> SqliteDatabase::getQuestions(int amount)
 {
+	insertNewQuestionsIfNeeded(amount);
 	std::list<Question> questions;
-	auto query = "SELECT * FROM QUESTIONS LIMIT " + std::to_string(amount) + ';';
+	auto query = "SELECT * FROM QUESTIONS ORDER BY RANDOM() LIMIT " + std::to_string(amount) + ';';
 	execQuery(query, getQuestionsCallback, &questions);
 	return questions;
 }
@@ -165,6 +167,11 @@ int SqliteDatabase::getNumOfPlayerGames(const std::string& userName)
 	return std::stoi(answer);
 }
 
+inline void SqliteDatabase::execQuery(const std::string& query)
+{
+	execQuery(query, nullptr, nullptr);
+}
+
 void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out)
 {
 	std::lock_guard<std::mutex> lock(_mtx);
@@ -172,9 +179,48 @@ void SqliteDatabase::execQuery(const std::string& query, int(*callback)(void*, i
 	if (sqlite3_exec(_db, query.c_str(), callback, out, &errmsg) != SQLITE_OK)
 	{
 		DatabaseException exception(errmsg);
+		std::cerr << "Database exception: " << exception.what() << std::endl;
 		sqlite3_free(errmsg);
 		throw exception;
 	}
+}
+
+void SqliteDatabase::insertNewQuestionsIfNeeded(int amount)
+{
+	auto query = "SELECT COUNT(*) FROM QUESTIONS;";
+	std::string questionsCountString;
+	execQuery(query, getSingleStringCallback, &questionsCountString);
+	auto questionsCount = std::stoi(questionsCountString);
+	if (questionsCount < amount)
+	{
+		try
+		{
+			insertNewQuestions(amount - questionsCount);
+		}
+		catch (const std::exception& e)
+		{
+			std::cerr << "Error recieving questions from api: " << e.what() << std::endl;
+		}
+	}
+}
+
+void SqliteDatabase::insertNewQuestions(int amount)
+{
+	// the begin keyword is for starting a transaction (https://www.geeksforgeeks.org/sqlite-transaction/)
+	std::string query = "BEGIN;";
+	for (const auto& question : QuestionsRetriever::retrieveQuestions(amount))
+	{
+		query += "INSERT OR IGNORE INTO QUESTIONS(question, correctAnswerId, answer_1, answer_2, answer_3, answer_4) "
+			"VALUES(\"" + question.getQuestion() + "\", " + std::to_string(question.getCorrectAnswerId());
+		for (const auto& answer : question.getPossibleAnswers())
+		{
+			query += ",\"" + answer + '"';
+		}
+		query += ");";
+	}
+	// ending the transaction
+	query += "END;";
+	execQuery(query);
 }
 
 int SqliteDatabase::calculateScore(const std::string& userName)
@@ -237,6 +283,6 @@ int SqliteDatabase::getQuestionsCallback(void* data, int argc, char** argv, char
 			correctAnswerId = std::stoi(argv[i]);
 		}
 	}
-	questions.emplace_back(questionPromptPtr, answers, correctAnswerId);
+	questions.emplace_back(questionPromptPtr, std::move(answers), correctAnswerId);
 	return 0;
 }

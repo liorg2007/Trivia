@@ -37,27 +37,25 @@ namespace Client
             return result.ToString();
         }
 
-        public static byte[] createProtocol(string message, int code)
+        public static byte[] createProtocol(Code code, byte[]? message=null)
         {
-            int messagelength = message.Length;
-            byte[] buffer = new byte[HEADER_LENGTH + messagelength];
+            int msgLen = message != null ? message.Length : 0;
+            byte[] buffer = new byte[HEADER_LENGTH + msgLen];
 
             buffer[0] = (byte)code;
-            buffer[1] = (byte)messagelength;
-            buffer[2] = (byte)(messagelength >> 8);
-            buffer[3] = (byte)(messagelength >> 0x10);
-            buffer[4] = (byte)(messagelength >> 0x18);
+            buffer[1] = (byte)msgLen;
+            buffer[2] = (byte)(msgLen >> 8);
+            buffer[3] = (byte)(msgLen >> 0x10);
+            buffer[4] = (byte)(msgLen >> 0x18);
 
-            byte[] messageBytes = Encoding.ASCII.GetBytes(message);
-
-            messageBytes.CopyTo(buffer, HEADER_LENGTH);
+            message?.CopyTo(buffer, HEADER_LENGTH);
 
             return buffer;
         }
 
         public static ServerResponse decodeProtocol(byte[] buffer)
         {
-            byte code = buffer[0];
+            var code = (Code)buffer[0];
             uint messageLength = BitConverter.ToUInt32(buffer, 1);
 
             byte[] messageBuffer = new byte[messageLength];

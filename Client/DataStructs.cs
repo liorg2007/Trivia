@@ -20,5 +20,21 @@ namespace Client
         {
             public List<Tuple<string, int>> bestScores;
         }
+
+        public struct RoomData
+        {
+            public uint id { get; set; }
+            public string name { get; set; }
+            public uint maxPlayers { get; set; }
+            public uint numOfQuestionsInGame { get; set; }
+            public uint timerPerQuestion { get; set; }
+            public uint isActive { get; set; }
+        }
+
+        public struct Room
+        {
+            public RoomData roomData { get; set; }
+            public List<string> players { get; set; }
+        }
     }
 }

@@ -1,7 +1,7 @@
 #include "Question.h"
 
-Question::Question(std::string&& question, const std::vector<std::string>& answers, int correctAnsId)
-    : _question(std::move(question)), _possibleAnswers(answers), _correctAnswerId(correctAnsId)
+Question::Question(std::string&& question, std::vector<std::string>&& answers, int correctAnsId)
+    : _question(std::move(question)), _possibleAnswers(std::move(answers)), _correctAnswerId(correctAnsId)
 {
 }
 

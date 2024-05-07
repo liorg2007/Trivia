@@ -7,6 +7,7 @@ using static Client.Requests;
 using System.Text.Json;
 using static Client.DataStructs;
 using Client.Menu;
+using System.Security.RightsManagement;
 
 namespace Client
 {
@@ -90,6 +91,42 @@ namespace Client
             topPlayers.bestScores = highScoresList;
 
             return topPlayers;
+        }
+
+        public static CreateRoomResponse DeserializeCreateRoomResponseResponse(string message)
+        {
+            return JsonSerializer.Deserialize<CreateRoomResponse>(message);
+        }
+
+        public static GetRoomsResponse DeserializeGetRoomsResponse(string message)
+        {
+            JsonDocument document = JsonDocument.Parse(message);
+            GetRoomsResponse response = new GetRoomsResponse();
+
+            var roomsArray = document.RootElement.GetProperty("Rooms").EnumerateArray();
+
+            List<RoomData> rooms = new List<RoomData>();
+
+            foreach (var element in roomsArray)
+            {
+                RoomData roomData  = JsonSerializer.Deserialize<RoomData>(element);
+
+                rooms.Add(roomData);
+            }
+
+            response.rooms = rooms;
+
+            return response;
+        }
+        
+        public static GetUsersInRoomResponse DeseriializeGetUsersInRoomsRequests(string message)
+        {
+            return JsonSerializer.Deserialize<GetUsersInRoomResponse>(message);
+        }
+
+        public static JoinRoomResponse DeserializeJoinRoomResponse(string message)
+        {
+            return JsonSerializer.Deserialize<JoinRoomResponse>(message);
         }
     }
 }

@@ -15,13 +15,12 @@ namespace Client.Menu
     {
         public static byte[] CreateStatsRequest()
         {
-            string json = "";
-            return Helper.createProtocol(json, (int)Codes.Stats);
+            return Helper.createProtocol(Code.GetPersonalStats);
         }
 
         public static UserStatistics GetStats(ServerResponse response)
         {
-            if (response.code == 9)
+            if (response.code == Code.GetPersonalStats)
             {
                 UserStatistics res = DeserializeStatsResponse(response.message);
                 return res;
@@ -33,13 +32,12 @@ namespace Client.Menu
 
         public static byte[] CreateHighScoresRequest()
         {
-            string json = "";
-            return Helper.createProtocol(json, (int)Codes.HighScores);
+            return Helper.createProtocol(Code.GetHighScores);
         }
 
         public static TopPlayers GetHighScores(ServerResponse response)
         {
-            if (response.code == 8)
+            if (response.code == Code.GetHighScores)
             {
                 TopPlayers res = DeserializeHighScoresResponse(response.message);
                 return res;
