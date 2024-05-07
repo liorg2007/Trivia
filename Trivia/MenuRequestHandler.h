@@ -12,6 +12,7 @@ public:
 
 	bool isRequestRelevant(const RequestInfo& req) override;
 	RequestResult handleRequest(const RequestInfo& req) override;
+	void handleDisconnect() override;
 
 private:
 	using HandlerFunction = RequestResult(MenuRequestHandler::*)(const RequestInfo&);
