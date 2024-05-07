@@ -72,7 +72,7 @@ namespace Client
 
             ServerResponse response = Helper.decodeProtocol(((App)Application.Current)._server.receiveMessage());
 
-            if(response.code == Code.Logout + 1)
+            if(response.code == Code.Logout)
             {
                 LogoutResponse res = JsonPacketDeserializer.DeserializeLogoutResponse(response.message);
 
