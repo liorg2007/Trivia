@@ -4,7 +4,7 @@
 Room::Room(RoomData&& roomData, const LoggedUser& user)
 	: _roomData(std::move(roomData))
 {
-	_users.push_back(user);
+	addUser(user);
 }
 
 const RoomData& Room::getRoomData() const
@@ -14,6 +14,10 @@ const RoomData& Room::getRoomData() const
 
 void Room::addUser(const LoggedUser& loggedUser)
 {
+	if (_roomData.maxPlayers == _users.size())
+	{
+		throw std::runtime_error("Max players amount reached");
+	}
 	_users.push_back(loggedUser);
 }
 

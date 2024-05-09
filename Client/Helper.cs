@@ -21,31 +21,45 @@ namespace Client
             MessageBox.Show(message, "Error", button, icon, MessageBoxResult.Yes);
         }
 
-        public static byte[] createProtocol(string message, int code)
+        public static void raiseSuccessBox(string message)
         {
-            int messagelength = message.Length;
-            byte[] buffer = new byte[HEADER_LENGTH + messagelength];
+            MessageBoxButton button = MessageBoxButton.OK;
+            MessageBoxImage icon = MessageBoxImage.Asterisk;
+            MessageBox.Show(message, "Ok", button, icon, MessageBoxResult.Yes);
+        }
+
+        public static string raiseQuestionBox(string message)
+        {
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            MessageBoxImage icon = MessageBoxImage.Question;
+            var result = MessageBox.Show(message, "?", button, icon, MessageBoxResult.Yes);
+
+            return result.ToString();
+        }
+
+        public static byte[] createProtocol(Code code, byte[]? message=null)
+        {
+            int msgLen = message != null ? message.Length : 0;
+            byte[] buffer = new byte[HEADER_LENGTH + msgLen];
 
             buffer[0] = (byte)code;
-            buffer[1] = (byte)messagelength;
-            buffer[2] = (byte)(messagelength >> 8);
-            buffer[3] = (byte)(messagelength >> 0x10);
-            buffer[4] = (byte)(messagelength >> 0x18);
+            buffer[1] = (byte)msgLen;
+            buffer[2] = (byte)(msgLen >> 8);
+            buffer[3] = (byte)(msgLen >> 0x10);
+            buffer[4] = (byte)(msgLen >> 0x18);
 
-            byte[] messageBytes = Encoding.ASCII.GetBytes(message);
-
-            messageBytes.CopyTo(buffer, HEADER_LENGTH);
+            message?.CopyTo(buffer, HEADER_LENGTH);
 
             return buffer;
         }
 
         public static ServerResponse decodeProtocol(byte[] buffer)
         {
-            byte code = buffer[0];
+            var code = (Code)buffer[0];
             uint messageLength = BitConverter.ToUInt32(buffer, 1);
 
             byte[] messageBuffer = new byte[messageLength];
-            Array.Copy(buffer, 5, messageBuffer, 0, messageLength);
+            Array.Copy(buffer, HEADER_LENGTH, messageBuffer, 0, messageLength);
 
             string message = Encoding.UTF8.GetString(messageBuffer);
 

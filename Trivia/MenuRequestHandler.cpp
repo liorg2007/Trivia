@@ -2,14 +2,14 @@
 #include "JsonRequestPacketSerializer.h"
 #include "JsonRequestPacketDeserializer.h"
 
-const std::unordered_map<RequestCode, MenuRequestHandler::HandlerFunction> MenuRequestHandler::codeToFunction = {
-		{ RequestCode::Logout, &MenuRequestHandler::logout },
-		{ RequestCode::CreateRoom, &MenuRequestHandler::createRoom },
-		{ RequestCode::JoinRoom, &MenuRequestHandler::createRoom },
-		{ RequestCode::GetPlayersInRoom, &MenuRequestHandler::getPlayersInRoom },
-		{ RequestCode::GetRooms, &MenuRequestHandler::getRooms },
-		{ RequestCode::GetPersonalStats, &MenuRequestHandler::getPersonalStats },
-		{ RequestCode::GetHighScores, &MenuRequestHandler::getHighScore }
+const std::unordered_map<ProtocolCode, MenuRequestHandler::HandlerFunction> MenuRequestHandler::codeToFunction = {
+		{ ProtocolCode::Logout, &MenuRequestHandler::logout },
+		{ ProtocolCode::CreateRoom, &MenuRequestHandler::createRoom },
+		{ ProtocolCode::JoinRoom, &MenuRequestHandler::joinRoom },
+		{ ProtocolCode::GetPlayersInRoom, &MenuRequestHandler::getPlayersInRoom },
+		{ ProtocolCode::GetRooms, &MenuRequestHandler::getRooms },
+		{ ProtocolCode::GetPersonalStats, &MenuRequestHandler::getPersonalStats },
+		{ ProtocolCode::GetHighScores, &MenuRequestHandler::getHighScore }
 };
 
 MenuRequestHandler::MenuRequestHandler(RequestHandlerFactory& handlerFactory, const LoggedUser& user)
@@ -26,6 +26,11 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& req)
 {
 	auto it = codeToFunction.find(req.id);
 	return (this->*(it->second))(req);
+}
+
+void MenuRequestHandler::handleDisconnect()
+{
+	_handlerFactory.getLoginManager().logout(_user.getUsername());
 }
 
 RequestResult MenuRequestHandler::logout(const RequestInfo& req)

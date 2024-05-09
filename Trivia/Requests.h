@@ -4,25 +4,9 @@
 #include "Constants.h"
 #include "IRequestHandler.h"
 
-enum class RequestCode : Byte
-{
-	/* Login State */
-	Login,
-	Signup,
-
-	/* Menu State*/
-	Logout,
-	CreateRoom,
-	JoinRoom,
-	GetRooms,
-	GetPlayersInRoom,
-	GetHighScores,
-	GetPersonalStats,
-};
-
 struct RequestInfo
 {
-	RequestCode id;
+	ProtocolCode id;
 	std::time_t receivalTime;
 	Buffer buffer;
 };

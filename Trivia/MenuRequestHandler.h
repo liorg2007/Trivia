@@ -12,6 +12,7 @@ public:
 
 	bool isRequestRelevant(const RequestInfo& req) override;
 	RequestResult handleRequest(const RequestInfo& req) override;
+	void handleDisconnect() override;
 
 private:
 	using HandlerFunction = RequestResult(MenuRequestHandler::*)(const RequestInfo&);
@@ -23,7 +24,7 @@ private:
 	RequestResult getPersonalStats(const RequestInfo& req);
 	RequestResult getHighScore(const RequestInfo& req);
 
-	static const std::unordered_map<RequestCode, HandlerFunction> codeToFunction;
+	static const std::unordered_map<ProtocolCode, HandlerFunction> codeToFunction;
 	LoggedUser _user;
 	RequestHandlerFactory & _handlerFactory;
 };

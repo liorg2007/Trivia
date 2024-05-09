@@ -14,7 +14,7 @@ public:
 	bool open() override;
 	bool close() override;
 
-	/* Login/Signup Queris */
+	/* Login/Signup Queries */
 	void addNewUser(const std::string& username, const std::string& password, const std::string& email, const std::string& address, const std::string& phoneNumber, const std::string& birthDate) override;
 	bool doesUserExist(const std::string& username) override;
 	bool doesPasswordMatch(const std::string& username, const std::string& password) override;
@@ -35,7 +35,11 @@ private:
 	sqlite3* _db;
 	std::mutex _mtx;
 
-	void execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out);
+	void insertNewQuestionsIfNeeded(int amount);
+	void insertNewQuestions(int amount);
+	inline void execQuery(const std::string& query, int(*callback)(void*, int, char**, char**), void* out);
+	// callback-less execQuery
+	inline void execQuery(const std::string& query);
 
 	/* Score Components Weights */
 	static constexpr double CORRECT_ANSWER_WEIGHT = 0.6;
@@ -49,6 +53,9 @@ private:
 	static int getDoubleCallback(void* data, int argc, char** argv, char** azColName);
 	static int getQuestionsCallback(void* data, int argc, char** argv, char** azColName);
 	static int getHighScoresCallback(void* data, int argc, char** argv, char** azColName);
+
+	/* Questions table count */
+	static constexpr auto QUESTIONS_MINIMUM_AMOUNT = 10;
 
 	/* Callbacks constants */
 	static constexpr auto FIRST_VALUE = 0;

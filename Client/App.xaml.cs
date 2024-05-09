@@ -8,6 +8,10 @@ using static Client.Helper;
 using System.Diagnostics;
 using System.Threading;
 using static Client.Requests;
+using System.Media;
+using System.ComponentModel;
+using System.Windows.Media;
+using System.Windows.Controls;
 
 namespace Client
 {
@@ -18,18 +22,18 @@ namespace Client
 
     public partial class App : Application
     {
-        public Server _server;
+        public Server _server { get; } = new();
+        private SoundPlayer _musicPlayer = new();
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             ServerData connDetails = new ServerData();
-            _server = new Server();
 
             try
             {
                 connDetails = _server.getServerConnData();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 raiseErrorBox(ex.Message);
                 System.Environment.Exit(0);
@@ -41,12 +45,29 @@ namespace Client
                 System.Environment.Exit(0);
             }
 
+            startMusic();
 
-            MainWindow mainWindow = new MainWindow();
+            LoginWindow mainWindow = new LoginWindow();
             mainWindow.Show();
         }
 
-        
-    }
+        public void startMusic()
+        {
+            Random rand = new();
+            var files = Directory.GetFiles("../../../Music", "*.wav");
+            var selectedMusicFile = files[rand.Next(files.Length)];
+            _musicPlayer.SoundLocation = selectedMusicFile;
+            continueMusic();
+        }
 
+        public void continueMusic()
+        {
+            _musicPlayer.Play();
+        }
+
+        public void stopMusic()
+        {
+            _musicPlayer.Stop();
+        }
+    }
 }

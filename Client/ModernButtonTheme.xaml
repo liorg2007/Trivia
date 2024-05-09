@@ -3,7 +3,12 @@
     <FontFamily x:Key="Chella-Black">pack://application:,,,/Client;component/Fonts/Chella-Black.ttf#Chella Black</FontFamily>
     <FontFamily x:Key="face-plate-saguage">pack://application:,,,/Client;component/Fonts/face-plate-saguage.otf#face plate saguage</FontFamily>
     <FontFamily x:Key="Nunito-Light">pack://application:,,,/Client;component/Fonts/Nunito-Light.ttf#Nunito Light</FontFamily>
-    
+    <FontFamily x:Key="Blanka">pack://application:,,,/Client;component/Fonts/Blanka.otf#Blanka</FontFamily>
+    <FontFamily x:Key="ELIXIA">pack://application:,,,/Client;component/Fonts/ELIXIA.ttf#ELIXIA</FontFamily>
+    <FontFamily x:Key="Azonix">pack://application:,,,/Client;component/Fonts/Azonix.otf#Azonix</FontFamily>
+
+
+
     <Style TargetType="Button" x:Key="LoginSignup">
         <Setter Property="Foreground" Value="White"></Setter>
         <Setter Property="FontFamily" Value="{StaticResource Chella-Black}"></Setter>
@@ -30,6 +35,36 @@
             </Trigger>
         </Style.Triggers>
         
+    </Style>
+
+
+    <Style TargetType="Button" x:Key="Menu">
+        <Setter Property="Foreground" Value="#F9E79F"></Setter>
+        <Setter Property="FontFamily" Value="{StaticResource ELIXIA}"></Setter>
+        <Setter Property="FontWeight" Value="Light"></Setter>
+        <Setter Property="FontSize" Value="35"></Setter>
+
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="20"
+                                                                    BorderThickness="2"
+                                                                    BorderBrush="White">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="Opacity" Value="0.4"/>
+                <Setter Property="Foreground" Value="#C33764"/>
+            </Trigger>
+        </Style.Triggers>
+
     </Style>
 
 </ResourceDictionary>
