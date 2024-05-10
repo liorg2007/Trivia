@@ -18,11 +18,11 @@ namespace Client
 
     public class Server
     {
-        private NetworkStream _socket {  get; set; }
+        private NetworkStream? _socket { get; set; }
 
-        public Server()
+        ~Server()
         {
-
+            _socket?.Close();
         }
 
         public ServerData getServerConnData()
@@ -50,7 +50,7 @@ namespace Client
 
         public bool connectToServer(ServerData serverData)
         {
-            TcpClient client = new TcpClient();
+            using TcpClient client = new TcpClient();
             IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(serverData.ip), serverData.port);
             try
             {
@@ -61,6 +61,7 @@ namespace Client
                 return false;
             }
 
+            _socket?.Close(); // Close previous socket before assigning a new one
             _socket = client.GetStream();
 
             return true;
@@ -68,16 +69,22 @@ namespace Client
 
         public void sendMessage(byte[] buffer)
         {
+            if (_socket == null) throw new Exception("Haven't connected to server yet");
             _socket.Write(buffer, 0, buffer.Length);
             _socket.Flush();
         }
 
         public byte[] receiveMessage()
         {
-            byte[] buffer = new byte[4096];
-            int bytesRead = _socket.Read(buffer, 0, 4096);
-
-            return buffer;
+            if (_socket == null) throw new Exception("Haven't connected to server yet");
+            byte[] data = new byte[1024];
+            using MemoryStream ms = new();
+            int numBytesRead;
+            while ((numBytesRead = _socket.Read(data, 0, data.Length)) > 0)
+            {
+                ms.Write(data, 0, numBytesRead);
+            }
+            return ms.ToArray();
         }
     }
 }
