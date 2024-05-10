@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include <string>
-#include <utility>
 #include "RoomData.h"
 #include "Constants.h"
 
@@ -61,7 +60,6 @@ struct CreateRoomResponse
 struct CloseRoomResponse
 {
 	unsigned int status;
-
 };
 
 struct StartGameResponse

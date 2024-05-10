@@ -26,6 +26,7 @@ Buffer JsonRequestPacketSerializer::serializeResponse(LogoutResponse res)
 
 Buffer JsonRequestPacketSerializer::serializeResponse(GetRoomsResponse res)
 {
+	/* Gets serialized using a member function (see RoomData's definition) */
 	json jsonObj{ {"Rooms", res.rooms} };
 	return buildBuffer(ProtocolCode::GetRooms, jsonObj);
 }
