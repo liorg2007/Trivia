@@ -20,6 +20,10 @@ public:
 	static Buffer serializeResponse(CreateRoomResponse res);
 	static Buffer serializeResponse(GetHighScoresResponse res);
 	static Buffer serializeResponse(GetPersonalStatsResponse res);
+	static Buffer serializeResponse(CloseRoomResponse res);
+	static Buffer serializeResponse(StartGameResponse res);
+	static Buffer serializeResponse(GetRoomStateResponse res);
+	static Buffer serializeResponse(LeaveRoomResponse res);
 
 private:
 	static Buffer buildBuffer(ProtocolCode resCode, const json& jsonObj);

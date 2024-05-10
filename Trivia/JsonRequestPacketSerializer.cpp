@@ -69,6 +69,12 @@ Buffer JsonRequestPacketSerializer::serializeResponse(GetPersonalStatsResponse r
 	return buildBuffer(ProtocolCode::GetPersonalStats, jsonObj);
 }
 
+Buffer JsonRequestPacketSerializer::serializeResponse(CloseRoomResponse res)
+{
+	json jsonObj{ { "status", res.status } };
+	return buildBuffer(ProtocolCode::CloseRoom, jsonObj);
+}
+
 Buffer JsonRequestPacketSerializer::buildBuffer(ProtocolCode resCode, const json& jsonObj)
 {
 	auto msg = jsonObj.dump();
