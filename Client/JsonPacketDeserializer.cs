@@ -74,17 +74,21 @@ namespace Client
 
             var highScoresArray = document.RootElement.GetProperty("HighScores").EnumerateArray();
 
-            List<Tuple<string, int>> highScoresList = new List<Tuple<string, int>>();
+            List<(string name, int score)> highScoresList = new();
 
             foreach (var element in highScoresArray)
             {
                 JsonElement nameElement = element[0];
                 JsonElement scoreElement = element[1];
 
-                string name = nameElement.GetString();
+                string? name = nameElement.GetString();
+                if (name is null)
+                {
+                    continue;
+                }
                 int score = scoreElement.GetInt32();
 
-                highScoresList.Add(new Tuple<string, int>(name, score));
+                highScoresList.Add((name, score));
             }
 
             TopPlayers topPlayers = new TopPlayers();

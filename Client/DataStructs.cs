@@ -18,7 +18,7 @@ namespace Client
 
         public struct TopPlayers
         {
-            public List<Tuple<string, int>> bestScores;
+            public List<(string, int)> bestScores;
         }
 
         public struct RoomData
