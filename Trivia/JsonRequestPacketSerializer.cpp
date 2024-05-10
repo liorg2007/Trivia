@@ -26,6 +26,7 @@ Buffer JsonRequestPacketSerializer::serializeResponse(LogoutResponse res)
 
 Buffer JsonRequestPacketSerializer::serializeResponse(GetRoomsResponse res)
 {
+	/* Gets serialized using a member function (see RoomData's definition) */
 	json jsonObj{ {"Rooms", res.rooms} };
 	return buildBuffer(ProtocolCode::GetRooms, jsonObj);
 }
@@ -67,6 +68,38 @@ Buffer JsonRequestPacketSerializer::serializeResponse(GetPersonalStatsResponse r
 		} 
 	};
 	return buildBuffer(ProtocolCode::GetPersonalStats, jsonObj);
+}
+
+Buffer JsonRequestPacketSerializer::serializeResponse(CloseRoomResponse res)
+{
+	json jsonObj{ { "status", res.status } };
+	return buildBuffer(ProtocolCode::CloseRoom, jsonObj);
+}
+
+Buffer JsonRequestPacketSerializer::serializeResponse(StartGameResponse res)
+{
+	json jsonObj{ { "status", res.status } };
+	return buildBuffer(ProtocolCode::StartGame, jsonObj);
+}
+
+Buffer JsonRequestPacketSerializer::serializeResponse(GetRoomStateResponse res)
+{
+	json jsonObj
+	{
+		{ "RoomState",
+			{ "hasGameBegun", res.roomState.hasGameBegun },
+			{ "players", res.roomState.players},
+			{ "answerCount", res.roomState.answerCount },
+			{ "answerTimeOut", res.roomState.answerTimeOut }
+		}
+	};
+	return buildBuffer(ProtocolCode::GetRoomState, jsonObj);
+}
+
+Buffer JsonRequestPacketSerializer::serializeResponse(LeaveRoomResponse res)
+{
+	json jsonObj{ { "status", res.status } };
+	return buildBuffer(ProtocolCode::LeaveRoom, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::buildBuffer(ProtocolCode resCode, const json& jsonObj)
