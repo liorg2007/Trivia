@@ -7,7 +7,7 @@ SIGNUP_CODE = 1
 
 def main():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    Test1(s)
+    Test4(s)
 
 
 

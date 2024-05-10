@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Fonts\Arkhip.otf" />
+    <None Remove="Fonts\Blanka.otf" />
+    <None Remove="Fonts\blkchan.ttf" />
+    <None Remove="Fonts\Chella-Black.ttf" />
+    <None Remove="Fonts\ELIXIA.ttf" />
+    <None Remove="Fonts\Ferdoka.ttf" />
+    <None Remove="Fonts\kontanter.otf" />
+    <None Remove="Images\logo.png" />
+    <None Remove="Music\Theme1.mp3" />
+    <None Remove="Music\Theme2.mp3" />
+    <None Remove="Music\Theme3.mp3" />
+    <None Remove="Music\Theme4.mp3" />
+    <None Remove="Music\Theme5.mp3" />
+    <None Remove="Music\Theme6.mp3" />
+    <None Remove="Music\Theme7.mp3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro.IconPacks.Coolicons" Version="4.11.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks.MaterialLight" Version="4.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\Arkhip.otf" />
+    <Resource Include="Fonts\Blanka.otf" />
+    <Resource Include="Fonts\Chella-Black.ttf" />
+    <Resource Include="Fonts\ELIXIA.ttf" />
+    <Resource Include="Fonts\kontanter.otf" />
+    <Resource Include="Fonts\Nunito-Light.ttf" />
+    <Resource Include="Fonts\face-plate-saguage.otf" />
+    <Resource Include="Images\logo.png" />
+	  <Resource Include="Images\logoPic.png" />
+  </ItemGroup>
+
+</Project>
