@@ -13,12 +13,13 @@ namespace Client.Menu
 {
     static class Statistics
     {
-        public static byte[] CreateStatsRequest()
+        public static UserStatistics SendStatsRequest(Server server)
         {
-            return Helper.createProtocol(Code.GetPersonalStats);
+            ServerResponse response = Helper.SendRequest(server, Code.GetPersonalStats);
+            return GetStats(response);
         }
 
-        public static UserStatistics GetStats(ServerResponse response)
+        private static UserStatistics GetStats(ServerResponse response)
         {
             if (response.code == Code.GetPersonalStats)
             {
@@ -26,16 +27,16 @@ namespace Client.Menu
                 return res;
             }
 
-            throw new Exception("Problem with server");
+            throw new Exception("Server returned wrong response code");
         }
 
-
-        public static byte[] CreateHighScoresRequest()
+        public static TopPlayers SendHighScoresRequest(Server server)
         {
-            return Helper.createProtocol(Code.GetHighScores);
+            ServerResponse response = Helper.SendRequest(server, Code.GetHighScores);
+            return GetHighScores(response);
         }
 
-        public static TopPlayers GetHighScores(ServerResponse response)
+        private static TopPlayers GetHighScores(ServerResponse response)
         {
             if (response.code == Code.GetHighScores)
             {
@@ -43,7 +44,7 @@ namespace Client.Menu
                 return res;
             }
 
-            throw new Exception("Problem with server");
+            throw new Exception("Server returned wrong response code");
         }
     }
 }

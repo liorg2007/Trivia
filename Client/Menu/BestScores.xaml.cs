@@ -33,21 +33,15 @@ namespace Client.Menu
 
         public void ShowBestScores()
         {
-            TopPlayers highScores = new TopPlayers();
-            var message = CreateHighScoresRequest();
-
-            ((App)Application.Current).server.sendMessage(message);
-
-            ServerResponse response = decodeProtocol(((App)Application.Current).server.receiveMessage());
-
+            TopPlayers highScores;
             try
             {
-                highScores = GetHighScores(response);
+                highScores = SendHighScoresRequest(((App)Application.Current).server);
             }
             catch (Exception ex)
             {
                 raiseErrorBox(ex.Message);
-                System.Environment.Exit(0);
+                return;
             }
 
             //Put stats in labels

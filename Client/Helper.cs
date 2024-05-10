@@ -65,5 +65,18 @@ namespace Client
 
             return new ServerResponse() { code = code, message = message };
         }
+
+        public static ServerResponse SendRequest(Server server, Code requestCode, byte[]? requestJson=null)
+        {
+            var msgToSend = createProtocol(requestCode, requestJson);
+            server.sendMessage(msgToSend);
+
+            ServerResponse response = decodeProtocol(server.receiveMessage());
+            if (response.code == Code.Error)
+            {
+                throw new Exception("Server Error: " + response.message);
+            }
+            return response;
+        }
     }
 }

@@ -36,21 +36,15 @@ namespace Client
 
         private void ShowStats()
         {
-            UserStatistics userStatistics = new UserStatistics();
-            var message = CreateStatsRequest();
-
-            ((App)Application.Current).server.sendMessage(message);
-
-            ServerResponse response = decodeProtocol(((App)Application.Current).server.receiveMessage());
-
+            UserStatistics userStatistics;
             try
             {
-                userStatistics = GetStats(response);
+                userStatistics = SendStatsRequest(((App)Application.Current).server);
             }
             catch (Exception ex)
             {
                 raiseErrorBox(ex.Message);
-                System.Environment.Exit(0);
+                return;
             }
 
             //Put stats in labels
