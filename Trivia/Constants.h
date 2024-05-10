@@ -42,4 +42,8 @@ enum class ProtocolCode : Byte
 	GetPlayersInRoom,
 	GetHighScores,
 	GetPersonalStats,
+	CloseRoom,
+	StartGame,
+	GetRoomState,
+	LeaveRoom,
 };

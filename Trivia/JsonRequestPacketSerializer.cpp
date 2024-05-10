@@ -81,6 +81,12 @@ Buffer JsonRequestPacketSerializer::serializeResponse(StartGameResponse res)
 	return buildBuffer(ProtocolCode::StartGame, jsonObj);
 }
 
+Buffer JsonRequestPacketSerializer::serializeResponse(LeaveRoomResponse res)
+{
+	json jsonObj{ { "status", res.status } };
+	return buildBuffer(ProtocolCode::LeaveRoom, jsonObj);
+}
+
 Buffer JsonRequestPacketSerializer::buildBuffer(ProtocolCode resCode, const json& jsonObj)
 {
 	auto msg = jsonObj.dump();
