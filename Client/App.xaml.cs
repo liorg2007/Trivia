@@ -27,19 +27,7 @@ namespace Client
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            ServerData connDetails = new ServerData();
-
-            try
-            {
-                connDetails = server.getServerConnData();
-            }
-            catch (Exception ex)
-            {
-                raiseErrorBox(ex.Message);
-                System.Environment.Exit(0);
-            }
-
-            if (!server.connectToServer(connDetails))
+            if (!server.ConnectToServer("serverConfig.txt"))
             {
                 raiseErrorBox("Can't connect to server");
                 System.Environment.Exit(0);

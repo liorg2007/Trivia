@@ -10,24 +10,22 @@ using System.Net;
 
 namespace Client
 {
-    public struct ServerData
-    {
-        public string ip;
-        public int port;
-    }
-
     public class Server
     {
         private NetworkStream? _socket { get; set; }
+        private struct ServerData
+        {
+            public IPAddress ip;
+            public int port;
+        }
 
         ~Server()
         {
             _socket?.Close();
         }
 
-        public ServerData getServerConnData()
+        private ServerData GetServerConnData(string serverDataFileName)
         {
-            const string serverDataFileName = "serverConfig.txt";
             var serverData = new ServerData();
 
             if (!File.Exists(serverDataFileName))
@@ -37,7 +35,7 @@ namespace Client
 
             try
             {
-                serverData.ip = data[0];
+                serverData.ip = IPAddress.Parse(data[0]);
                 serverData.port = int.Parse(data[1]);
             }
             catch
@@ -48,10 +46,11 @@ namespace Client
             return serverData;
         }
 
-        public bool connectToServer(ServerData serverData)
+        public bool ConnectToServer(string serverDataFileName = "serverConfig.txt")
         {
+            ServerData serverData = GetServerConnData(serverDataFileName);
             using TcpClient client = new TcpClient();
-            IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(serverData.ip), serverData.port);
+            IPEndPoint serverEndPoint = new IPEndPoint(serverData.ip, serverData.port);
             try
             {
                 client.Connect(serverEndPoint);
