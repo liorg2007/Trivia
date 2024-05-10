@@ -22,8 +22,8 @@ namespace Client
 
     public partial class App : Application
     {
-        public Server _server { get; } = new();
-        private SoundPlayer _musicPlayer = new();
+        public Server server { get; } = new();
+        private readonly SoundPlayer _musicPlayer = new();
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -31,7 +31,7 @@ namespace Client
 
             try
             {
-                connDetails = _server.getServerConnData();
+                connDetails = server.getServerConnData();
             }
             catch (Exception ex)
             {
@@ -39,7 +39,7 @@ namespace Client
                 System.Environment.Exit(0);
             }
 
-            if (!_server.connectToServer(connDetails))
+            if (!server.connectToServer(connDetails))
             {
                 raiseErrorBox("Can't connect to server");
                 System.Environment.Exit(0);

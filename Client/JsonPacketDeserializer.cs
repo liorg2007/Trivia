@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Client.Requests;
-using System.Text.Json;
+﻿using System.Text.Json;
 using static Client.DataStructs;
-using Client.Menu;
-using System.Security.RightsManagement;
+using static Client.Requests;
 
 namespace Client
 {
@@ -113,7 +106,7 @@ namespace Client
 
             foreach (var element in roomsArray)
             {
-                RoomData roomData  = JsonSerializer.Deserialize<RoomData>(element);
+                RoomData roomData = JsonSerializer.Deserialize<RoomData>(element);
 
                 rooms.Add(roomData);
             }
@@ -122,7 +115,7 @@ namespace Client
 
             return response;
         }
-        
+
         public static GetUsersInRoomResponse DeseriializeGetUsersInRoomsRequests(string message)
         {
             return JsonSerializer.Deserialize<GetUsersInRoomResponse>(message);

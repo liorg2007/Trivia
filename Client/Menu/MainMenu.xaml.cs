@@ -68,9 +68,9 @@ namespace Client
         {
             var message = Helper.createProtocol(Code.Logout);
 
-            ((App)Application.Current)._server.sendMessage(message);
+            ((App)Application.Current).server.sendMessage(message);
 
-            ServerResponse response = Helper.decodeProtocol(((App)Application.Current)._server.receiveMessage());
+            ServerResponse response = Helper.decodeProtocol(((App)Application.Current).server.receiveMessage());
 
             if(response.code == Code.Logout)
             {

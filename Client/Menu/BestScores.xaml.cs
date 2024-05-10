@@ -36,9 +36,9 @@ namespace Client.Menu
             TopPlayers highScores = new TopPlayers();
             var message = CreateHighScoresRequest();
 
-            ((App)Application.Current)._server.sendMessage(message);
+            ((App)Application.Current).server.sendMessage(message);
 
-            ServerResponse response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+            ServerResponse response = decodeProtocol(((App)Application.Current).server.receiveMessage());
 
             try
             {

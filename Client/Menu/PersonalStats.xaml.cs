@@ -39,9 +39,9 @@ namespace Client
             UserStatistics userStatistics = new UserStatistics();
             var message = CreateStatsRequest();
 
-            ((App)Application.Current)._server.sendMessage(message);
+            ((App)Application.Current).server.sendMessage(message);
 
-            ServerResponse response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+            ServerResponse response = decodeProtocol(((App)Application.Current).server.receiveMessage());
 
             try
             {
