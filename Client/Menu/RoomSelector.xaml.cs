@@ -17,6 +17,7 @@ using static Client.Requests;
 using static Client.JsonPacketDeserializer;
 using System.Security;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace Client.Menu
 {
@@ -116,12 +117,9 @@ namespace Client.Menu
             ServerResponse response;
             GetUsersInRoomRequest getUsersInRoomRequest = new GetUsersInRoomRequest() { roomId = roomId };
             GetUsersInRoomResponse playersResponse;
-
-            var message = RoomManagement.CreateGetUsersInRoomsRequests(getUsersInRoomRequest);
-
             try
             {
-                response = Helper.SendRequest(((App)Application.Current).server, Code.GetPlayersInRoom, message);
+                response = Helper.SendRequest(((App)Application.Current).server, Code.GetPlayersInRoom, JsonSerializer.SerializeToUtf8Bytes(getUsersInRoomRequest));
                 if (response.code == Code.GetPlayersInRoom)
                 {
                     playersResponse = DeseriializeGetUsersInRoomsRequests(response.message);
