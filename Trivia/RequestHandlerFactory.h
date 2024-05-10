@@ -16,9 +16,9 @@ public:
 	static RequestHandlerFactory& getInstance();
 
 	LoginRequestHandler* createLoginRequestHandler();
-	LoginManager& getLoginManager();
-
 	MenuRequestHandler* createMenuRequestHandler(const LoggedUser& user);
+
+	LoginManager& getLoginManager();
 	StatisticsManager& getStatisticsManager();
 	RoomManager& getRoomManager();
 
