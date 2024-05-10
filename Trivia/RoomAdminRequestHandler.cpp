@@ -1,4 +1,5 @@
 #include "RoomAdminRequestHandler.h"
+#include "JsonRequestPacketSerializer.h"
 
 const std::unordered_map<ProtocolCode, RoomAdminRequestHandler::HandlerFunction> RoomAdminRequestHandler::codeToFunction = {
 		{ ProtocolCode::StartGame, &RoomAdminRequestHandler::startGame },
@@ -25,15 +26,42 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& reqInfo)
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& reqInfo)
 {
 	_roomManager.deleteRoom(_room.getRoomData().id);
-	
+
+	// TODO: Send LeaveRoomResponse to all users in the room
+
+	CloseRoomResponse res;
+	RequestResult serializedRes;
+	res.status = SUCCESS;
+
+	serializedRes.response = JsonRequestPacketSerializer::serializeResponse(res);
+	serializedRes.newHandler = _handlerFactory.createMenuRequestHandler(_user);
+	return serializedRes;
 }
 
 RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& reqInfo)
 {
-	return RequestResult();
+	// TODO: Send StartGameResponse to all users in the room
+
+	StartGameResponse res;
+	RequestResult serializedRes;
+	res.status = SUCCESS;
+
+	serializedRes.response = JsonRequestPacketSerializer::serializeResponse(res);
+	serializedRes.newHandler = nullptr;
+	return serializedRes;
 }
 
 RequestResult RoomAdminRequestHandler::getRoomState(const RequestInfo& reqInfo)
 {
-	return RequestResult();
+	GetRoomStateResponse res;
+	RequestResult serializedRes;
+	res.roomState.answerCount = _room.getRoomData().numOfQuestionsInGame;
+	res.roomState.answerTimeOut = _room.getRoomData().timerPerQuestion;
+	res.roomState.players = _room.getAllUsers();
+	res.roomState.hasGameBegun = _room.getRoomData().isActive;
+	res.status = SUCCESS;
+
+	serializedRes.response = JsonRequestPacketSerializer::serializeResponse(res);
+	serializedRes.newHandler = nullptr;
+	return serializedRes;
 }
