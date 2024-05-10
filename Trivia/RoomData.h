@@ -13,3 +13,11 @@ struct RoomData {
 	// in order for SerializeResponse to work
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE_ONLY_SERIALIZE(RoomData, id, name, maxPlayers, numOfQuestionsInGame, timerPerQuestion, isActive);
 };
+
+
+struct RoomState {
+	bool hasGameBegun;
+	std::list<std::string> players;
+	unsigned int AnswerCount;
+	unsigned int answerTimeOut;
+};

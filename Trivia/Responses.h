@@ -72,10 +72,7 @@ struct StartGameResponse
 struct GetRoomStateResponse
 {
 	unsigned int status;
-	bool hasGameBegun;
-	std::list<std::string> players;
-	unsigned int AnswerCount;
-	int answerTimeOut;
+	RoomState roomState;
 };
 
 struct LeaveRoomResponse
