@@ -92,7 +92,7 @@ Buffer JsonRequestPacketSerializer::serializeResponse(GetRoomStateResponse res)
 			{ "answerTimeOut", res.roomState.answerTimeOut }
 		}
 	};
-	return buildBuffer(ProtocolCode::GetPersonalStats, jsonObj);
+	return buildBuffer(ProtocolCode::GetRoomState, jsonObj);
 }
 
 Buffer JsonRequestPacketSerializer::serializeResponse(LeaveRoomResponse res)
