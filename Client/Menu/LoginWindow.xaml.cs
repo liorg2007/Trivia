@@ -11,9 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static System.Byte;
 using static Client.Helper;
-using static Client.LoginSignup;
 using static Client.Requests;
 
 namespace Client
@@ -37,50 +35,36 @@ namespace Client
 
         private void LoginPress(object sender, RoutedEventArgs e)
         {
-            LoginRequest request = new LoginRequest()
-            {
-                password = passwordBox.Password,
-                username = usernameBox.Text
-            };
-
-            var message = LoginSignup.CreateLoginRequest(request);
+            bool loginSuccess;
+            string username = usernameBox.Text;
+            string password = passwordBox.Password;
             try
             {
-                ((App)Application.Current).server.sendMessage(message);
-            }
-            catch
-            {
-                raiseErrorBox("Server problem");
-                System.Environment.Exit(0);
-            }
-
-            ServerResponse response = decodeProtocol(((App)Application.Current).server.receiveMessage());
-
-            try
-            {
-                if (CheckLogin(response))
-                {
-                    MainMenu window = new MainMenu(request.username);
-                    window.Show();
-                    this.Close();
-                }
-                else
-                {
-                    raiseErrorBox("Login bad");
-                }
+                loginSuccess = LoginSignup.SendLoginRequest(((App)Application.Current).server, username, password);
             }
             catch (Exception ex)
             {
                 raiseErrorBox(ex.Message);
-                System.Environment.Exit(0);
+                Environment.Exit(0);
+                return;
             }
 
+            if (loginSuccess)
+            {
+                MainMenu window = new MainMenu(username);
+                window.Show();
+                this.Close();
+            }
+            else
+            {
+                raiseErrorBox("Wrong login credentials, try again.");
+            }
         }
 
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 DragMove();
             }
@@ -106,7 +90,7 @@ namespace Client
 
         private void UsernameLostFocus(object sender, RoutedEventArgs e)
         {
-            if(((TextBox)sender).Text == "")
+            if (((TextBox)sender).Text == "")
                 ((TextBox)sender).Text = "Username";
         }
 

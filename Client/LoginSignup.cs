@@ -13,21 +13,12 @@ namespace Client
 {
     internal static class LoginSignup
     {
-        public static byte[] CreateLoginRequest(LoginRequest loginRequest)
+        public static bool SendLoginRequest(Server server, string username, string password)
         {
-            var json = JsonSerializer.SerializeToUtf8Bytes(loginRequest);
-            return Helper.createProtocol(Code.Login, json);
-        }
-
-        public static bool CheckLogin(ServerResponse response)
-        {
-            if (response.code == Code.Login)
-            {
-                LoginResponse res = DeserializeLoginResponse(response.message);
-                return res.status == 1;
-            }
-
-            throw new Exception("");
+            var reqStruct = new LoginRequest { username=username, password=password };
+            ServerResponse res = Helper.SendRequest(server, Code.Login, JsonSerializer.SerializeToUtf8Bytes(reqStruct));
+            LoginResponse deserializedRes = DeserializeLoginResponse(res.message);
+            return deserializedRes.status == 1; // Successful login
         }
 
         public static bool CheckSignupInput(SignupRequest input)
