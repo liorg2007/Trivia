@@ -12,12 +12,14 @@ RoomManager& RoomManager::getInstance()
 
 void RoomManager::createRoom(const LoggedUser& user, RoomData&& roomData)
 {
+	std::lock_guard<std::mutex> lock(_mtx);
 	unsigned int id = _rooms.size();
 	_rooms.emplace(std::piecewise_construct, std::forward_as_tuple(id), std::forward_as_tuple(std::move(roomData), user));
 }
 
 void RoomManager::deleteRoom(int roomId)
 {
+	std::lock_guard<std::mutex> lock(_mtx);
 	_rooms.erase(roomId);
 }
 
@@ -28,7 +30,7 @@ unsigned int RoomManager::getRoomState(int roomId) const
 
 std::vector<RoomData> RoomManager::getRooms() const
 {
-	std::vector<RoomData> ans;
+	std::vector<RoomData> ans(_rooms.size());
 
 	for (const auto& room : _rooms)
 		ans.push_back(room.second.getRoomData());

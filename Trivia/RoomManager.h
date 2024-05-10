@@ -1,12 +1,9 @@
 #pragma once
 #include <unordered_map>
 #include "Room.h"
+#include <mutex>
 
 class RoomManager {
-private:
-	std::unordered_map<int, Room> _rooms;
-	RoomManager();
-
 public:
 	static RoomManager& getInstance();
 
@@ -15,4 +12,10 @@ public:
 	unsigned int getRoomState(int roomId) const;
 	std::vector<RoomData> getRooms() const;
 	Room& getRoom(int roomId);
+
+private:
+	RoomManager();
+	std::unordered_map<int, Room> _rooms;
+	std::mutex _mtx;
+
 };

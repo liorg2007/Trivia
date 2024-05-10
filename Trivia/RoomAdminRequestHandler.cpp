@@ -24,7 +24,8 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& reqInfo)
 
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& reqInfo)
 {
-	return RequestResult();
+	_roomManager.deleteRoom(_room.getRoomData().id);
+	
 }
 
 RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& reqInfo)
