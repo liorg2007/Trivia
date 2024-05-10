@@ -57,3 +57,28 @@ struct CreateRoomResponse
 {
 	unsigned int status;
 };
+
+struct CloseRoomResponse
+{
+	unsigned int status;
+
+};
+
+struct StartGameResponse
+{
+	unsigned int status;
+};
+
+struct GetRoomStateResponse
+{
+	unsigned int status;
+	bool hasGameBegun;
+	std::list<std::string> players;
+	unsigned int AnswerCount;
+	int answerTimeOut;
+};
+
+struct LeaveRoomResponse
+{
+	unsigned int status;
+};
