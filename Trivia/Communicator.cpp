@@ -78,10 +78,8 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			else
 			{
 				// send error message
-				ErrorResponse errRes;
-				errRes.message = "Request is not relevant to current client state";
 				sendData(clientSocket,
-					JsonRequestPacketSerializer::serializeResponse(errRes));
+					parseErrorMessage("Request is not relevant to current client state"));
 			}
 		}
 	}
@@ -130,7 +128,7 @@ RequestInfo Communicator::recieveData(SOCKET clientSocket) const
 	return req;
 }
 
-Buffer Communicator::parseErrorMessage(const std::string& errMsg) const
+Buffer Communicator::parseErrorMessage(std::string&& errMsg) const
 {
 	ErrorResponse res;
 	res.message = errMsg;
