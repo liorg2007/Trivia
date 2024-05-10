@@ -8,6 +8,7 @@ using System.Text.Json;
 using static Client.JsonPacketDeserializer;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Windows.Automation;
 
 namespace Client
 {
@@ -31,10 +32,12 @@ namespace Client
             return passwordMatch && emailMatch && addressMatch && phoneNumberMatch && birthDateMatch;
         }
 
-        public static byte[] CreateSignupRequest(SignupRequest userData)
+        public static bool SendSignupRequest(Server server, SignupRequest userData)
         {
             var json = JsonSerializer.SerializeToUtf8Bytes(userData);
-            return Helper.createProtocol(Code.Signup, json);
+            ServerResponse res = Helper.SendRequest(server, Code.Signup, json);
+            SignupResponse deserializedRes = DeserializeSignupResponse(res.message);
+            return deserializedRes.status == 1;
         }
 
         public static bool CheckSignup(ServerResponse response)

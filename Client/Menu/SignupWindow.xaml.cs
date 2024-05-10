@@ -61,30 +61,30 @@ namespace Client
                     "- Birth date is in form DD/MM/YYYY.");
                 return;
             }
-            var message = CreateSignupRequest(request);
 
-            ((App)Application.Current).server.sendMessage(message);
-
-            ServerResponse response = decodeProtocol(((App)Application.Current).server.receiveMessage());
+            bool signupSuccess;
 
             try
             {
-                if (CheckSignup(response))
-                {
-                    MainMenu window = new MainMenu(request.username);
-                    window.Show();
-                    this.Close();
-                }
-                else
-                {
-                    raiseErrorBox("Error signing up: username \"" + request.username + "\" already exists.");
-                }
+                signupSuccess = SendSignupRequest(((App)Application.Current).server, request);
             }
             catch (Exception ex)
             {
                 raiseErrorBox(ex.Message);
-                System.Environment.Exit(0);
+                Environment.Exit(0);
+                return;
             }
+            if (signupSuccess)
+            {
+                MainMenu window = new MainMenu(request.username);
+                window.Show();
+                this.Close();
+            }
+            else
+            {
+                raiseErrorBox("Username \"" + request.username + "\" already exists.");
+            }
+
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
