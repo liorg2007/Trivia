@@ -7,8 +7,8 @@ const std::unordered_map<ProtocolCode, RoomAdminRequestHandler::HandlerFunction>
 		{ ProtocolCode::CloseRoom, &RoomAdminRequestHandler::closeRoom },
 };
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(const Room& room, const LoggedUser& user, RoomManager& roomManager, RequestHandlerFactory& handlerFactory)
-	: _room(room), _user(user), _roomManager(roomManager), _handlerFactory(handlerFactory)
+RoomAdminRequestHandler::RoomAdminRequestHandler(const Room& room, const LoggedUser& user, RequestHandlerFactory& handlerFactory)
+	: _room(room), _user(user), _roomManager(RoomManager::getInstance()), _handlerFactory(handlerFactory)
 {
 }
 

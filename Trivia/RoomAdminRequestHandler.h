@@ -6,7 +6,7 @@
 class RoomAdminRequestHandler : public IRequestHandler
 {
 public:
-	RoomAdminRequestHandler(const Room& room, const LoggedUser& user, RoomManager& roomManager, RequestHandlerFactory& handlerFactory);
+	RoomAdminRequestHandler(const Room& room, const LoggedUser& user, RequestHandlerFactory& handlerFactory);
 
 	bool isRequestRelevant(const RequestInfo& reqInfo) override;
 	RequestResult handleRequest(const RequestInfo& reqInfo) override;

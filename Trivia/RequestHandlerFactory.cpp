@@ -29,6 +29,11 @@ MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const Logged
 	return new MenuRequestHandler(*this, user);
 }
 
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(const Room& room, const LoggedUser& user)
+{
+	return new RoomAdminRequestHandler(room, user, *this);
+}
+
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 {
 	return _statisticsManager;
