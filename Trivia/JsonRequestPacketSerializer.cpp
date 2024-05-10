@@ -81,6 +81,20 @@ Buffer JsonRequestPacketSerializer::serializeResponse(StartGameResponse res)
 	return buildBuffer(ProtocolCode::StartGame, jsonObj);
 }
 
+Buffer JsonRequestPacketSerializer::serializeResponse(GetRoomStateResponse res)
+{
+	json jsonObj
+	{
+		{ "RoomState",
+			{ "hasGameBegun", res.roomState.hasGameBegun },
+			{ "players", res.roomState.players},
+			{ "answerCount", res.roomState.answerCount },
+			{ "answerTimeOut", res.roomState.answerTimeOut }
+		}
+	};
+	return buildBuffer(ProtocolCode::GetPersonalStats, jsonObj);
+}
+
 Buffer JsonRequestPacketSerializer::serializeResponse(LeaveRoomResponse res)
 {
 	json jsonObj{ { "status", res.status } };
