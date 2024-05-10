@@ -90,21 +90,9 @@ namespace Client.Menu
         {
             ServerResponse response;
             GetRoomsResponse roomsResponse;
-            var message = RoomManagement.CreateGetRoomsRequests();
             try
             {
-                ((App)Application.Current).server.sendMessage(message);
-                response = decodeProtocol(((App)Application.Current).server.receiveMessage());
-            }
-            catch
-            {
-                raiseErrorBox("Server problem");
-                System.Environment.Exit(0);
-                return new List<RoomData>();
-            }
-
-            try
-            {
+                response = Helper.SendRequest(((App)Application.Current).server, Code.GetRooms);
                 if (response.code == Code.GetRooms)
                 {
                     roomsResponse = DeserializeGetRoomsResponse(response.message);
@@ -117,8 +105,7 @@ namespace Client.Menu
             catch (Exception ex)
             {
                 raiseErrorBox(ex.Message);
-                System.Environment.Exit(0);
-                return new List<RoomData>(); 
+                return new List<RoomData>();
             }
 
             return roomsResponse.rooms;
@@ -134,18 +121,7 @@ namespace Client.Menu
 
             try
             {
-                ((App)Application.Current).server.sendMessage(message);
-                response = decodeProtocol(((App)Application.Current).server.receiveMessage());
-            }
-            catch
-            {
-                raiseErrorBox("Server problem");
-                System.Environment.Exit(0);
-                return new List<string>();
-            }
-
-            try
-            {
+                response = Helper.SendRequest(((App)Application.Current).server, Code.GetPlayersInRoom, message);
                 if (response.code == Code.GetPlayersInRoom)
                 {
                     playersResponse = DeseriializeGetUsersInRoomsRequests(response.message);
@@ -184,16 +160,6 @@ namespace Client.Menu
             {
                 ((App)Application.Current).server.sendMessage(message);
                 response = decodeProtocol(((App)Application.Current).server.receiveMessage());
-            }
-            catch
-            {
-                raiseErrorBox("Server problem");
-                System.Environment.Exit(0);
-                return;
-            }
-
-            try
-            {
                 if (response.code == Code.JoinRoom && DeserializeJoinRoomResponse(response.message).status == 1)
                 {
                     raiseSuccessBox("Entered room!");
