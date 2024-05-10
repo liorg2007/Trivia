@@ -5,7 +5,7 @@
 const std::unordered_map<ProtocolCode, MenuRequestHandler::HandlerFunction> MenuRequestHandler::codeToFunction = {
 		{ ProtocolCode::Logout, &MenuRequestHandler::logout },
 		{ ProtocolCode::CreateRoom, &MenuRequestHandler::createRoom },
-		{ ProtocolCode::JoinRoom, &MenuRequestHandler::createRoom },
+		{ ProtocolCode::JoinRoom, &MenuRequestHandler::joinRoom },
 		{ ProtocolCode::GetPlayersInRoom, &MenuRequestHandler::getPlayersInRoom },
 		{ ProtocolCode::GetRooms, &MenuRequestHandler::getRooms },
 		{ ProtocolCode::GetPersonalStats, &MenuRequestHandler::getPersonalStats },
@@ -26,6 +26,11 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& req)
 {
 	auto it = codeToFunction.find(req.id);
 	return (this->*(it->second))(req);
+}
+
+void MenuRequestHandler::handleDisconnect()
+{
+	_handlerFactory.getLoginManager().logout(_user.getUsername());
 }
 
 RequestResult MenuRequestHandler::logout(const RequestInfo& req)
