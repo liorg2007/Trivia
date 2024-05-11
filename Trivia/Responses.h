@@ -65,6 +65,7 @@ struct CloseRoomResponse
 struct StartGameResponse
 {
 	unsigned int status;
+	std::time_t startTime;
 };
 
 struct GetRoomStateResponse

@@ -78,7 +78,7 @@ Buffer JsonRequestPacketSerializer::serializeResponse(CloseRoomResponse res)
 
 Buffer JsonRequestPacketSerializer::serializeResponse(StartGameResponse res)
 {
-	json jsonObj{ { "status", res.status } };
+	json jsonObj{ { "status", res.status, }, { "startTime", res.startTime } };
 	return buildBuffer(ProtocolCode::StartGame, jsonObj);
 }
 
