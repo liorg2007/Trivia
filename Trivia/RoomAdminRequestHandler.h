@@ -14,7 +14,7 @@ public:
 private:
 	RequestResult closeRoom(const RequestInfo& reqInfo);
 	RequestResult startGame(const RequestInfo& reqInfo);
-	RequestResult getRoomState(const RequestInfo& reqInfo);
+	RequestResult isRoomActive(const RequestInfo& reqInfo);
 
 	using HandlerFunction = RequestResult(RoomAdminRequestHandler::*)(const RequestInfo&);
 	static const std::unordered_map<ProtocolCode, HandlerFunction> codeToFunction;

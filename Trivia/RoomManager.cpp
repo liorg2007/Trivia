@@ -23,7 +23,7 @@ void RoomManager::deleteRoom(int roomId)
 	_rooms.erase(roomId);
 }
 
-unsigned int RoomManager::getRoomState(int roomId) const
+unsigned int RoomManager::isRoomActive(int roomId) const
 {
 	return _rooms.at(roomId).getRoomData().isActive;
 }

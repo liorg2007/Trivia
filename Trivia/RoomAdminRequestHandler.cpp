@@ -3,7 +3,7 @@
 
 const std::unordered_map<ProtocolCode, RoomAdminRequestHandler::HandlerFunction> RoomAdminRequestHandler::codeToFunction = {
 		{ ProtocolCode::StartGame, &RoomAdminRequestHandler::startGame },
-		{ ProtocolCode::GetRoomState, &RoomAdminRequestHandler::getRoomState },
+		{ ProtocolCode::GetRoomState, &RoomAdminRequestHandler::isRoomActive },
 		{ ProtocolCode::CloseRoom, &RoomAdminRequestHandler::closeRoom },
 };
 
@@ -26,7 +26,6 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& reqInfo)
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& reqInfo)
 {
 	_roomManager.deleteRoom(_room.getRoomData().id);
-
 	// TODO: Send LeaveRoomResponse to all users in the room
 
 	CloseRoomResponse res;
@@ -51,10 +50,11 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& reqInfo)
 	return serializedRes;
 }
 
-RequestResult RoomAdminRequestHandler::getRoomState(const RequestInfo& reqInfo)
+RequestResult RoomAdminRequestHandler::isRoomActive(const RequestInfo& reqInfo)
 {
-	GetRoomStateResponse res;
 	RequestResult serializedRes;
+	GetRoomStateResponse res;
+
 	res.roomState.answerCount = _room.getRoomData().numOfQuestionsInGame;
 	res.roomState.answerTimeOut = _room.getRoomData().timerPerQuestion;
 	res.roomState.players = _room.getAllUsers();
