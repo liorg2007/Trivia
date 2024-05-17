@@ -115,7 +115,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& req)
 	GetPlayersInRoomRequest request = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(req.buffer);
 	GetPlayersInRoomResponse response;
 	RequestResult result;
-	response.players = _handlerFactory.getRoomManager().getRoom(request.roomId).getAllUsers();
+	response.players = _handlerFactory.getRoomManager().getRoom(request.roomId).getAllUsernames();
 	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	result.newHandler = nullptr;
 	return result;

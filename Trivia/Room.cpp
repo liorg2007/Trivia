@@ -29,7 +29,12 @@ void Room::removeUser(const LoggedUser& loggedUser)
 		_users.erase(position);
 }
 
-std::vector<std::string> Room::getAllUsers() const
+const std::vector<LoggedUser>& Room::getAllUsers() const
+{
+	return _users;
+}
+
+std::vector<std::string> Room::getAllUsernames() const
 {
 	std::vector<std::string> ans;
 

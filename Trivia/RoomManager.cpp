@@ -28,6 +28,11 @@ unsigned int RoomManager::isRoomActive(int roomId) const
 	return _rooms.at(roomId).getRoomData().isActive;
 }
 
+bool RoomManager::doesRoomExist(int roomId) const
+{
+	return _rooms.find(roomId) != _rooms.end();
+}
+
 std::vector<RoomData> RoomManager::getRooms() const
 {
 	std::vector<RoomData> ans(_rooms.size());

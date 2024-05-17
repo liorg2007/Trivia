@@ -15,5 +15,6 @@ public:
 
 	void addUser(const LoggedUser& loggedUser);
 	void removeUser(const LoggedUser& loggedUser);
-	std::vector<std::string> getAllUsers() const;
+	const std::vector<LoggedUser>& getAllUsers() const;
+	std::vector<std::string> getAllUsernames() const;
 };

@@ -10,6 +10,7 @@ public:
 	void createRoom(const LoggedUser& user, RoomData&& roomData);
 	void deleteRoom(int roomId);
 	unsigned int isRoomActive(int roomId) const;
+	bool doesRoomExist(int roomId) const;
 	std::vector<RoomData> getRooms() const;
 	Room& getRoom(int roomId);
 
