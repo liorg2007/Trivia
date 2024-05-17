@@ -8,8 +8,8 @@ const std::unordered_map<ProtocolCode, RoomAdminRequestHandler::HandlerFunction>
 };
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(int roomId, const LoggedUser& user)
-	: _roomId(roomId), _user(user), _roomManager(RoomManager::getInstance()), 
-	_handlerFactory(RequestHandlerFactory::getInstance()), _roomRef(_roomManager.getRoom(roomId))
+	: _roomId(roomId), _user(user), _roomManager(RoomManager::getInstance()), _handlerFactory(RequestHandlerFactory::getInstance()),
+	  _roomRef(_roomManager.getRoom(roomId))
 {
 }
 
@@ -55,15 +55,10 @@ RequestResult RoomAdminRequestHandler::isRoomActive(const RequestInfo& reqInfo)
 {
 	RequestResult serializedRes;
 	GetRoomStateResponse res;
-	
-	if (!_roomManager.doesRoomExist(_roomId) ||)
-	{
-		
-	}
 
-	res.roomState.answerCount = _roomRef.getRoomData().numOfQuestionsInGame;
-	res.roomState.answerTimeOut = _roomRef.getRoomData().timerPerQuestion;
-	res.roomState.players = _roomRef.getAllUsernames();
+	res.roomState.numOfQuestionsInGame = _roomRef.getRoomData().numOfQuestionsInGame;
+	res.roomState.timerPerQuestion = _roomRef.getRoomData().timerPerQuestion;
+	res.roomState.players = _roomRef.getAllUsers();
 	res.roomState.hasGameBegun = _roomRef.getRoomData().isActive;
 	res.status = SUCCESS;
 

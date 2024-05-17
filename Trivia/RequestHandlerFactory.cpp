@@ -14,9 +14,9 @@ RequestHandlerFactory& RequestHandlerFactory::getInstance()
 	return instance;
 }
 
-LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
+LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler(SOCKET userSocket)
 {
-	return new LoginRequestHandler(*this);
+	return new LoginRequestHandler(*this, userSocket);
 }
 
 LoginManager& RequestHandlerFactory::getLoginManager()
@@ -29,9 +29,9 @@ MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const Logged
 	return new MenuRequestHandler(*this, user);
 }
 
-RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(const Room& room, const LoggedUser& user)
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(int roomId, const LoggedUser& user)
 {
-	return new RoomAdminRequestHandler(room, user, *this);
+	return new RoomAdminRequestHandler(roomId, user);
 }
 
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()

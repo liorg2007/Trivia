@@ -42,7 +42,7 @@ RequestResult MenuRequestHandler::logout(const RequestInfo& req)
 	else
 		throw(std::exception("Cannot logout non-existing user"));
 
-	result.newHandler = _handlerFactory.createLoginRequestHandler();
+	result.newHandler = _handlerFactory.createLoginRequestHandler(_user.getSocket());
 	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	return result;
 }
@@ -115,7 +115,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& req)
 	GetPlayersInRoomRequest request = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(req.buffer);
 	GetPlayersInRoomResponse response;
 	RequestResult result;
-	response.players = _handlerFactory.getRoomManager().getRoom(request.roomId).getAllUsernames();
+	response.players = _handlerFactory.getRoomManager().getRoom(request.roomId).getAllUsers();
 	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	result.newHandler = nullptr;
 	return result;
