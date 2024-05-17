@@ -40,7 +40,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& req)
 		result.newHandler = nullptr;
 	}
 
-	result.response = JsonRequestPacketSerializer::serializeResponse(loginResponse);
+	result.response = JsonResponsePacketSerializer::serializeResponse(loginResponse);
 
 	return result;
 }
@@ -64,7 +64,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& req)
 		result.newHandler = nullptr;
 	}
 
-	result.response = JsonRequestPacketSerializer::serializeResponse(signupResponse);
+	result.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
 
 	return result;
 }

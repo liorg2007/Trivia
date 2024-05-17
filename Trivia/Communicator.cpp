@@ -132,7 +132,7 @@ Buffer Communicator::parseErrorMessage(std::string&& errMsg) const
 {
 	ErrorResponse res;
 	res.message = errMsg;
-	return JsonRequestPacketSerializer::serializeResponse(res);
+	return JsonResponsePacketSerializer::serializeResponse(res);
 }
 
 Communicator::Communicator()

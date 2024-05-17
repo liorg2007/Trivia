@@ -7,8 +7,9 @@ const std::unordered_map<ProtocolCode, RoomAdminRequestHandler::HandlerFunction>
 		{ ProtocolCode::CloseRoom, &RoomAdminRequestHandler::closeRoom },
 };
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(const Room& room, const LoggedUser& user, RequestHandlerFactory& handlerFactory)
-	: _room(room), _user(user), _roomManager(RoomManager::getInstance()), _handlerFactory(handlerFactory)
+RoomAdminRequestHandler::RoomAdminRequestHandler(int roomId, const LoggedUser& user)
+	: _roomId(roomId), _user(user), _roomManager(RoomManager::getInstance()), _handlerFactory(RequestHandlerFactory::getInstance()),
+	  _roomRef(_roomManager.getRoom(roomId))
 {
 }
 
@@ -25,14 +26,14 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& reqInfo)
 
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& reqInfo)
 {
-	_roomManager.deleteRoom(_room.getRoomData().id);
+	_roomManager.deleteRoom(_roomId);
 	// TODO: Send LeaveRoomResponse to all users in the room
 
 	CloseRoomResponse res;
 	RequestResult serializedRes;
 	res.status = SUCCESS;
 
-	serializedRes.response = JsonRequestPacketSerializer::serializeResponse(res);
+	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
 	serializedRes.newHandler = _handlerFactory.createMenuRequestHandler(_user);
 	return serializedRes;
 }
@@ -45,7 +46,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& reqInfo)
 	RequestResult serializedRes;
 	res.status = SUCCESS;
 
-	serializedRes.response = JsonRequestPacketSerializer::serializeResponse(res);
+	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
 	serializedRes.newHandler = nullptr;
 	return serializedRes;
 }
@@ -55,13 +56,13 @@ RequestResult RoomAdminRequestHandler::isRoomActive(const RequestInfo& reqInfo)
 	RequestResult serializedRes;
 	GetRoomStateResponse res;
 
-	res.roomState.answerCount = _room.getRoomData().numOfQuestionsInGame;
-	res.roomState.answerTimeOut = _room.getRoomData().timerPerQuestion;
-	res.roomState.players = _room.getAllUsers();
-	res.roomState.hasGameBegun = _room.getRoomData().isActive;
+	res.roomState.answerCount = _roomRef.getRoomData().numOfQuestionsInGame;
+	res.roomState.answerTimeOut = _roomRef.getRoomData().timerPerQuestion;
+	res.roomState.players = _roomRef.getAllUsers();
+	res.roomState.hasGameBegun = _roomRef.getRoomData().isActive;
 	res.status = SUCCESS;
 
-	serializedRes.response = JsonRequestPacketSerializer::serializeResponse(res);
+	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
 	serializedRes.newHandler = nullptr;
 	return serializedRes;
 }

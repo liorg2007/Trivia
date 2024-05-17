@@ -43,7 +43,7 @@ RequestResult MenuRequestHandler::logout(const RequestInfo& req)
 		throw(std::exception("Cannot logout non-existing user"));
 
 	result.newHandler = _handlerFactory.createLoginRequestHandler();
-	result.response = JsonRequestPacketSerializer::serializeResponse(response);
+	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	return result;
 }
 
@@ -60,7 +60,7 @@ RequestResult MenuRequestHandler::getRooms(const RequestInfo& req)
 	{
 		response.status = FAILURE;
 	}
-	result.response = JsonRequestPacketSerializer::serializeResponse(response);
+	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	result.newHandler = nullptr;
 	return result;
 }
@@ -86,7 +86,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& req)
 	{
 		response.status = FAILURE;
 	}
-	result.response = JsonRequestPacketSerializer::serializeResponse(response);
+	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	result.newHandler = nullptr;
 	return result;
 }
@@ -105,7 +105,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& req)
 	{
 		response.status = FAILURE;
 	}
-	result.response = JsonRequestPacketSerializer::serializeResponse(response);
+	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	result.newHandler = nullptr;
 	return result;
 }
@@ -116,7 +116,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& req)
 	GetPlayersInRoomResponse response;
 	RequestResult result;
 	response.players = _handlerFactory.getRoomManager().getRoom(request.roomId).getAllUsers();
-	result.response = JsonRequestPacketSerializer::serializeResponse(response);
+	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	result.newHandler = nullptr;
 	return result;
 }
@@ -126,7 +126,7 @@ RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& req)
 	GetPersonalStatsResponse response;
 	RequestResult result;
 	response.statistics = _handlerFactory.getStatisticsManager().getUserStatistics(_user.getUsername());
-	result.response = JsonRequestPacketSerializer::serializeResponse(response);
+	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	result.newHandler = nullptr;
 	return result;
 }
@@ -136,7 +136,7 @@ RequestResult MenuRequestHandler::getHighScore(const RequestInfo& req)
 	GetHighScoresResponse response;
 	RequestResult result;
 	response.highScores = _handlerFactory.getStatisticsManager().getHighScores();
-	result.response = JsonRequestPacketSerializer::serializeResponse(response);
+	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	result.newHandler = nullptr;
 	return result;
 }

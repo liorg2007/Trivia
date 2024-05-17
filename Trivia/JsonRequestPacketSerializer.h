@@ -6,7 +6,7 @@
 
 using json = nlohmann::json;
 
-class JsonRequestPacketSerializer
+class JsonResponsePacketSerializer
 {
 public:
 	static Buffer serializeResponse(ErrorResponse res);

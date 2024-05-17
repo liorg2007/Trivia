@@ -1,62 +1,62 @@
 #include "JsonRequestPacketSerializer.h"
 
-Buffer JsonRequestPacketSerializer::serializeResponse(ErrorResponse res)
+Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse res)
 {
 	json jsonObj{ { "message", res.message } };
 	return buildBuffer(ProtocolCode::Error, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::serializeResponse(LoginResponse res)
+Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse res)
 {
 	json jsonObj{ { "status", res.status } };
 	return buildBuffer(ProtocolCode::Login, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::serializeResponse(SignupResponse res)
+Buffer JsonResponsePacketSerializer::serializeResponse(SignupResponse res)
 {
 	json jsonObj{ { "status", res.status } };
 	return buildBuffer(ProtocolCode::Signup, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::serializeResponse(LogoutResponse res)
+Buffer JsonResponsePacketSerializer::serializeResponse(LogoutResponse res)
 {
 	json jsonObj{ { "status", res.status } };
 	return buildBuffer(ProtocolCode::Logout, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::serializeResponse(GetRoomsResponse res)
+Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse res)
 {
 	/* Gets serialized using a member function (see RoomData's definition) */
 	json jsonObj{ {"Rooms", res.rooms} };
 	return buildBuffer(ProtocolCode::GetRooms, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::serializeResponse(GetPlayersInRoomResponse res)
+Buffer JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse res)
 {
 	json jsonObj{ {"PlayersInRoom", res.players} };
 	return buildBuffer(ProtocolCode::GetPlayersInRoom, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::serializeResponse(JoinRoomResponse res)
+Buffer JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse res)
 {
 	json jsonObj{ { "status", res.status} };
 	return buildBuffer(ProtocolCode::JoinRoom, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::serializeResponse(CreateRoomResponse res)
+Buffer JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse res)
 {
 	json jsonObj{ { "status", res.status} };
 	return buildBuffer(ProtocolCode::CreateRoom, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::serializeResponse(GetHighScoresResponse res)
+Buffer JsonResponsePacketSerializer::serializeResponse(GetHighScoresResponse res)
 {
 	/* format: { "HighScores": [ [name1, score1], [name2, score2] ... ] } */
 	json jsonObj{ { "HighScores", res.highScores } };
 	return buildBuffer(ProtocolCode::GetHighScores, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::serializeResponse(GetPersonalStatsResponse res)
+Buffer JsonResponsePacketSerializer::serializeResponse(GetPersonalStatsResponse res)
 {
 	json jsonObj
 	{
@@ -70,19 +70,19 @@ Buffer JsonRequestPacketSerializer::serializeResponse(GetPersonalStatsResponse r
 	return buildBuffer(ProtocolCode::GetPersonalStats, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::serializeResponse(CloseRoomResponse res)
+Buffer JsonResponsePacketSerializer::serializeResponse(CloseRoomResponse res)
 {
 	json jsonObj{ { "status", res.status } };
 	return buildBuffer(ProtocolCode::CloseRoom, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::serializeResponse(StartGameResponse res)
+Buffer JsonResponsePacketSerializer::serializeResponse(StartGameResponse res)
 {
 	json jsonObj{ { "status", res.status, }, { "startTime", res.startTime } };
 	return buildBuffer(ProtocolCode::StartGame, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::serializeResponse(GetRoomStateResponse res)
+Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse res)
 {
 	json jsonObj
 	{
@@ -96,13 +96,13 @@ Buffer JsonRequestPacketSerializer::serializeResponse(GetRoomStateResponse res)
 	return buildBuffer(ProtocolCode::GetRoomState, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::serializeResponse(LeaveRoomResponse res)
+Buffer JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse res)
 {
 	json jsonObj{ { "status", res.status } };
 	return buildBuffer(ProtocolCode::LeaveRoom, jsonObj);
 }
 
-Buffer JsonRequestPacketSerializer::buildBuffer(ProtocolCode resCode, const json& jsonObj)
+Buffer JsonResponsePacketSerializer::buildBuffer(ProtocolCode resCode, const json& jsonObj)
 {
 	auto msg = jsonObj.dump();
 	int msgSize = msg.length();

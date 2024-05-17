@@ -6,7 +6,7 @@
 class RoomAdminRequestHandler : public IRequestHandler
 {
 public:
-	RoomAdminRequestHandler(const Room& room, const LoggedUser& user, RequestHandlerFactory& handlerFactory);
+	RoomAdminRequestHandler(int roomId, const LoggedUser& user);
 
 	bool isRequestRelevant(const RequestInfo& reqInfo) override;
 	RequestResult handleRequest(const RequestInfo& reqInfo) override;
@@ -18,7 +18,9 @@ private:
 
 	using HandlerFunction = RequestResult(RoomAdminRequestHandler::*)(const RequestInfo&);
 	static const std::unordered_map<ProtocolCode, HandlerFunction> codeToFunction;
-	Room _room;
+
+	int _roomId;
+	Room& _roomRef;
 	LoggedUser _user;
 	RoomManager& _roomManager;
 	RequestHandlerFactory& _handlerFactory;
