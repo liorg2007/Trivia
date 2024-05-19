@@ -16,7 +16,7 @@ RequestHandlerFactory& RequestHandlerFactory::getInstance()
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler(SOCKET userSocket)
 {
-	return new LoginRequestHandler(*this, userSocket);
+	return new LoginRequestHandler(userSocket);
 }
 
 LoginManager& RequestHandlerFactory::getLoginManager()
@@ -26,7 +26,7 @@ LoginManager& RequestHandlerFactory::getLoginManager()
 
 MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& user)
 {
-	return new MenuRequestHandler(*this, user);
+	return new MenuRequestHandler(user);
 }
 
 RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(int roomId, const LoggedUser& user)

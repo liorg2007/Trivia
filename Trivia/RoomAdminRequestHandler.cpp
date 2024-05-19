@@ -28,7 +28,7 @@ void RoomAdminRequestHandler::handleDisconnect()
 {
 	closeRoom();
 	// Logout the user
-	MenuRequestHandler(_handlerFactory, _user).handleDisconnect();
+	MenuRequestHandler(_user).handleDisconnect();
 }
 
 RequestResult RoomAdminRequestHandler::closeRoom()
