@@ -38,7 +38,7 @@ struct CreateRoomRequest
 {
 	std::string roomName;
 	unsigned int maxUsers;
-	unsigned int questionCount;
+	unsigned int answerCount;
 	unsigned int answerTimeout;
 };
 

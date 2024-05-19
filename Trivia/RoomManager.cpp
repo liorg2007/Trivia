@@ -30,7 +30,7 @@ RoomState RoomManager::getRoomState(int roomId) const
 	const auto& ref = _rooms.at(roomId).getRoomData();
 	roomState.hasGameBegun = ref.isActive;
 	roomState.answerTimeout = ref.timerPerQuestion;
-	roomState.questionCount = ref.numOfQuestionsInGame;
+	roomState.answerCount = ref.numOfQuestionsInGame;
 	roomState.players = _rooms.at(roomId).getAllUsers();
 	return roomState;
 }

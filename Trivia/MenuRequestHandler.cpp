@@ -75,7 +75,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& req)
 	newRoomData.isActive = INACTIVE_ROOM;
 	newRoomData.maxPlayers = request.maxUsers;
 	newRoomData.name = std::move(request.roomName);
-	newRoomData.numOfQuestionsInGame = request.questionCount;
+	newRoomData.numOfQuestionsInGame = request.answerCount;
 	newRoomData.timerPerQuestion = request.answerTimeout;
 	try
 	{
