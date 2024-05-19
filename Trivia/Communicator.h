@@ -42,6 +42,9 @@ public:
 	/* starts handling the client requests */
 	void startHandleRequests();
 
+	/* Send the buffer to the socket and update the request handle */
+	void sendAndHandleRequestResult(const RequestResult& result, SOCKET userSocket);
+
 	Communicator(Communicator&) = delete;
 	void operator=(const Communicator&) = delete;
 };

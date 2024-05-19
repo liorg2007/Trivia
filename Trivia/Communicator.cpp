@@ -68,12 +68,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 					res.response = parseErrorMessage(e.what());
 				}
 
-				if (res.newHandler != nullptr)
-				{
-					delete handlerSearch->second; // free previous handler
-					handlerSearch->second = res.newHandler;
-				}
-				sendData(clientSocket, res.response);
+				sendAndHandleRequestResult(res, clientSocket);
 			}
 			else
 			{
@@ -175,4 +170,15 @@ void Communicator::startHandleRequests()
 	_threadPool.push_back(
 		new std::thread(&Communicator::bindAndListen,
 			this));
+}
+
+void Communicator::sendAndHandleRequestResult(const RequestResult& result, SOCKET userSocket)
+{
+	auto handlerSearch = _clients.find(userSocket);
+	if (result.newHandler != nullptr)
+	{
+		delete handlerSearch->second; // free previous handler
+		handlerSearch->second = result.newHandler;
+	}
+	sendData(userSocket, result.response);
 }

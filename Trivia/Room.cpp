@@ -1,5 +1,7 @@
 #include "Room.h"
-
+#include "Communicator.h"
+#include "Responses.h"
+#include "JsonRequestPacketSerializer.h"
 
 Room::Room(RoomData&& roomData, const LoggedUser& user)
 	: _roomData(std::move(roomData))
@@ -27,6 +29,36 @@ void Room::removeUser(const LoggedUser& loggedUser)
 
 	if (position != _users.end())
 		_users.erase(position);
+}
+
+void Room::startGame()
+{
+	StartGameResponse startGameRes;
+	startGameRes.status = SUCCESS;
+	RequestResult serializedRes;
+	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(startGameRes);
+
+	for (const auto& user : _users)
+	{
+		// will be updated to createGameRequestHandler
+		serializedRes.newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(user);
+		Communicator::getInstance().sendAndHandleRequestResult(serializedRes, user.getSocket());
+	}
+}
+
+void Room::removeAllUsers()
+{
+	LeaveRoomResponse leaveRoomRes;
+	leaveRoomRes.status = SUCCESS;
+	RequestResult serializedRes;
+	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(leaveRoomRes);
+
+	for (const auto& user : _users)
+	{
+		serializedRes.newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(user);
+		Communicator::getInstance().sendAndHandleRequestResult(serializedRes, user.getSocket());
+	}
+	_users.clear();
 }
 
 std::vector<std::string> Room::getAllUsers() const
