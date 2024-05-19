@@ -19,13 +19,20 @@ void RoomManager::createRoom(const LoggedUser& user, RoomData&& roomData)
 
 void RoomManager::deleteRoom(int roomId)
 {
+	_rooms.at(roomId).removeAllUsers();
 	std::lock_guard<std::mutex> lock(_mtx);
 	_rooms.erase(roomId);
 }
 
-unsigned int RoomManager::isRoomActive(int roomId) const
+RoomState RoomManager::getRoomState(int roomId) const
 {
-	return _rooms.at(roomId).getRoomData().isActive;
+	RoomState roomState;
+	const auto& ref = _rooms.at(roomId).getRoomData();
+	roomState.hasGameBegun = ref.isActive;
+	roomState.answerTimeout = ref.timerPerQuestion;
+	roomState.questionCount = ref.numOfQuestionsInGame;
+	roomState.players = _rooms.at(roomId).getAllUsers();
+	return roomState;
 }
 
 std::vector<RoomData> RoomManager::getRooms() const
