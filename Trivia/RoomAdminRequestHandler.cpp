@@ -1,5 +1,5 @@
 #include "RoomAdminRequestHandler.h"
-#include "JsonRequestPacketSerializer.h"
+#include "JsonResponsePacketSerializer.h"
 
 const std::unordered_map<ProtocolCode, RoomAdminRequestHandler::HandlerFunction> RoomAdminRequestHandler::codeToFunction = {
 		{ ProtocolCode::StartGame, &RoomAdminRequestHandler::startGame },

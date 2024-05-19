@@ -1,7 +1,7 @@
 #include "Room.h"
 #include "Communicator.h"
 #include "Responses.h"
-#include "JsonRequestPacketSerializer.h"
+#include "JsonResponsePacketSerializer.h"
 
 Room::Room(RoomData&& roomData, const LoggedUser& roomAdmin)
 	: _roomData(std::move(roomData)), _adminUser(roomAdmin)
