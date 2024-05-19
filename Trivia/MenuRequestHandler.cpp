@@ -12,8 +12,8 @@ const std::unordered_map<ProtocolCode, MenuRequestHandler::HandlerFunction> Menu
 		{ ProtocolCode::GetHighScores, &MenuRequestHandler::getHighScore }
 };
 
-MenuRequestHandler::MenuRequestHandler(RequestHandlerFactory& handlerFactory, const LoggedUser& user)
-	: _handlerFactory(handlerFactory), _user(user)
+MenuRequestHandler::MenuRequestHandler(const LoggedUser& user)
+	: _handlerFactory(RequestHandlerFactory::getInstance()), _user(user)
 {
 }
 

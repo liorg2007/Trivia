@@ -9,7 +9,7 @@ class RequestHandlerFactory;
 
 class LoginRequestHandler : public IRequestHandler {
 public:
-	LoginRequestHandler(RequestHandlerFactory& handlerFactory, SOCKET userSocket);
+	LoginRequestHandler(SOCKET userSocket);
 
 	bool isRequestRelevant(const RequestInfo& req) override;
 	RequestResult handleRequest(const RequestInfo& req) override;

@@ -3,10 +3,9 @@
 #include "Responses.h"
 #include "JsonRequestPacketSerializer.h"
 
-Room::Room(RoomData&& roomData, const LoggedUser& user)
-	: _roomData(std::move(roomData))
+Room::Room(RoomData&& roomData, const LoggedUser& roomAdmin)
+	: _roomData(std::move(roomData)), _adminUser(roomAdmin)
 {
-	addUser(user);
 }
 
 const RoomData& Room::getRoomData() const

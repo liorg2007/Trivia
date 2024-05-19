@@ -21,10 +21,17 @@ bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& reqInfo)
 RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& reqInfo)
 {
 	auto it = codeToFunction.find(reqInfo.id);
-	return (this->*(it->second))(reqInfo);
+	return (this->*(it->second))();
 }
 
-RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& reqInfo)
+void RoomAdminRequestHandler::handleDisconnect()
+{
+	closeRoom();
+	// Logout the user
+	MenuRequestHandler(_handlerFactory, _user).handleDisconnect();
+}
+
+RequestResult RoomAdminRequestHandler::closeRoom()
 {
 	CloseRoomResponse res;
 	RequestResult serializedRes;
@@ -43,7 +50,7 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& reqInfo)
 	return serializedRes;
 }
 
-RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& reqInfo)
+RequestResult RoomAdminRequestHandler::startGame()
 {
 	StartGameResponse res;
 	RequestResult serializedRes;
@@ -62,7 +69,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& reqInfo)
 	return serializedRes;
 }
 
-RequestResult RoomAdminRequestHandler::getRoomState(const RequestInfo& reqInfo)
+RequestResult RoomAdminRequestHandler::getRoomState()
 {
 	GetRoomStateResponse res;
 	RequestResult serializedRes;

@@ -6,10 +6,11 @@
 class Room {
 private:
 	RoomData _roomData;
+	LoggedUser _adminUser;
 	std::vector<LoggedUser> _users;
 
 public:
-	Room(RoomData&& roomData, const LoggedUser& user);
+	Room(RoomData&& roomData, const LoggedUser& roomAdmin);
 
 	const RoomData& getRoomData() const;
 

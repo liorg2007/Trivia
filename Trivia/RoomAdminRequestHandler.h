@@ -10,13 +10,14 @@ public:
 
 	bool isRequestRelevant(const RequestInfo& reqInfo) override;
 	RequestResult handleRequest(const RequestInfo& reqInfo) override;
+	void handleDisconnect() override;
 	
 private:
-	RequestResult closeRoom(const RequestInfo& reqInfo);
-	RequestResult startGame(const RequestInfo& reqInfo);
-	RequestResult getRoomState(const RequestInfo& reqInfo);
+	RequestResult closeRoom();
+	RequestResult startGame();
+	RequestResult getRoomState();
 
-	using HandlerFunction = RequestResult(RoomAdminRequestHandler::*)(const RequestInfo&);
+	using HandlerFunction = RequestResult(RoomAdminRequestHandler::*)();
 	static const std::unordered_map<ProtocolCode, HandlerFunction> codeToFunction;
 
 	int _roomId;

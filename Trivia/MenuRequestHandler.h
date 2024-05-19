@@ -8,7 +8,7 @@ class RequestHandlerFactory;
 
 class MenuRequestHandler : public IRequestHandler {
 public:
-	MenuRequestHandler(RequestHandlerFactory& handlerFactory, const LoggedUser& user);
+	MenuRequestHandler(const LoggedUser& user);
 
 	bool isRequestRelevant(const RequestInfo& req) override;
 	RequestResult handleRequest(const RequestInfo& req) override;

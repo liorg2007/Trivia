@@ -2,8 +2,8 @@
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonRequestPacketSerializer.h"
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory, SOCKET userSocket)
-	: _handlerFactory(handlerFactory), _userSocket(userSocket)
+LoginRequestHandler::LoginRequestHandler(SOCKET userSocket)
+	: _handlerFactory(RequestHandlerFactory::getInstance()), _userSocket(userSocket)
 {
 }
 
