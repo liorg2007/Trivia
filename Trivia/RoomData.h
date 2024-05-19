@@ -18,6 +18,6 @@ struct RoomData {
 struct RoomState {
 	bool hasGameBegun;
 	std::vector<std::string> players;
-	unsigned int numOfQuestionsInGame;
-	unsigned int timerPerQuestion;
+	unsigned int questionCount;
+	unsigned int answerTimeout;
 };
