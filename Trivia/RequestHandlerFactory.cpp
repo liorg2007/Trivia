@@ -41,6 +41,11 @@ RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(
 	return new RoomMemberRequestHandler(roomId, user);
 }
 
+IRequestHandler* RequestHandlerFactory::createGameRequestHandler()
+{
+	return nullptr;
+}
+
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 {
 	return _statisticsManager;

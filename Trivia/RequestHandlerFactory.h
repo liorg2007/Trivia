@@ -27,6 +27,8 @@ public:
 	RoomAdminRequestHandler* createRoomAdminRequestHandler(int roomId, const LoggedUser& user);
 	RoomMemberRequestHandler* createRoomMemberRequestHandler(int roomId, const LoggedUser& user);
 
+	IRequestHandler* createGameRequestHandler();
+
 	LoginManager& getLoginManager();
 	StatisticsManager& getStatisticsManager();
 	RoomManager& getRoomManager();

@@ -9,6 +9,8 @@ struct RoomData {
 	unsigned int numOfQuestionsInGame;
 	unsigned int timerPerQuestion;
 	unsigned int isActive;
+
+	std::time_t startTime;
 	// https://json.nlohmann.me/api/macros/nlohmann_define_type_intrusive/
 	// in order for SerializeResponse to work
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE_ONLY_SERIALIZE(RoomData, id, name, maxPlayers, numOfQuestionsInGame, timerPerQuestion, isActive);

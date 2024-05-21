@@ -30,6 +30,12 @@ void Room::removeUser(const LoggedUser& loggedUser)
 		_users.erase(position);
 }
 
+void Room::startGame(std::time_t startTime)
+{
+	_roomData.isActive = true;
+	_roomData.startTime = startTime;
+}
+
 std::vector<std::string> Room::getAllUsers() const
 {
 	std::vector<std::string> ans;

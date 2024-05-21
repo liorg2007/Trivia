@@ -17,5 +17,7 @@ public:
 	void addUser(const LoggedUser& loggedUser);
 	void removeUser(const LoggedUser& loggedUser);
 
+	void startGame(std::time_t startTime);
+
 	std::vector<std::string> getAllUsers() const;
 };

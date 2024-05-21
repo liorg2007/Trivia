@@ -11,19 +11,38 @@ BaseRoomRequestHandler::BaseRoomRequestHandler(int roomId, const LoggedUser& use
 
 RequestResult BaseRoomRequestHandler::getRoomState() const
 {
-	GetRoomStateResponse res;
-	RequestResult serializedRes;
+	GetRoomStateResponse roomStateRes;
 	try
 	{
-		res.roomState = _roomManager.getRoomState(_roomId);
-		res.status = SUCCESS;
+		roomStateRes.roomState = _roomManager.getRoomState(_roomId);
 	}
 	catch (...)
 	{
-		res.status = FAILURE;
+		// Exception: room not found, player needs to leave the room
+		LeaveRoomResponse res;
+		res.status = SUCCESS;
+		return RequestResult {
+			JsonResponsePacketSerializer::serializeResponse(res),
+			_handlerFactory.createMenuRequestHandler(_user)
+		};
 	}
 
-	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
-	serializedRes.newHandler = nullptr;
-	return serializedRes;
+	if (roomStateRes.roomState.hasGameBegun == true)
+	{
+		// Tell the player the game started
+		StartGameResponse res;
+		res.status = SUCCESS;
+		res.startTime = _roomRef.getRoomData().startTime;
+		return RequestResult{
+			JsonResponsePacketSerializer::serializeResponse(res),
+			_handlerFactory.createGameRequestHandler()
+		};
+	}
+	
+	// Room hasn't started or closed, return a normal GetRoomStateResult
+	roomStateRes.status = SUCCESS;
+	return RequestResult { 
+		JsonResponsePacketSerializer::serializeResponse(roomStateRes),
+		nullptr 
+	};
 }
