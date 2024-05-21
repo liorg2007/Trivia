@@ -17,6 +17,8 @@ private:
 	RequestResult startGame();
 	RequestResult getRoomState();
 
+	std::time_t getUTCGameStartTime();
+
 	using HandlerFunction = RequestResult(RoomAdminRequestHandler::*)();
 	static const std::unordered_map<ProtocolCode, HandlerFunction> codeToFunction;
 
@@ -26,4 +28,5 @@ private:
 	RoomManager& _roomManager;
 	RequestHandlerFactory& _handlerFactory;
 
+	static constexpr auto SECONDS_TO_GAME_START = 7;
 };

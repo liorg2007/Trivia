@@ -2,6 +2,7 @@
 #include "Communicator.h"
 #include "Responses.h"
 #include "JsonRequestPacketSerializer.h"
+#include <chrono>
 
 Room::Room(RoomData&& roomData, const LoggedUser& roomAdmin)
 	: _roomData(std::move(roomData)), _adminUser(roomAdmin)
@@ -30,18 +31,16 @@ void Room::removeUser(const LoggedUser& loggedUser)
 		_users.erase(position);
 }
 
-void Room::startGame()
+void Room::startGame(std::time_t startTime)
 {
+	_roomData.isActive = true;
+
 	StartGameResponse startGameRes;
 	startGameRes.status = SUCCESS;
+	startGameRes.startTime = startTime;
+
 	RequestResult serializedRes;
 	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(startGameRes);
-
-	// 10 seconds from now
-	std::time_t gameStartTime = std::time(nullptr) + 10;
-	// Convert to GMT
-	startGameRes.startTime = std::mktime(std::gmtime(&gameStartTime));
-
 	for (const auto& user : _users)
 	{
 		// will be updated to createGameRequestHandler

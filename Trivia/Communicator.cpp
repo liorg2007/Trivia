@@ -126,7 +126,7 @@ RequestInfo Communicator::recieveData(SOCKET clientSocket) const
 Buffer Communicator::parseErrorMessage(std::string&& errMsg) const
 {
 	ErrorResponse res;
-	res.message = errMsg;
+	res.message = std::move(errMsg);
 	return JsonResponsePacketSerializer::serializeResponse(res);
 }
 
