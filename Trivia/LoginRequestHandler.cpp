@@ -24,6 +24,10 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& req)
 	return result;
 }
 
+void LoginRequestHandler::handleDisconnect()
+{
+}
+
 RequestResult LoginRequestHandler::login(const RequestInfo& req)
 {
 	LoginManager& loginManager = _handlerFactory.getLoginManager();

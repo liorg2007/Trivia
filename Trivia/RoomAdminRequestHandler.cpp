@@ -1,21 +1,26 @@
 #include "RoomAdminRequestHandler.h"
 #include "JsonResponsePacketSerializer.h"
-
-const std::unordered_map<ProtocolCode, RoomAdminRequestHandler::HandlerFunction> RoomAdminRequestHandler::codeToFunction = {
-		{ ProtocolCode::StartGame, &RoomAdminRequestHandler::startGame },
-		{ ProtocolCode::GetRoomState, &RoomAdminRequestHandler::getRoomState },
-		{ ProtocolCode::CloseRoom, &RoomAdminRequestHandler::closeRoom },
-};
+#include "RequestHandlerFactory.h"
 
 bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& reqInfo)
 {
-	return codeToFunction.find(reqInfo.id) != codeToFunction.end();
+	return reqInfo.id == ProtocolCode::CloseRoom
+		|| reqInfo.id == ProtocolCode::StartGame
+		|| reqInfo.id == ProtocolCode::GetRoomState;
 }
 
 RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& reqInfo)
 {
-	auto it = codeToFunction.find(reqInfo.id);
-	return (this->*(it->second))();
+	switch (reqInfo.id)
+	{
+	case ProtocolCode::CloseRoom:
+		return closeRoom();
+	case ProtocolCode::StartGame:
+		return startGame();
+	case ProtocolCode::GetRoomState:
+	default:
+		return getRoomState();
+	}
 }
 
 void RoomAdminRequestHandler::handleDisconnect()

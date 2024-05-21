@@ -1,4 +1,6 @@
 #include "RequestHandlerFactory.h"
+#include "RoomAdminRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
 
 RequestHandlerFactory::RequestHandlerFactory()
 	: _database(IDatabase::getInstance()),
@@ -32,6 +34,11 @@ MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const Logged
 RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(int roomId, const LoggedUser& user)
 {
 	return new RoomAdminRequestHandler(roomId, user);
+}
+
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(int roomId, const LoggedUser& user)
+{
+	return new RoomMemberRequestHandler(roomId, user);
 }
 
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()

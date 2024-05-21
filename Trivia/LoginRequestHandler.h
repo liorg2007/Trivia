@@ -13,6 +13,7 @@ public:
 
 	bool isRequestRelevant(const RequestInfo& req) override;
 	RequestResult handleRequest(const RequestInfo& req) override;
+	void handleDisconnect() override;
 
 private:
 	RequestResult login(const RequestInfo& req);

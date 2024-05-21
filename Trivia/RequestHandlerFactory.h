@@ -6,11 +6,13 @@
 #include "RoomManager.h"
 #include "StatisticsManager.h"
 #include "LoggedUser.h"
-#include "RoomAdminRequestHandler.h"
 #include "WinSock2.h"
+#include "RoomAdminRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
 
 class LoginRequestHandler;
 class MenuRequestHandler;
+class RoomMemberRequestHandler;
 class RoomAdminRequestHandler;
 
 class RequestHandlerFactory
@@ -19,8 +21,11 @@ public:
 	static RequestHandlerFactory& getInstance();
 
 	LoginRequestHandler* createLoginRequestHandler(SOCKET socket);
+
 	MenuRequestHandler* createMenuRequestHandler(const LoggedUser& user);
+
 	RoomAdminRequestHandler* createRoomAdminRequestHandler(int roomId, const LoggedUser& user);
+	RoomMemberRequestHandler* createRoomMemberRequestHandler(int roomId, const LoggedUser& user);
 
 	LoginManager& getLoginManager();
 	StatisticsManager& getStatisticsManager();

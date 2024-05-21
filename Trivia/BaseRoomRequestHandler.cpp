@@ -1,6 +1,7 @@
 #include "BaseRoomRequestHandler.h"
 #include "Responses.h"
 #include "JsonResponsePacketSerializer.h"
+#include "RequestHandlerFactory.h"
 
 BaseRoomRequestHandler::BaseRoomRequestHandler(int roomId, const LoggedUser& user)
 	: _roomId(roomId), _user(user), _roomManager(RoomManager::getInstance()), _handlerFactory(RequestHandlerFactory::getInstance()),
