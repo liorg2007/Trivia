@@ -1,5 +1,5 @@
 #include "MenuRequestHandler.h"
-#include "JsonRequestPacketSerializer.h"
+#include "JsonResponsePacketSerializer.h"
 #include "JsonRequestPacketDeserializer.h"
 
 const std::unordered_map<ProtocolCode, MenuRequestHandler::HandlerFunction> MenuRequestHandler::codeToFunction = {

@@ -1,5 +1,5 @@
 #include "Communicator.h"
-#include "JsonRequestPacketSerializer.h"
+#include "JsonResponsePacketSerializer.h"
 
 void Communicator::bindAndListen()
 {
