@@ -20,7 +20,7 @@ class RequestHandlerFactory
 public:
 	static RequestHandlerFactory& getInstance();
 
-	LoginRequestHandler* createLoginRequestHandler(SOCKET socket);
+	LoginRequestHandler* createLoginRequestHandler();
 
 	MenuRequestHandler* createMenuRequestHandler(const LoggedUser& user);
 

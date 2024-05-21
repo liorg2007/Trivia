@@ -26,7 +26,7 @@ void Communicator::bindAndListen()
 			throw std::exception(__FUNCTION__);
 
 		std::cout << "New client accepted, starting a new thread" << std::endl;
-		_clients.insert({ clientSocket, _handlerFactory.createLoginRequestHandler(clientSocket) });
+		_clients.emplace(clientSocket, _handlerFactory.createLoginRequestHandler());
 		_threadPool.push_back(
 			new std::thread(&Communicator::handleNewClient,
 				this, clientSocket));
@@ -68,7 +68,13 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 					res.response = parseErrorMessage(e.what());
 				}
 
-				sendAndHandleRequestResult(res, clientSocket);
+				if (res.newHandler != nullptr)
+				{
+					delete handlerSearch->second; // free previous handler
+					handlerSearch->second = res.newHandler;
+				}
+
+				sendData(clientSocket, res.response);
 			}
 			else
 			{
@@ -170,15 +176,4 @@ void Communicator::startHandleRequests()
 	_threadPool.push_back(
 		new std::thread(&Communicator::bindAndListen,
 			this));
-}
-
-void Communicator::sendAndHandleRequestResult(const RequestResult& result, SOCKET userSocket)
-{
-	auto handlerSearch = _clients.find(userSocket);
-	if (result.newHandler != nullptr)
-	{
-		delete handlerSearch->second; // free previous handler
-		handlerSearch->second = result.newHandler;
-	}
-	sendData(userSocket, result.response);
 }

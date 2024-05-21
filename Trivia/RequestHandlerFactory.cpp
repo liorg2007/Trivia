@@ -16,9 +16,9 @@ RequestHandlerFactory& RequestHandlerFactory::getInstance()
 	return instance;
 }
 
-LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler(SOCKET userSocket)
+LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
-	return new LoginRequestHandler(userSocket);
+	return new LoginRequestHandler();
 }
 
 LoginManager& RequestHandlerFactory::getLoginManager()

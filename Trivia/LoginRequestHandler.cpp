@@ -2,8 +2,8 @@
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonResponsePacketSerializer.h"
 
-LoginRequestHandler::LoginRequestHandler(SOCKET userSocket)
-	: _handlerFactory(RequestHandlerFactory::getInstance()), _userSocket(userSocket)
+LoginRequestHandler::LoginRequestHandler()
+	: _handlerFactory(RequestHandlerFactory::getInstance())
 {
 }
 
@@ -35,9 +35,9 @@ RequestResult LoginRequestHandler::login(const RequestInfo& req)
 	LoginResponse loginResponse;
 	RequestResult result;
 
-	if (loginManager.login(_userSocket, loginData.username, loginData.password)) {
+	if (loginManager.login(loginData.username, loginData.password)) {
 		loginResponse.status = SUCCESS;
-		result.newHandler = _handlerFactory.createMenuRequestHandler(LoggedUser(loginData.username, _userSocket));
+		result.newHandler = _handlerFactory.createMenuRequestHandler(loginData.username);
 	}
 	else {
 		loginResponse.status = FAILURE;
@@ -59,9 +59,9 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& req)
 
 	isDataValid = CheckSignupData::CheckData(signupData);
 
-	if (isDataValid && loginManager.signup(_userSocket, signupData.username, signupData.password, signupData.email, signupData.address, signupData.phoneNumber, signupData.birthDate)) {
+	if (isDataValid && loginManager.signup(signupData.username, signupData.password, signupData.email, signupData.address, signupData.phoneNumber, signupData.birthDate)) {
 		signupResponse.status = SUCCESS;
-		result.newHandler = _handlerFactory.createMenuRequestHandler(LoggedUser(signupData.username, _userSocket));
+		result.newHandler = _handlerFactory.createMenuRequestHandler(signupData.username);
 	}
 	else {
 		signupResponse.status = FAILURE;

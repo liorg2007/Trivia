@@ -55,7 +55,7 @@ RequestResult RoomAdminRequestHandler::startGame()
 	try
 	{
 		res.startTime = getUTCGameStartTime();
-		_roomRef.startGame(res.startTime);
+//		_roomRef.startGame(res.startTime);
 		res.status = SUCCESS;
 	}
 	catch (...)

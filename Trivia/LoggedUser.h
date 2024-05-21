@@ -5,14 +5,12 @@
 class LoggedUser
 {
 public:
-	LoggedUser(const std::string& username, SOCKET socket);
+	LoggedUser(const std::string& username);
 
 	std::string getUsername() const;
-	SOCKET getSocket() const;
 	bool operator==(const LoggedUser& other) const;
 	bool operator==(const std::string& other) const;
 private:
 	std::string _username;
-	SOCKET _socket;
 };
 

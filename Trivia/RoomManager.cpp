@@ -19,7 +19,6 @@ void RoomManager::createRoom(const LoggedUser& user, RoomData&& roomData)
 
 void RoomManager::deleteRoom(int roomId)
 {
-	_rooms.at(roomId).removeAllUsers();
 	std::lock_guard<std::mutex> lock(_mtx);
 	_rooms.erase(roomId);
 }
