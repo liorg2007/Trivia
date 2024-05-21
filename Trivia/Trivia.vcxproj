@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseRoomRequestHandler.cpp" />
     <ClCompile Include="CheckSignupData.cpp" />
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="IDatabase.cpp" />
@@ -145,6 +146,7 @@
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomAdminRequestHandler.cpp" />
     <ClCompile Include="RoomManager.cpp" />
+    <ClCompile Include="RoomMemberRequestHandler.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SqliteDatabase.cpp" />
@@ -152,6 +154,7 @@
     <ClCompile Include="WSAInitializer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseRoomRequestHandler.h" />
     <ClInclude Include="CheckSignupData.h" />
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="Constants.h" />
@@ -164,7 +167,7 @@
     <ClInclude Include="LoggedUser.h" />
     <ClInclude Include="LoginManager.h" />
     <ClInclude Include="LoginRequestHandler.h" />
-    <ClInclude Include="JsonResponsePacketSerializer.h" />
+    <ClInclude Include="JsonRequestPacketSerializer.h" />
     <ClInclude Include="MenuRequestHandler.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="QuestionsRetriever.h" />
@@ -175,6 +178,7 @@
     <ClInclude Include="RoomAdminRequestHandler.h" />
     <ClInclude Include="RoomData.h" />
     <ClInclude Include="RoomManager.h" />
+    <ClInclude Include="RoomMemberRequestHandler.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="SqliteDatabase.h" />
     <ClInclude Include="StatisticsManager.h" />

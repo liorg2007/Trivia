@@ -7,12 +7,6 @@ const std::unordered_map<ProtocolCode, RoomAdminRequestHandler::HandlerFunction>
 		{ ProtocolCode::CloseRoom, &RoomAdminRequestHandler::closeRoom },
 };
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(int roomId, const LoggedUser& user)
-	: _roomId(roomId), _user(user), _roomManager(RoomManager::getInstance()), _handlerFactory(RequestHandlerFactory::getInstance()),
-	_roomRef(_roomManager.getRoom(roomId))
-{
-}
-
 bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& reqInfo)
 {
 	return codeToFunction.find(reqInfo.id) != codeToFunction.end();
@@ -62,25 +56,6 @@ RequestResult RoomAdminRequestHandler::startGame()
 	catch (...)
 	{
 		res.startTime = 0;
-		res.status = FAILURE;
-	}
-
-	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
-	serializedRes.newHandler = nullptr;
-	return serializedRes;
-}
-
-RequestResult RoomAdminRequestHandler::getRoomState()
-{
-	GetRoomStateResponse res;
-	RequestResult serializedRes;
-	try
-	{
-		res.roomState = _roomManager.getRoomState(_roomId);
-		res.status = SUCCESS;
-	}
-	catch (...)
-	{
 		res.status = FAILURE;
 	}
 

@@ -2,12 +2,11 @@
 #include "IRequestHandler.h"
 #include "RoomManager.h"
 #include "RequestHandlerFactory.h"
+#include "BaseRoomRequestHandler.h"
 
-class RoomAdminRequestHandler : public IRequestHandler
+class RoomAdminRequestHandler : public BaseRoomRequestHandler
 {
 public:
-	RoomAdminRequestHandler(int roomId, const LoggedUser& user);
-
 	bool isRequestRelevant(const RequestInfo& reqInfo) override;
 	RequestResult handleRequest(const RequestInfo& reqInfo) override;
 	void handleDisconnect() override;
@@ -15,7 +14,6 @@ public:
 private:
 	RequestResult closeRoom();
 	RequestResult startGame();
-	RequestResult getRoomState();
 
 	std::time_t getUTCGameStartTime();
 
