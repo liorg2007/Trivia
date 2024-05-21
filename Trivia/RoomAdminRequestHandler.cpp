@@ -26,9 +26,8 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& reqInfo)
 
 void RoomAdminRequestHandler::handleDisconnect()
 {
-	closeRoom();
-	// Logout the user
-	MenuRequestHandler(_user).handleDisconnect();
+	_roomManager.deleteRoom(_roomId);
+	_handlerFactory.getLoginManager().logout(_user.getUsername());
 }
 
 RequestResult RoomAdminRequestHandler::closeRoom()

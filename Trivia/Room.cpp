@@ -37,6 +37,11 @@ void Room::startGame()
 	RequestResult serializedRes;
 	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(startGameRes);
 
+	// 10 seconds from now
+	std::time_t gameStartTime = std::time(nullptr) + 10;
+	// Convert to GMT
+	startGameRes.startTime = std::mktime(std::gmtime(&gameStartTime));
+
 	for (const auto& user : _users)
 	{
 		// will be updated to createGameRequestHandler
