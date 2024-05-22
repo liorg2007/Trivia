@@ -1,10 +1,11 @@
 #include "Room.h"
+#include "Communicator.h"
+#include "Responses.h"
+#include "JsonResponsePacketSerializer.h"
 
-
-Room::Room(RoomData&& roomData, const LoggedUser& user)
-	: _roomData(std::move(roomData))
+Room::Room(RoomData&& roomData, const LoggedUser& roomAdmin)
+	: _roomData(std::move(roomData)), _adminUser(roomAdmin)
 {
-	addUser(user);
 }
 
 const RoomData& Room::getRoomData() const
@@ -27,6 +28,12 @@ void Room::removeUser(const LoggedUser& loggedUser)
 
 	if (position != _users.end())
 		_users.erase(position);
+}
+
+void Room::startGame(std::time_t startTime)
+{
+	_roomData.isActive = true;
+	_roomData.startTime = startTime;
 }
 
 std::vector<std::string> Room::getAllUsers() const

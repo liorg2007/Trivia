@@ -1,9 +1,9 @@
 #include "LoginRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
-#include "JsonRequestPacketSerializer.h"
+#include "JsonResponsePacketSerializer.h"
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory)
-	: _handlerFactory(handlerFactory)
+LoginRequestHandler::LoginRequestHandler()
+	: _handlerFactory(RequestHandlerFactory::getInstance())
 {
 }
 
@@ -24,6 +24,10 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& req)
 	return result;
 }
 
+void LoginRequestHandler::handleDisconnect()
+{
+}
+
 RequestResult LoginRequestHandler::login(const RequestInfo& req)
 {
 	LoginManager& loginManager = _handlerFactory.getLoginManager();
@@ -40,7 +44,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& req)
 		result.newHandler = nullptr;
 	}
 
-	result.response = JsonRequestPacketSerializer::serializeResponse(loginResponse);
+	result.response = JsonResponsePacketSerializer::serializeResponse(loginResponse);
 
 	return result;
 }
@@ -64,7 +68,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& req)
 		result.newHandler = nullptr;
 	}
 
-	result.response = JsonRequestPacketSerializer::serializeResponse(signupResponse);
+	result.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
 
 	return result;
 }

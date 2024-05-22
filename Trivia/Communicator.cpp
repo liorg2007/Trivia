@@ -1,5 +1,5 @@
 #include "Communicator.h"
-#include "JsonRequestPacketSerializer.h"
+#include "JsonResponsePacketSerializer.h"
 
 void Communicator::bindAndListen()
 {
@@ -26,7 +26,7 @@ void Communicator::bindAndListen()
 			throw std::exception(__FUNCTION__);
 
 		std::cout << "New client accepted, starting a new thread" << std::endl;
-		_clients.insert({ clientSocket, _handlerFactory.createLoginRequestHandler() });
+		_clients.emplace(clientSocket, _handlerFactory.createLoginRequestHandler());
 		_threadPool.push_back(
 			new std::thread(&Communicator::handleNewClient,
 				this, clientSocket));
@@ -70,18 +70,16 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 				if (res.newHandler != nullptr)
 				{
-					delete handlerSearch->second; // free previous handler
-					handlerSearch->second = res.newHandler;
+					handlerSearch->second = std::move(res.newHandler);
 				}
+
 				sendData(clientSocket, res.response);
 			}
 			else
 			{
 				// send error message
-				ErrorResponse errRes;
-				errRes.message = "Request is not relevant to current client state";
 				sendData(clientSocket,
-					JsonRequestPacketSerializer::serializeResponse(errRes));
+					parseErrorMessage("Request is not relevant to current client state"));
 			}
 		}
 	}
@@ -92,7 +90,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		if (handlerSearch != _clients.end())
 		{
 			handlerSearch->second->handleDisconnect();
-			delete handlerSearch->second;
+			handlerSearch->second.release();
 			_clients.erase(clientSocket);
 		}
 		closesocket(clientSocket);
@@ -130,11 +128,11 @@ RequestInfo Communicator::recieveData(SOCKET clientSocket) const
 	return req;
 }
 
-Buffer Communicator::parseErrorMessage(const std::string& errMsg) const
+Buffer Communicator::parseErrorMessage(std::string&& errMsg) const
 {
 	ErrorResponse res;
-	res.message = errMsg;
-	return JsonRequestPacketSerializer::serializeResponse(res);
+	res.message = std::move(errMsg);
+	return JsonResponsePacketSerializer::serializeResponse(res);
 }
 
 Communicator::Communicator()
@@ -162,11 +160,7 @@ Communicator::~Communicator()
 			pThread->join();
 			delete pThread;
 		}
-		for (const auto& pair : _clients)
-		{
-			// free handlers memory
-			delete pair.second;
-		}
+
 		closesocket(_serverSocket);
 	}
 	catch (...) {}

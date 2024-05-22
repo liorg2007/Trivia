@@ -44,7 +44,7 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(co
 	CreateRoomRequest request;
 	request.roomName = std::move(data.at(ROOM_NAME_HEADER));
 	request.maxUsers = std::move(data.at(MAX_USERS_HEADER));
-	request.questionCount = std::move(data.at(QUESTION_COUNT_HEADER));
+	request.answerCount = std::move(data.at(QUESTION_COUNT_HEADER));
 	request.answerTimeout = std::move(data.at(ANSWER_TIMEOUT_HEADER));
 	return request;
 }
