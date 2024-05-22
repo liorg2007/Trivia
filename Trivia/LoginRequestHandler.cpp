@@ -37,7 +37,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& req)
 
 	if (loginManager.login(loginData.username, loginData.password)) {
 		loginResponse.status = SUCCESS;
-		result.newHandler = _handlerFactory.createMenuRequestHandler(loginData.username);
+		result.newHandler = std::shared_ptr<IRequestHandler>(_handlerFactory.createMenuRequestHandler(loginData.username));
 	}
 	else {
 		loginResponse.status = FAILURE;
@@ -61,7 +61,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& req)
 
 	if (isDataValid && loginManager.signup(signupData.username, signupData.password, signupData.email, signupData.address, signupData.phoneNumber, signupData.birthDate)) {
 		signupResponse.status = SUCCESS;
-		result.newHandler = _handlerFactory.createMenuRequestHandler(signupData.username);
+		result.newHandler = std::shared_ptr<IRequestHandler>(_handlerFactory.createMenuRequestHandler(signupData.username));
 	}
 	else {
 		signupResponse.status = FAILURE;

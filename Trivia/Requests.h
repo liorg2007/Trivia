@@ -3,6 +3,7 @@
 #include <ctime>
 #include "Constants.h"
 #include "IRequestHandler.h"
+#include <memory>
 
 struct RequestInfo
 {
@@ -31,7 +32,7 @@ class IRequestHandler;
 struct RequestResult
 {
 	Buffer response;
-	IRequestHandler* newHandler = nullptr;
+	std::shared_ptr<IRequestHandler> newHandler;
 };
 
 struct CreateRoomRequest

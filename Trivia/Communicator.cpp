@@ -70,7 +70,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 				if (res.newHandler != nullptr)
 				{
-					delete handlerSearch->second; // free previous handler
+					handlerSearch->second.reset();
 					handlerSearch->second = res.newHandler;
 				}
 
@@ -91,7 +91,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		if (handlerSearch != _clients.end())
 		{
 			handlerSearch->second->handleDisconnect();
-			delete handlerSearch->second;
+			handlerSearch->second.reset();
 			_clients.erase(clientSocket);
 		}
 		closesocket(clientSocket);
@@ -161,11 +161,7 @@ Communicator::~Communicator()
 			pThread->join();
 			delete pThread;
 		}
-		for (const auto& pair : _clients)
-		{
-			// free handlers memory
-			delete pair.second;
-		}
+
 		closesocket(_serverSocket);
 	}
 	catch (...) {}

@@ -21,10 +21,11 @@ RequestResult BaseRoomRequestHandler::getRoomState() const
 		// Exception: room not found, player needs to leave the room
 		LeaveRoomResponse res;
 		res.status = SUCCESS;
-		return RequestResult {
-			JsonResponsePacketSerializer::serializeResponse(res),
-			_handlerFactory.createMenuRequestHandler(_user)
-		};
+
+		RequestResult result;
+		result.response = JsonResponsePacketSerializer::serializeResponse(res);
+		result.newHandler = std::shared_ptr<IRequestHandler>(_handlerFactory.createMenuRequestHandler(_user));
+		return result;
 	}
 
 	if (roomStateRes.roomState.hasGameBegun == true)
@@ -33,16 +34,18 @@ RequestResult BaseRoomRequestHandler::getRoomState() const
 		StartGameResponse res;
 		res.status = SUCCESS;
 		res.startTime = _roomRef.getRoomData().startTime;
-		return RequestResult{
-			JsonResponsePacketSerializer::serializeResponse(res),
-			_handlerFactory.createGameRequestHandler()
-		};
+
+		RequestResult result;
+		result.response = JsonResponsePacketSerializer::serializeResponse(res);
+		result.newHandler = std::shared_ptr<IRequestHandler>(_handlerFactory.createGameRequestHandler());
+		return result;
 	}
 	
 	// Room hasn't started or closed, return a normal GetRoomStateResult
 	roomStateRes.status = SUCCESS;
-	return RequestResult { 
-		JsonResponsePacketSerializer::serializeResponse(roomStateRes),
-		nullptr 
-	};
+
+	RequestResult result;
+	result.response = JsonResponsePacketSerializer::serializeResponse(roomStateRes);
+	result.newHandler = nullptr;
+	return result;
 }

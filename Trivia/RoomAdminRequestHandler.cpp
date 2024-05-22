@@ -44,7 +44,7 @@ RequestResult RoomAdminRequestHandler::closeRoom()
 	}
 
 	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
-	serializedRes.newHandler = _handlerFactory.createMenuRequestHandler(_user);
+	serializedRes.newHandler = std::shared_ptr<IRequestHandler>(_handlerFactory.createMenuRequestHandler(_user));
 	return serializedRes;
 }
 
