@@ -6,7 +6,6 @@
 #include "RoomManager.h"
 #include "StatisticsManager.h"
 #include "LoggedUser.h"
-#include "WinSock2.h"
 #include "RoomAdminRequestHandler.h"
 #include "RoomMemberRequestHandler.h"
 
