@@ -32,7 +32,7 @@ class IRequestHandler;
 struct RequestResult
 {
 	Buffer response;
-	std::shared_ptr<IRequestHandler> newHandler;
+	std::unique_ptr<IRequestHandler> newHandler;
 };
 
 struct CreateRoomRequest

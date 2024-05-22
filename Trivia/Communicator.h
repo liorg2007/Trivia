@@ -16,7 +16,7 @@ private:
 	SOCKET _serverSocket;
 	RequestHandlerFactory& _handlerFactory;
 
-	std::unordered_map<SOCKET, std::shared_ptr<IRequestHandler>> _clients;
+	std::unordered_map<SOCKET, std::unique_ptr<IRequestHandler>> _clients;
 	
 	std::vector<std::thread*> _threadPool;
 

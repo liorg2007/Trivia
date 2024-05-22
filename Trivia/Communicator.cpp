@@ -70,7 +70,6 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 				if (res.newHandler != nullptr)
 				{
-					handlerSearch->second.reset();
 					handlerSearch->second = std::move(res.newHandler);
 				}
 
@@ -91,7 +90,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		if (handlerSearch != _clients.end())
 		{
 			handlerSearch->second->handleDisconnect();
-			handlerSearch->second.reset();
+			handlerSearch->second.release();
 			_clients.erase(clientSocket);
 		}
 		closesocket(clientSocket);

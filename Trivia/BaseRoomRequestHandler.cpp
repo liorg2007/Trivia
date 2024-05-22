@@ -24,7 +24,7 @@ RequestResult BaseRoomRequestHandler::getRoomState() const
 
 		RequestResult result;
 		result.response = JsonResponsePacketSerializer::serializeResponse(res);
-		result.newHandler = std::shared_ptr<IRequestHandler>(_handlerFactory.createMenuRequestHandler(_user));
+		result.newHandler = _handlerFactory.createMenuRequestHandler(_user);
 		return result;
 	}
 
@@ -37,7 +37,7 @@ RequestResult BaseRoomRequestHandler::getRoomState() const
 
 		RequestResult result;
 		result.response = JsonResponsePacketSerializer::serializeResponse(res);
-		result.newHandler = std::shared_ptr<IRequestHandler>(_handlerFactory.createGameRequestHandler());
+		result.newHandler = _handlerFactory.createGameRequestHandler();
 		return result;
 	}
 	

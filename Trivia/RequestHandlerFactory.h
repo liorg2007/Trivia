@@ -20,12 +20,12 @@ class RequestHandlerFactory
 public:
 	static RequestHandlerFactory& getInstance();
 
-	std::unique_ptr<IRequestHandler> createLoginRequestHandler();
+	std::unique_ptr<LoginRequestHandler> createLoginRequestHandler();
 
-	std::unique_ptr<IRequestHandler> createMenuRequestHandler(const LoggedUser& user);
+	std::unique_ptr<MenuRequestHandler> createMenuRequestHandler(const LoggedUser& user);
 
-	std::unique_ptr<IRequestHandler> createRoomAdminRequestHandler(int roomId, const LoggedUser& user);
-	std::unique_ptr<IRequestHandler> createRoomMemberRequestHandler(int roomId, const LoggedUser& user);
+	std::unique_ptr<RoomAdminRequestHandler> createRoomAdminRequestHandler(int roomId, const LoggedUser& user);
+	std::unique_ptr<RoomMemberRequestHandler> createRoomMemberRequestHandler(int roomId, const LoggedUser& user);
 
 	std::unique_ptr<IRequestHandler> createGameRequestHandler();
 
