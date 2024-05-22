@@ -42,7 +42,7 @@ RequestResult MenuRequestHandler::logout(const RequestInfo& req)
 	else
 		throw(std::exception("Cannot logout non-existing user"));
 
-	result.newHandler = std::shared_ptr<IRequestHandler>(_handlerFactory.createLoginRequestHandler());
+	result.newHandler = std::move(_handlerFactory.createLoginRequestHandler());
 	result.response = JsonResponsePacketSerializer::serializeResponse(response);
 	return result;
 }

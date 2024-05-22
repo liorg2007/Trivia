@@ -16,9 +16,9 @@ RequestHandlerFactory& RequestHandlerFactory::getInstance()
 	return instance;
 }
 
-LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
+std::unique_ptr<IRequestHandler> RequestHandlerFactory::createLoginRequestHandler()
 {
-	return new LoginRequestHandler();
+	return std::unique_ptr<IRequestHandler>(new LoginRequestHandler());
 }
 
 LoginManager& RequestHandlerFactory::getLoginManager()
@@ -26,22 +26,22 @@ LoginManager& RequestHandlerFactory::getLoginManager()
 	return _loginManager;
 }
 
-MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& user)
+std::unique_ptr<IRequestHandler> RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& user)
 {
-	return new MenuRequestHandler(user);
+	return std::unique_ptr<IRequestHandler>(new MenuRequestHandler(user));
 }
 
-RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(int roomId, const LoggedUser& user)
+std::unique_ptr<IRequestHandler> RequestHandlerFactory::createRoomAdminRequestHandler(int roomId, const LoggedUser& user)
 {
-	return new RoomAdminRequestHandler(roomId, user);
+	return std::unique_ptr<IRequestHandler>(new RoomAdminRequestHandler(roomId, user));
 }
 
-RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(int roomId, const LoggedUser& user)
+std::unique_ptr<IRequestHandler> RequestHandlerFactory::createRoomMemberRequestHandler(int roomId, const LoggedUser& user)
 {
-	return new RoomMemberRequestHandler(roomId, user);
+	return std::unique_ptr<IRequestHandler>(new RoomMemberRequestHandler(roomId, user));
 }
 
-IRequestHandler* RequestHandlerFactory::createGameRequestHandler()
+std::unique_ptr<IRequestHandler> RequestHandlerFactory::createGameRequestHandler()
 {
 	return nullptr;
 }

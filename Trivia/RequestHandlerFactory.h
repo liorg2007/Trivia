@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
 #include "IDatabase.h"
@@ -19,14 +20,14 @@ class RequestHandlerFactory
 public:
 	static RequestHandlerFactory& getInstance();
 
-	LoginRequestHandler* createLoginRequestHandler();
+	std::unique_ptr<IRequestHandler> createLoginRequestHandler();
 
-	MenuRequestHandler* createMenuRequestHandler(const LoggedUser& user);
+	std::unique_ptr<IRequestHandler> createMenuRequestHandler(const LoggedUser& user);
 
-	RoomAdminRequestHandler* createRoomAdminRequestHandler(int roomId, const LoggedUser& user);
-	RoomMemberRequestHandler* createRoomMemberRequestHandler(int roomId, const LoggedUser& user);
+	std::unique_ptr<IRequestHandler> createRoomAdminRequestHandler(int roomId, const LoggedUser& user);
+	std::unique_ptr<IRequestHandler> createRoomMemberRequestHandler(int roomId, const LoggedUser& user);
 
-	IRequestHandler* createGameRequestHandler();
+	std::unique_ptr<IRequestHandler> createGameRequestHandler();
 
 	LoginManager& getLoginManager();
 	StatisticsManager& getStatisticsManager();

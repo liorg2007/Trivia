@@ -71,7 +71,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 				if (res.newHandler != nullptr)
 				{
 					handlerSearch->second.reset();
-					handlerSearch->second = res.newHandler;
+					handlerSearch->second = std::move(res.newHandler);
 				}
 
 				sendData(clientSocket, res.response);
