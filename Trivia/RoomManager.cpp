@@ -12,19 +12,20 @@ RoomManager& RoomManager::getInstance()
 
 void RoomManager::createRoom(const LoggedUser& user, RoomData&& roomData)
 {
-	std::lock_guard<std::mutex> lock(_mtx);
+	std::unique_lock<std::shared_mutex> lock(_mtx);
 	unsigned int id = _rooms.size();
 	_rooms.emplace(std::piecewise_construct, std::forward_as_tuple(id), std::forward_as_tuple(std::move(roomData), user));
 }
 
 void RoomManager::deleteRoom(int roomId)
 {
-	std::lock_guard<std::mutex> lock(_mtx);
+	std::unique_lock<std::shared_mutex> lock(_mtx);
 	_rooms.erase(roomId);
 }
 
 RoomState RoomManager::getRoomState(int roomId) const
 {
+	std::shared_lock<std::shared_mutex> lock(_mtx);
 	RoomState roomState;
 	const auto& ref = _rooms.at(roomId).getRoomData();
 	roomState.hasGameBegun = ref.isActive;
@@ -36,6 +37,8 @@ RoomState RoomManager::getRoomState(int roomId) const
 
 std::vector<RoomData> RoomManager::getRooms() const
 {
+	std::shared_lock<std::shared_mutex> lock(_mtx);
+
 	std::vector<RoomData> ans(_rooms.size());
 
 	for (const auto& room : _rooms)
@@ -44,7 +47,8 @@ std::vector<RoomData> RoomManager::getRooms() const
 	return ans;
 }
 
-Room& RoomManager::getRoom(int roomId)
+Room& RoomManager::getRoom(int roomId) 
 {
+	std::shared_lock<std::shared_mutex> lock(_mtx);
 	return _rooms.at(roomId);
 }

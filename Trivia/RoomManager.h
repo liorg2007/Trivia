@@ -1,6 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include "Room.h"
+#include <shared_mutex>
 #include <mutex>
 
 class RoomManager {
@@ -16,6 +17,6 @@ public:
 private:
 	RoomManager();
 	std::unordered_map<int, Room> _rooms;
-	std::mutex _mtx;
+	mutable std::shared_mutex _mtx;
 
 };
