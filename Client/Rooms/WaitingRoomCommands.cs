@@ -24,12 +24,31 @@ namespace Client.Rooms
                 if (res.status != 1)
                     return false;
                 else
-                {
                     return true;
-                }
             }
 
             return false;
+        }
+
+        public static long StartGame(App app)
+        {
+            var message = Helper.createProtocol(Code.StartGame);
+
+            app._server.sendMessage(message);
+
+            ServerResponse response = Helper.decodeProtocol(app._server.receiveMessage());
+
+            if (response.code == Code.LeaveRoom)
+            {
+                StartGameResponse res = JsonPacketDeserializer.DeserializeStartGameResponse(response.message);
+
+                if (res.status != 1)
+                    throw new Exception("Can't start game");
+                else
+                    return res.start_time;
+            }
+
+            throw new Exception("Bad response");
         }
     }
 }

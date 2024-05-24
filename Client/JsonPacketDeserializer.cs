@@ -133,5 +133,10 @@ namespace Client
         {
             return JsonSerializer.Deserialize<LeaveRoomResponse>(message);
         }
+
+        public static StartGameResponse DeserializeStartGameResponse(string message)
+        {
+            return JsonSerializer.Deserialize<StartGameResponse>(message);
+        }
     }
 }

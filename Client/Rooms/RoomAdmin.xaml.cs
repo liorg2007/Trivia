@@ -37,6 +37,20 @@ namespace Client.Rooms
             }
         }
 
+        private void startPress(object sender, MouseButtonEventArgs e)
+        {
+            long startTime;
+            try
+            {
+                startTime = WaitingRoomCommands.StartGame((App)Application.Current);
+                Helper.raiseSuccessBox("Game starts at:" + startTime);
+            }
+            catch (Exception ex)
+            {
+                Helper.raiseErrorBox(ex.Message);
+            }
+        }
+
         /* Default screen events*/
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

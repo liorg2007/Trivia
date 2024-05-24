@@ -130,5 +130,10 @@ namespace Client
             public uint status { get; set; }
         }
 
+        public struct StartGameResponse
+        {
+            public uint status { get; set; }
+            public long start_time { get; set; }
+        }
     }
 }
