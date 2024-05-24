@@ -128,5 +128,10 @@ namespace Client
         {
             return JsonSerializer.Deserialize<JoinRoomResponse>(message);
         }
+
+        public static LeaveRoomResponse DeserializeLeaveRoomResponse(string message)
+        {
+            return JsonSerializer.Deserialize<LeaveRoomResponse>(message);
+        }
     }
 }

@@ -124,5 +124,11 @@ namespace Client
         {
             public uint status { get; set; }
         }
+
+        public struct LeaveRoomResponse
+        {
+            public uint status { get; set; }
+        }
+
     }
 }
