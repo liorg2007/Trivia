@@ -12,11 +12,7 @@ namespace Client.Rooms
     {
         public static bool LeaveRoom(App app)
         {
-            var message = Helper.createProtocol(Code.LeaveRoom);
-
-            app._server.sendMessage(message);
-
-            ServerResponse response = Helper.decodeProtocol(app._server.receiveMessage());
+            ServerResponse response = Helper.SendMessageWithCode(Code.LeaveRoom, app);
 
             if (response.code == Code.LeaveRoom)
                 return GetLeaveRoomResponse(response.message);
@@ -26,11 +22,7 @@ namespace Client.Rooms
 
         public static bool CloseRoom(App app)
         {
-            var message = Helper.createProtocol(Code.CloseRoom);
-
-            app._server.sendMessage(message);
-
-            ServerResponse response = Helper.decodeProtocol(app._server.receiveMessage());
+            ServerResponse response = Helper.SendMessageWithCode(Code.CloseRoom, app);
 
             if (response.code == Code.CloseRoom)
             {
@@ -47,26 +39,12 @@ namespace Client.Rooms
 
         public static long StartGame(App app)
         {
-            var message = Helper.createProtocol(Code.StartGame);
-
-            app._server.sendMessage(message);
-
-            ServerResponse response = Helper.decodeProtocol(app._server.receiveMessage());
+            ServerResponse response = Helper.SendMessageWithCode(Code.StartGame, app);
 
             if (response.code == Code.StartGame)
                 return GetStartGameResponse(response.message);
             
-
             throw new Exception("Bad response");
-        }
-
-        public static ServerResponse GetRoomStateRequest(App app)
-        {
-            var message = Helper.createProtocol(Code.StartGame);
-
-            app._server.sendMessage(message);
-
-            return Helper.decodeProtocol(app._server.receiveMessage());
         }
 
         public static RoomState GetRoomStateResponse(string message)
