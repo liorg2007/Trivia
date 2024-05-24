@@ -93,8 +93,7 @@ namespace Client.Menu
             var message = RoomManagement.CreateGetRoomsRequests();
             try
             {
-                ((App)Application.Current)._server.sendMessage(message);
-                response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+               response = SendMessageWithByteArr(message, ((App)Application.Current));
             }
             catch
             {
@@ -134,8 +133,7 @@ namespace Client.Menu
 
             try
             {
-                ((App)Application.Current)._server.sendMessage(message);
-                response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+                response = SendMessageWithByteArr(message, ((App)Application.Current));
             }
             catch
             {
@@ -182,8 +180,7 @@ namespace Client.Menu
 
             try
             {
-                ((App)Application.Current)._server.sendMessage(message);
-                response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+                response = SendMessageWithByteArr(message, ((App)Application.Current));
             }
             catch
             {

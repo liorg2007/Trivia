@@ -66,13 +66,9 @@ namespace Client
 
         private void SignoutClick(object sender, RoutedEventArgs e)
         {
-            var message = Helper.createProtocol(Code.Logout);
+            ServerResponse response = Helper.SendMessageWithCode(Code.Logout, ((App)Application.Current));
 
-            ((App)Application.Current)._server.sendMessage(message);
-
-            ServerResponse response = Helper.decodeProtocol(((App)Application.Current)._server.receiveMessage());
-
-            if(response.code == Code.Logout)
+            if (response.code == Code.Logout)
             {
                 LogoutResponse res = JsonPacketDeserializer.DeserializeLogoutResponse(response.message);
 
