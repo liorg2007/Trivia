@@ -3,15 +3,17 @@
 #include "RequestHandlerFactory.h"
 #include "Requests.h" 
 #include "CheckSignupData.h"
+#include <WinSock2.h>
 
 class RequestHandlerFactory;
 
 class LoginRequestHandler : public IRequestHandler {
 public:
-	LoginRequestHandler(RequestHandlerFactory& handlerFactory);
+	LoginRequestHandler();
 
 	bool isRequestRelevant(const RequestInfo& req) override;
 	RequestResult handleRequest(const RequestInfo& req) override;
+	void handleDisconnect() override;
 
 private:
 	RequestResult login(const RequestInfo& req);

@@ -3,6 +3,7 @@
 #include <ctime>
 #include "Constants.h"
 #include "IRequestHandler.h"
+#include <memory>
 
 struct RequestInfo
 {
@@ -31,14 +32,14 @@ class IRequestHandler;
 struct RequestResult
 {
 	Buffer response;
-	IRequestHandler* newHandler = nullptr;
+	std::unique_ptr<IRequestHandler> newHandler;
 };
 
 struct CreateRoomRequest
 {
 	std::string roomName;
 	unsigned int maxUsers;
-	unsigned int questionCount;
+	unsigned int answerCount;
 	unsigned int answerTimeout;
 };
 

@@ -16,7 +16,7 @@ private:
 	SOCKET _serverSocket;
 	RequestHandlerFactory& _handlerFactory;
 
-	std::unordered_map<SOCKET, IRequestHandler*> _clients;
+	std::unordered_map<SOCKET, std::unique_ptr<IRequestHandler>> _clients;
 	
 	std::vector<std::thread*> _threadPool;
 
@@ -30,7 +30,7 @@ private:
 
 	void sendData(SOCKET clientSocket, const Buffer& buff) const;
 	RequestInfo recieveData(SOCKET clientSocket) const;
-	Buffer parseErrorMessage(const std::string& errMsg) const;
+	Buffer parseErrorMessage(std::string&& errMsg) const;
 
 	Communicator();
 public:

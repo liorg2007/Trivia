@@ -2,8 +2,8 @@ import socket
 import json
 
 PORT = 6969
-LOGIN_CODE = 0
-SIGNUP_CODE = 1
+LOGIN_CODE = 1
+SIGNUP_CODE = 2
 
 def main():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -69,8 +69,8 @@ def Test4(s):
     send_json(s, SIGNUP_CODE, { "username": "lior", "password": "#Ahalan30", "email" : "lior2hah.com", "address" : "Shimon,12,Israel", "phoneNumber" : "0501231234", "birthDate" : "10/02/2007" })
     print("Recieved for bad email:", s.recv(1024))
 
-    #send_json(s, SIGNUP_CODE, { "username": "lior", "password": "#Ahalan30", "email" : "lior@hah.com", "address" : "Shimon,1a2,Israel", "phoneNumber" : "0501231234", "birthDate" : "10/02/2007" })
-    #print("Recieved for bad address:", s.recv(1024))
+    send_json(s, SIGNUP_CODE, { "username": "lior", "password": "#Ahalan30", "email" : "lior@hah.com", "address" : "Shimon,1a2,Israel", "phoneNumber" : "0501231234", "birthDate" : "10/02/2007" })
+    print("Recieved for bad address:", s.recv(1024))
 
     send_json(s, SIGNUP_CODE, { "username": "lior", "password": "#Ahalan30", "email" : "lior@hah.com", "address" : "Shimon,12,Israel", "phoneNumber" : "0501231234123123123", "birthDate" : "10/02/2007" })
     print("Recieved for bad phone number:", s.recv(1024))
@@ -78,7 +78,7 @@ def Test4(s):
     send_json(s, SIGNUP_CODE, { "username": "lior", "password": "#Ahalan30", "email" : "lior@hah.com", "address" : "Shimon,12,Israel", "phoneNumber" : "0501231234", "birthDate" : "32/02/2007" })
     print("Recieved for bad birthdate:", s.recv(1024))
 
-    send_json(s, SIGNUP_CODE, { "username": "lior", "password": "#Ahalan30", "email" : "lior@hah.com", "address" : "Shimon,12,Israel", "phoneNumber" : "0501231234", "birthDate" : "10/02/2007" })
+    send_json(s, SIGNUP_CODE, { "username": "lior2", "password": "#Ahalan30", "email" : "lior@hah.com", "address" : "Shimon,12,Israel", "phoneNumber" : "0501231234", "birthDate" : "10/02/2007" })
     print("Recieved for good data:", s.recv(1024))
 
     s.close()
