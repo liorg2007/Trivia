@@ -30,7 +30,7 @@ namespace Client.Rooms
         /* Button events */
         private void exitPress(object sender, MouseButtonEventArgs e)
         {
-            if(WaitingRoomCommands.LeaveRoom((App)Application.Current))
+            if(WaitingRoomCommands.CloseRoom((App)Application.Current))
             {
                 MainMenu window = new MainMenu(_username);
                 window.Show();

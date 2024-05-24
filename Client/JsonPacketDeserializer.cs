@@ -134,6 +134,11 @@ namespace Client
             return JsonSerializer.Deserialize<LeaveRoomResponse>(message);
         }
 
+        public static CloseRoomResponse DeserializeCloseRoomResponse(string message)
+        {
+            return JsonSerializer.Deserialize<CloseRoomResponse>(message);
+        }
+
         public static StartGameResponse DeserializeStartGameResponse(string message)
         {
             return JsonSerializer.Deserialize<StartGameResponse>(message);

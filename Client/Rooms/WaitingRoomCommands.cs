@@ -30,6 +30,27 @@ namespace Client.Rooms
             return false;
         }
 
+        public static bool CloseRoom(App app)
+        {
+            var message = Helper.createProtocol(Code.CloseRoom);
+
+            app._server.sendMessage(message);
+
+            ServerResponse response = Helper.decodeProtocol(app._server.receiveMessage());
+
+            if (response.code == Code.CloseRoom)
+            {
+                CloseRoomResponse res = JsonPacketDeserializer.DeserializeCloseRoomResponse(response.message);
+
+                if (res.status != 1)
+                    return false;
+                else
+                    return true;
+            }
+
+            return false;
+        }
+
         public static long StartGame(App app)
         {
             var message = Helper.createProtocol(Code.StartGame);
@@ -38,7 +59,7 @@ namespace Client.Rooms
 
             ServerResponse response = Helper.decodeProtocol(app._server.receiveMessage());
 
-            if (response.code == Code.LeaveRoom)
+            if (response.code == Code.StartGame)
             {
                 StartGameResponse res = JsonPacketDeserializer.DeserializeStartGameResponse(response.message);
 

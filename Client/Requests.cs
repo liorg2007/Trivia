@@ -130,6 +130,11 @@ namespace Client
             public uint status { get; set; }
         }
 
+        public struct CloseRoomResponse
+        {
+            public uint status { get; set; }
+        }
+
         public struct StartGameResponse
         {
             public uint status { get; set; }
