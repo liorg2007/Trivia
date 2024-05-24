@@ -19,10 +19,25 @@ namespace Client.Rooms
     /// </summary>
     public partial class RoomMember : Window
     {
-        public RoomMember()
+        private string _username;
+
+        public RoomMember(string username)
         {
             InitializeComponent();
+            _username = username;
         }
+
+        /* Button events */
+        private void exitPress(object sender, MouseButtonEventArgs e)
+        {
+            if (WaitingRoomCommands.LeaveRoom((App)Application.Current))
+            {
+                MainMenu window = new MainMenu(_username);
+                window.Show();
+            }
+        }
+
+        /* Default screen events*/
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {

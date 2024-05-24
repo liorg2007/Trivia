@@ -19,15 +19,22 @@ namespace Client.Rooms
     /// </summary>
     public partial class RoomAdmin : Window
     {
-        public RoomAdmin()
+        private string _username;
+
+        public RoomAdmin(string username)
         {
             InitializeComponent();
+            _username = username;
         }
 
         /* Button events */
         private void exitPress(object sender, MouseButtonEventArgs e)
         {
-            
+            if(WaitingRoomCommands.LeaveRoom((App)Application.Current))
+            {
+                MainMenu window = new MainMenu(_username);
+                window.Show();
+            }
         }
 
         /* Default screen events*/
