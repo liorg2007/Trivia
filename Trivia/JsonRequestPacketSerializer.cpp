@@ -86,6 +86,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespons
 {
 	json jsonObj
 	{
+		{ "status", res.status, },
 		{ "RoomState",
 			{ "hasGameBegun", res.roomState.hasGameBegun },
 			{ "players", res.roomState.players},
