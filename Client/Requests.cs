@@ -140,5 +140,11 @@ namespace Client
             public uint status { get; set; }
             public long start_time { get; set; }
         }
+
+        public struct GetRoomStateResponse
+        {
+            public uint status { get; set; }
+            public RoomState roomState { get; set; }
+        }
     }
 }

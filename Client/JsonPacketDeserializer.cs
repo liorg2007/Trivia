@@ -143,5 +143,10 @@ namespace Client
         {
             return JsonSerializer.Deserialize<StartGameResponse>(message);
         }
+
+        public static GetRoomStateResponse DeserializeGetRoomStateResponse(string message)
+        {
+
+        }
     }
 }

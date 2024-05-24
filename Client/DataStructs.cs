@@ -36,5 +36,13 @@ namespace Client
             public RoomData roomData { get; set; }
             public List<string> players { get; set; }
         }
+
+        public struct RoomState
+        {
+            bool hasGameBegun;
+            List<string> players;
+            uint answerCount;
+            uint answerTimeout;
+        }
     }
 }
