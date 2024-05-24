@@ -39,10 +39,10 @@ namespace Client
 
         public struct RoomState
         {
-            bool hasGameBegun;
-            List<string> players;
-            uint answerCount;
-            uint answerTimeout;
+            public bool hasGameBegun { get; set; }
+            public List<string> players { get; set; }
+            public uint answerCount { get; set; }
+            public uint answerTimeout { get; set; }
         }
     }
 }

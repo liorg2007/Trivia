@@ -146,7 +146,28 @@ namespace Client
 
         public static GetRoomStateResponse DeserializeGetRoomStateResponse(string message)
         {
+            JsonDocument document = JsonDocument.Parse(message);
+            GetRoomStateResponse response = new GetRoomStateResponse();
 
+            response.status = document.RootElement.GetProperty("status").GetUInt32();
+
+            var roomStateElement = document.RootElement.GetProperty("RoomState");
+            RoomState roomState = new RoomState
+            {
+                hasGameBegun = roomStateElement.GetProperty("hasGameBegun").GetBoolean(),
+                answerCount = roomStateElement.GetProperty("answerCount").GetUInt32(),
+                answerTimeout = roomStateElement.GetProperty("answerTimeout").GetUInt32(),
+                players = new List<string>()
+            };
+
+            foreach (var playerElement in roomStateElement.GetProperty("players").EnumerateArray())
+            {
+                roomState.players.Add(playerElement.GetString());
+            }
+
+            response.roomState = roomState;
+
+            return response;
         }
     }
 }
