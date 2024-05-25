@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static Client.Requests;
 
 namespace Client.Rooms
 {
@@ -19,12 +20,15 @@ namespace Client.Rooms
     /// </summary>
     public partial class RoomMember : Window
     {
-        private string _username;
+        private string username;
+        private bool ContinueBackgroundThread;
+        private static Mutex mut = new Mutex();
 
         public RoomMember(string username)
         {
+            ContinueBackgroundThread = true;
             InitializeComponent();
-            _username = username;
+            this.username = username;
         }
 
         /* Button events */
@@ -32,8 +36,33 @@ namespace Client.Rooms
         {
             if (WaitingRoomCommands.LeaveRoom((App)Application.Current))
             {
-                MainMenu window = new MainMenu(_username);
+                MainMenu window = new MainMenu(username);
                 window.Show();
+            }
+        }
+
+        /* Get Update Thread */
+        private void Background_Update_Thread()
+        {
+            while(ContinueBackgroundThread)
+            {
+                mut.WaitOne();
+
+                if (!ContinueBackgroundThread)//check if while waiting state was changed
+                    break;
+
+                ServerResponse response = Helper.SendMessageWithCode(Code.GetRoomState, (App)Application.Current);
+
+                if(response.code == Code.LeaveRoom)
+                {
+                    if (WaitingRoomCommands.GetLeaveRoomResponse(response.message))
+                    {
+                        MainMenu window = new MainMenu(username);
+                        window.Show();
+                    }
+                    else
+                        Helper.raiseErrorBox("can't leave room");
+                }
             }
         }
 
