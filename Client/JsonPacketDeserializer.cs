@@ -8,6 +8,7 @@ using System.Text.Json;
 using static Client.DataStructs;
 using Client.Menu;
 using System.Security.RightsManagement;
+using System.Collections;
 
 namespace Client
 {
@@ -144,30 +145,47 @@ namespace Client
             return JsonSerializer.Deserialize<StartGameResponse>(message);
         }
 
+
         public static GetRoomStateResponse DeserializeGetRoomStateResponse(string message)
         {
             JsonDocument document = JsonDocument.Parse(message);
-            GetRoomStateResponse response = new GetRoomStateResponse();
+            JsonElement rootElement = document.RootElement;
+            GetRoomStateResponse res = new GetRoomStateResponse();
+            RoomState roomState = new RoomState();
+            roomState.players = new List<string>();
 
-            response.status = document.RootElement.GetProperty("status").GetUInt32();
+            res.status = rootElement[0][1].GetUInt32();
 
-            var roomStateElement = document.RootElement.GetProperty("RoomState");
-            RoomState roomState = new RoomState
+            JsonElement roomStateData = rootElement[1];
+            foreach (var element in roomStateData.EnumerateArray())
             {
-                hasGameBegun = roomStateElement.GetProperty("hasGameBegun").GetBoolean(),
-                answerCount = roomStateElement.GetProperty("answerCount").GetUInt32(),
-                answerTimeout = roomStateElement.GetProperty("answerTimeOut").GetUInt32(),
-                players = new List<string>()
-            };
+                if (element.ValueKind == JsonValueKind.Array)
+                {
+                    string propertyName = element[0].GetString();
+                    switch (propertyName)
+                    {
+                        case "hasGameBegun":
+                            roomState.hasGameBegun = element[1].GetBoolean();
+                            break;
+                        case "players":
+                            foreach(var player in element[1].EnumerateArray())  
+                                roomState.players.Add(player.GetString());
+                            break;
+                        case "answerCount":
+                            roomState.answerCount = element[1].GetUInt32();
+                            break;
+                        case "answerTimeout":
+                            roomState.answerTimeout = element[1].GetUInt32();
+                            break;
 
-            foreach (var playerElement in roomStateElement.GetProperty("players").EnumerateArray())
-            {
-                roomState.players.Add(playerElement.GetString());
+                    }
+                }
+
             }
 
-            response.roomState = roomState;
+            res.roomState = roomState;
 
-            return response;
+            return res;
         }
     }
 }

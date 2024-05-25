@@ -40,6 +40,7 @@ namespace Client.Rooms
         {
             if (WaitingRoomCommands.LeaveRoom((App)Application.Current))
             {
+                ContinueBackgroundThread = false;
                 MainMenu window = new MainMenu(username);
                 window.Show();
                 this.Close();

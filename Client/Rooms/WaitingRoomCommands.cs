@@ -92,10 +92,18 @@ namespace Client.Rooms
                 return;
             }
 
-            var listBox = (ListBox)window.FindName("PlayerList");
-
-            
-            listBox.ItemsSource = roomState.players;
+            window.Dispatcher.Invoke(() =>
+            {
+                var listBox = (ListBox)window.FindName("PlayerList");
+                if (listBox != null)
+                {
+                    listBox.ItemsSource = roomState.players;
+                }
+                else
+                {
+                    Helper.raiseErrorBox("PlayerList ListBox not found");
+                }
+            });
         }
     }
 }
