@@ -11,6 +11,7 @@ unsigned int RoomManager::createRoom(const LoggedUser& user, RoomData&& roomData
 	std::unique_lock<std::shared_mutex> lock(_mtx);
 	unsigned int id = _rooms.size();
 	_rooms.emplace(std::piecewise_construct, std::forward_as_tuple(id), std::forward_as_tuple(std::move(roomData), user));
+	_rooms.at(id).addUser(user);
 	return id;
 }
 
