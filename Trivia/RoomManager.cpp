@@ -1,20 +1,17 @@
 #include "RoomManager.h"
 
-RoomManager::RoomManager()
-{
-}
-
 RoomManager& RoomManager::getInstance()
 {
 	static RoomManager instance;
 	return instance;
 }
 
-void RoomManager::createRoom(const LoggedUser& user, RoomData&& roomData)
+unsigned int RoomManager::createRoom(const LoggedUser& user, RoomData&& roomData)
 {
 	std::unique_lock<std::shared_mutex> lock(_mtx);
 	unsigned int id = _rooms.size();
 	_rooms.emplace(std::piecewise_construct, std::forward_as_tuple(id), std::forward_as_tuple(std::move(roomData), user));
+	return id;
 }
 
 void RoomManager::deleteRoom(int roomId)

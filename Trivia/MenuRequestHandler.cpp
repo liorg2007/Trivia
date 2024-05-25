@@ -67,6 +67,7 @@ RequestResult MenuRequestHandler::getRooms(const RequestInfo& req)
 
 RequestResult MenuRequestHandler::createRoom(const RequestInfo& req)
 {
+	int roomId;
 	RequestResult result;
 	CreateRoomRequest request = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(req.buffer);
 	CreateRoomResponse response;
@@ -79,7 +80,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& req)
 	newRoomData.timerPerQuestion = request.answerTimeout;
 	try
 	{
-		_handlerFactory.getRoomManager().createRoom(_user, std::move(newRoomData));
+		roomId = _handlerFactory.getRoomManager().createRoom(_user, std::move(newRoomData));
 		response.status = SUCCESS;
 	}
 	catch (...)
@@ -87,7 +88,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& req)
 		response.status = FAILURE;
 	}
 	result.response = JsonResponsePacketSerializer::serializeResponse(response);
-	result.newHandler = nullptr;
+	result.newHandler = _handlerFactory.createRoomAdminRequestHandler(roomId, _user);
 	return result;
 }
 
@@ -106,7 +107,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& req)
 		response.status = FAILURE;
 	}
 	result.response = JsonResponsePacketSerializer::serializeResponse(response);
-	result.newHandler = nullptr;
+	result.newHandler = _handlerFactory.createRoomMemberRequestHandler(request.roomId, _user);
 	return result;
 }
 
