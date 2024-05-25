@@ -28,7 +28,7 @@ namespace Client.Rooms
         }
 
         /* Button events */
-        private void exitPress(object sender, MouseButtonEventArgs e)
+        void exitPress(object sender, RoutedEventArgs e)
         {
             if(WaitingRoomCommands.CloseRoom((App)Application.Current))
             {
@@ -37,7 +37,7 @@ namespace Client.Rooms
             }
         }
 
-        private void startPress(object sender, MouseButtonEventArgs e)
+        void startPress(object sender, RoutedEventArgs e)
         {
             long startTime;
             try

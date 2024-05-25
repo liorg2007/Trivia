@@ -33,7 +33,7 @@ namespace Client.Rooms
         }
 
         /* Button events */
-        private void exitPress(object sender, MouseButtonEventArgs e)
+        void exitPress(object sender, RoutedEventArgs e)
         {
             if (WaitingRoomCommands.LeaveRoom((App)Application.Current))
             {

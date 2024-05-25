@@ -17,6 +17,7 @@ using static Client.Requests;
 using static Client.JsonPacketDeserializer;
 using System.Security;
 using System.Diagnostics;
+using Client.Rooms;
 
 namespace Client.Menu
 {
@@ -193,7 +194,9 @@ namespace Client.Menu
             {
                 if (response.code == Code.JoinRoom && DeserializeJoinRoomResponse(response.message).status == 1)
                 {
-                    raiseSuccessBox("Entered room!");
+                    RoomMember window = new RoomMember(_username);
+                    window.Show();
+                    this.Close();
                 }
                 else
                 {
