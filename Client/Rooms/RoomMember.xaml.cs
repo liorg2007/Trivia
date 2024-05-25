@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -38,6 +39,7 @@ namespace Client.Rooms
             {
                 MainMenu window = new MainMenu(username);
                 window.Show();
+                this.Close();
             }
         }
 
@@ -59,10 +61,36 @@ namespace Client.Rooms
                     {
                         MainMenu window = new MainMenu(username);
                         window.Show();
+                        this.Close();
                     }
                     else
                         Helper.raiseErrorBox("can't leave room");
                 }
+                else if(response.code == Code.StartGame)
+                {
+                    long start_time;
+
+                    try
+                    {
+                        start_time = WaitingRoomCommands.GetStartGameResponse(response.message);
+                    }
+                    catch (Exception ex) 
+                    {
+                        Helper.raiseErrorBox(ex.Message);
+                        continue;
+                    }
+
+                    //handle the start game
+                    DateTime utcGameStartTime = DateTimeOffset.FromUnixTimeSeconds(start_time).UtcDateTime;
+                    Helper.raiseSuccessBox("Game starts at: " + utcGameStartTime);
+                    break;
+                }
+                else
+                {
+                    WaitingRoomCommands.HandleRoomData((App)Application.Current, this, response.message);
+                }
+
+                mut.ReleaseMutex();
             }
         }
 

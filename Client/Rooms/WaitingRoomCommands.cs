@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using static Client.Requests;
 using static Client.DataStructs;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Client.Rooms
 {
@@ -75,6 +77,25 @@ namespace Client.Rooms
                 return false;
             else
                 return true;
+        }
+
+        public static void HandleRoomData(App app, Window window, string message)
+        {
+            RoomState roomState;
+            try
+            {
+                roomState = GetRoomStateResponse(message);
+            }
+            catch (Exception e)
+            {
+                Helper.raiseErrorBox(e.Message);
+                return;
+            }
+
+            var listBox = (ListBox)window.FindName("PlayerList");
+
+            
+            listBox.ItemsSource = roomState.players;
         }
     }
 }
