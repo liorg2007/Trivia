@@ -63,9 +63,13 @@ namespace Client.Rooms
                 {
                     if (WaitingRoomCommands.GetLeaveRoomResponse(response.message))
                     {
-                        MainMenu window = new MainMenu(username);
-                        window.Show();
-                        this.Close();
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            MainMenu window = new MainMenu(username);
+                            window.Show();
+                            this.Close();
+                            ContinueBackgroundThread = false;
+                        });
                     }
                     else
                         Helper.raiseErrorBox("can't leave room");

@@ -97,7 +97,16 @@ namespace Client.Rooms
                 var listBox = (ListBox)window.FindName("PlayerList");
                 if (listBox != null)
                 {
-                    listBox.ItemsSource = roomState.players;
+                    listBox.Items.Clear();  // Clear existing items
+
+                    foreach (var player in roomState.players)
+                    {
+                        var listBoxItem = new ListBoxItem
+                        {
+                            Content = player // Assuming player has a Name property
+                        };
+                        listBox.Items.Add(listBoxItem);
+                    }
                 }
                 else
                 {
