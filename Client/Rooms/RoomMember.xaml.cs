@@ -30,6 +30,9 @@ namespace Client.Rooms
             ContinueBackgroundThread = true;
             InitializeComponent();
             this.username = username;
+
+            Thread thread1 = new Thread(Background_Update_Thread);
+            thread1.Start();
         }
 
         /* Button events */
@@ -91,6 +94,7 @@ namespace Client.Rooms
                 }
 
                 mut.ReleaseMutex();
+                Thread.Sleep(300);
             }
         }
 

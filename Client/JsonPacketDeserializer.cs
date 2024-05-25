@@ -156,7 +156,7 @@ namespace Client
             {
                 hasGameBegun = roomStateElement.GetProperty("hasGameBegun").GetBoolean(),
                 answerCount = roomStateElement.GetProperty("answerCount").GetUInt32(),
-                answerTimeout = roomStateElement.GetProperty("answerTimeout").GetUInt32(),
+                answerTimeout = roomStateElement.GetProperty("answerTimeOut").GetUInt32(),
                 players = new List<string>()
             };
 
