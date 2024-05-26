@@ -38,6 +38,7 @@ namespace Client.Rooms
         /* Button events */
         void exitPress(object sender, RoutedEventArgs e)
         {
+            mut.WaitOne();
             if (WaitingRoomCommands.LeaveRoom((App)Application.Current))
             {
                 ContinueBackgroundThread = false;
@@ -45,12 +46,13 @@ namespace Client.Rooms
                 window.Show();
                 this.Close();
             }
+            mut.ReleaseMutex();
         }
 
         /* Get Update Thread */
         private void Background_Update_Thread()
         {
-            while(ContinueBackgroundThread)
+            while (ContinueBackgroundThread)
             {
                 mut.WaitOne();
 
@@ -59,7 +61,7 @@ namespace Client.Rooms
 
                 ServerResponse response = Helper.SendMessageWithCode(Code.GetRoomState, (App)Application.Current);
 
-                if(response.code == Code.LeaveRoom)
+                if (response.code == Code.LeaveRoom)
                 {
                     if (WaitingRoomCommands.GetLeaveRoomResponse(response.message))
                     {
@@ -74,7 +76,7 @@ namespace Client.Rooms
                     else
                         Helper.raiseErrorBox("can't leave room");
                 }
-                else if(response.code == Code.StartGame)
+                else if (response.code == Code.StartGame)
                 {
                     long start_time;
 
@@ -82,7 +84,7 @@ namespace Client.Rooms
                     {
                         start_time = WaitingRoomCommands.GetStartGameResponse(response.message);
                     }
-                    catch (Exception ex) 
+                    catch (Exception ex)
                     {
                         Helper.raiseErrorBox(ex.Message);
                         continue;
