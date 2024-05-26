@@ -72,13 +72,5 @@ RequestResult RoomAdminRequestHandler::startGame()
 std::time_t RoomAdminRequestHandler::getUTCGameStartTime()
 {
 	std::time_t gameStartTime = std::time(nullptr) + SECONDS_TO_GAME_START;
-	
-	// Convert to UTC
-	std::tm utcGameStartTime;
-	if (gmtime_s(&utcGameStartTime, &gameStartTime) != 0)
-	{
-		throw std::exception("Can't get game start time");
-	}
-	// Convert to time_t
-	return std::mktime(&utcGameStartTime);
+	return gameStartTime;
 }
