@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static Client.Requests;
 
 namespace Client.Rooms
 {
@@ -19,35 +20,66 @@ namespace Client.Rooms
     /// </summary>
     public partial class RoomAdmin : Window
     {
-        private string _username;
+        private string username;
+        private bool ContinueBackgroundThread;
+        private static Mutex mut = new Mutex();
 
         public RoomAdmin(string username)
         {
+            ContinueBackgroundThread = true;
             InitializeComponent();
-            _username = username;
+            this.username = username;
+
+            Thread thread1 = new Thread(Background_Update_Thread);
+            thread1.Start();
         }
 
         /* Button events */
         void exitPress(object sender, RoutedEventArgs e)
         {
-            if(WaitingRoomCommands.CloseRoom((App)Application.Current))
+            mut.WaitOne();
+            if (WaitingRoomCommands.CloseRoom((App)Application.Current))
             {
-                MainMenu window = new MainMenu(_username);
+                ContinueBackgroundThread = false;
+                MainMenu window = new MainMenu(username);
                 window.Show();
+                this.Close();
             }
+            mut.ReleaseMutex();
         }
 
         void startPress(object sender, RoutedEventArgs e)
         {
+            mut.WaitOne();
             long startTime;
             try
             {
                 startTime = WaitingRoomCommands.StartGame((App)Application.Current);
+                ContinueBackgroundThread = false;
                 Helper.raiseSuccessBox("Game starts at:" + startTime);
             }
             catch (Exception ex)
             {
                 Helper.raiseErrorBox(ex.Message);
+            }
+            mut.ReleaseMutex();
+        }
+
+        /* Get Update Thread */
+        private void Background_Update_Thread()
+        {
+            while (ContinueBackgroundThread)
+            {
+                mut.WaitOne();
+
+                if (!ContinueBackgroundThread)//check if while waiting state was changed
+                    break;
+
+                ServerResponse response = Helper.SendMessageWithCode(Code.GetRoomState, (App)Application.Current);
+                 WaitingRoomCommands.HandleRoomData((App)Application.Current, this, response.message);
+                
+                mut.ReleaseMutex();
+                Thread.Sleep(300);
             }
         }
 

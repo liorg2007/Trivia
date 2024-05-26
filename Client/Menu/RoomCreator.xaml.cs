@@ -15,6 +15,7 @@ using static Client.Requests;
 using static System.Formats.Asn1.AsnWriter;
 using static Client.Helper;
 using static Client.JsonPacketDeserializer;
+using Client.Rooms;
 
 namespace Client.Menu
 {
@@ -83,8 +84,9 @@ namespace Client.Menu
                 }
                 else
                 {
-                    raiseSuccessBox("Room Created!");
-                    // TODO: Move to the room window
+                    RoomAdmin window = new RoomAdmin(_username);
+                    window.Show();
+                    this.Close();
                 }
             }
             catch (Exception ex)
