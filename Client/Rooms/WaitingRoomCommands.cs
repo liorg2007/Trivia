@@ -39,12 +39,13 @@ namespace Client.Rooms
             return false;
         }
 
-        public static long StartGame(App app)
+        public static DateTime StartGame(App app)
         {
             ServerResponse response = Helper.SendMessageWithCode(Code.StartGame, app);
 
             if (response.code == Code.StartGame)
-                return GetStartGameResponse(response.message);
+                return GetStartGameResponse(response.message); 
+                
             
             throw new Exception("Bad response");
         }
@@ -59,15 +60,24 @@ namespace Client.Rooms
                 return res.roomState;
         }
 
-        public static long GetStartGameResponse(string message)
+        public static DateTime GetStartGameResponse(string message)
         {
             StartGameResponse res = JsonPacketDeserializer.DeserializeStartGameResponse(message);
 
             if (res.status != 1)
+            {
                 throw new Exception("Can't start game");
+            }
             else
-                return res.start_time;
+            {
+                DateTimeOffset utcGameStartTimeOffset = DateTimeOffset.FromUnixTimeSeconds(res.startTime);
+
+                DateTime localGameStartTime = utcGameStartTimeOffset.ToLocalTime().DateTime;
+
+                return localGameStartTime;
+            }
         }
+
 
         public static bool GetLeaveRoomResponse(string message)
         {

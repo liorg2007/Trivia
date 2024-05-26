@@ -51,12 +51,14 @@ namespace Client.Rooms
         void startPress(object sender, RoutedEventArgs e)
         {
             mut.WaitOne();
-            long startTime;
+            DateTime start_time;
             try
             {
-                startTime = WaitingRoomCommands.StartGame((App)Application.Current);
+                start_time = WaitingRoomCommands.StartGame((App)Application.Current);
                 ContinueBackgroundThread = false;
-                Helper.raiseSuccessBox("Game starts at:" + startTime);
+                //handle the start game
+                
+                Helper.raiseSuccessBox("Game starts at: " + start_time);
             }
             catch (Exception ex)
             {

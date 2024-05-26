@@ -78,7 +78,7 @@ namespace Client.Rooms
                 }
                 else if (response.code == Code.StartGame)
                 {
-                    long start_time;
+                    DateTime start_time;
 
                     try
                     {
@@ -91,8 +91,7 @@ namespace Client.Rooms
                     }
 
                     //handle the start game
-                    DateTime utcGameStartTime = DateTimeOffset.FromUnixTimeSeconds(start_time).UtcDateTime;
-                    Helper.raiseSuccessBox("Game starts at: " + utcGameStartTime);
+                    Helper.raiseSuccessBox("Game starts at: " + start_time);
                     break;
                 }
                 else
