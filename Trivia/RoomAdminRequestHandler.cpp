@@ -58,7 +58,7 @@ RequestResult RoomAdminRequestHandler::startGame()
 		_roomRef.startGame(res.startTime);
 		res.status = SUCCESS;
 	}
-	catch (const std::exception ex)
+	catch (const std::exception& ex)
 	{
 		res.startTime = 0;
 		res.status = FAILURE;
@@ -71,6 +71,5 @@ RequestResult RoomAdminRequestHandler::startGame()
 
 std::time_t RoomAdminRequestHandler::getUTCGameStartTime()
 {
-	std::time_t gameStartTime = std::time(nullptr) + SECONDS_TO_GAME_START;
-	return gameStartTime;
+	return std::time(nullptr) + SECONDS_TO_GAME_START;
 }

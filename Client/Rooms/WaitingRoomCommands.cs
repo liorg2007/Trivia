@@ -30,10 +30,7 @@ namespace Client.Rooms
             {
                 CloseRoomResponse res = JsonPacketDeserializer.DeserializeCloseRoomResponse(response.message);
 
-                if (res.status != 1)
-                    return false;
-                else
-                    return true;
+                return res.status == 1;
             }
 
             return false;
@@ -44,9 +41,8 @@ namespace Client.Rooms
             ServerResponse response = Helper.SendMessageWithCode(Code.StartGame, app);
 
             if (response.code == Code.StartGame)
-                return GetStartGameResponse(response.message); 
-                
-            
+                return GetStartGameResponse(response.message);
+
             throw new Exception("Bad response");
         }
 
@@ -56,8 +52,7 @@ namespace Client.Rooms
 
             if (res.status != 1)
                 throw new Exception("Can't get room data");
-            else
-                return res.roomState;
+            return res.roomState;
         }
 
         public static DateTime GetStartGameResponse(string message)
@@ -68,14 +63,12 @@ namespace Client.Rooms
             {
                 throw new Exception("Can't start game");
             }
-            else
-            {
-                DateTimeOffset utcGameStartTimeOffset = DateTimeOffset.FromUnixTimeSeconds(res.startTime);
 
-                DateTime localGameStartTime = utcGameStartTimeOffset.ToLocalTime().DateTime;
+            DateTimeOffset utcGameStartTimeOffset = DateTimeOffset.FromUnixTimeSeconds(res.startTime);
+            DateTime localGameStartTime = utcGameStartTimeOffset.ToLocalTime().DateTime;
 
-                return localGameStartTime;
-            }
+            return localGameStartTime;
+
         }
 
 
@@ -83,10 +76,7 @@ namespace Client.Rooms
         {
             LeaveRoomResponse res = JsonPacketDeserializer.DeserializeLeaveRoomResponse(message);
 
-            if (res.status != 1)
-                return false;
-            else
-                return true;
+            return res.status == 1;
         }
 
         public static void HandleRoomData(App app, Window window, string message)

@@ -57,14 +57,17 @@ namespace Client.Rooms
                 start_time = WaitingRoomCommands.StartGame((App)Application.Current);
                 ContinueBackgroundThread = false;
                 //handle the start game
-                
+
                 Helper.raiseSuccessBox("Game starts at: " + start_time);
             }
             catch (Exception ex)
             {
                 Helper.raiseErrorBox(ex.Message);
             }
-            mut.ReleaseMutex();
+            finally
+            {
+                mut.ReleaseMutex();
+            }
         }
 
         /* Get Update Thread */
@@ -75,11 +78,14 @@ namespace Client.Rooms
                 mut.WaitOne();
 
                 if (!ContinueBackgroundThread)//check if while waiting state was changed
+                {
+                    mut.ReleaseMutex();
                     break;
+                }
 
                 ServerResponse response = Helper.SendMessageWithCode(Code.GetRoomState, (App)Application.Current);
-                 WaitingRoomCommands.HandleRoomData((App)Application.Current, this, response.message);
-                
+                WaitingRoomCommands.HandleRoomData((App)Application.Current, this, response.message);
+
                 mut.ReleaseMutex();
                 Thread.Sleep(300);
             }
