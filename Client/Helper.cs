@@ -65,5 +65,21 @@ namespace Client
 
             return new ServerResponse() { code = code, message = message };
         }
+
+        public static ServerResponse SendMessageWithCode(Code code, App app)
+        {
+            var message = Helper.createProtocol(code);
+
+            app._server.sendMessage(message);
+
+            return Helper.decodeProtocol(app._server.receiveMessage());
+        }
+
+        public static ServerResponse SendMessageWithByteArr(byte[] message, App app)
+        {
+            app._server.sendMessage(message);
+
+            return Helper.decodeProtocol(app._server.receiveMessage());
+        }
     }
 }

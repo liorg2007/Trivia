@@ -7,6 +7,7 @@ using System.Windows;
 using System.IO;
 using System.Net.Sockets;
 using System.Net;
+using static Client.Requests;
 
 namespace Client
 {

@@ -17,6 +17,7 @@ using static Client.Requests;
 using static Client.JsonPacketDeserializer;
 using System.Security;
 using System.Diagnostics;
+using Client.Rooms;
 
 namespace Client.Menu
 {
@@ -93,8 +94,7 @@ namespace Client.Menu
             var message = RoomManagement.CreateGetRoomsRequests();
             try
             {
-                ((App)Application.Current)._server.sendMessage(message);
-                response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+               response = SendMessageWithByteArr(message, ((App)Application.Current));
             }
             catch
             {
@@ -134,8 +134,7 @@ namespace Client.Menu
 
             try
             {
-                ((App)Application.Current)._server.sendMessage(message);
-                response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+                response = SendMessageWithByteArr(message, ((App)Application.Current));
             }
             catch
             {
@@ -182,8 +181,7 @@ namespace Client.Menu
 
             try
             {
-                ((App)Application.Current)._server.sendMessage(message);
-                response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+                response = SendMessageWithByteArr(message, ((App)Application.Current));
             }
             catch
             {
@@ -196,7 +194,9 @@ namespace Client.Menu
             {
                 if (response.code == Code.JoinRoom && DeserializeJoinRoomResponse(response.message).status == 1)
                 {
-                    raiseSuccessBox("Entered room!");
+                    RoomMember window = new RoomMember(_username);
+                    window.Show();
+                    this.Close();
                 }
                 else
                 {

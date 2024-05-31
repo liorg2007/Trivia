@@ -17,6 +17,7 @@ namespace Client
             /* Login State */
             Login,
             Signup,
+
             /* Menu State */
             Logout,
             CreateRoom,
@@ -25,6 +26,12 @@ namespace Client
             GetPlayersInRoom,
             GetHighScores,
             GetPersonalStats,
+
+            /* Room Admin State */
+            CloseRoom,
+            StartGame,
+            GetRoomState,
+            LeaveRoom,
         }
 
         public struct ServerResponse
@@ -116,6 +123,28 @@ namespace Client
         public struct JoinRoomResponse
         {
             public uint status { get; set; }
+        }
+
+        public struct LeaveRoomResponse
+        {
+            public uint status { get; set; }
+        }
+
+        public struct CloseRoomResponse
+        {
+            public uint status { get; set; }
+        }
+
+        public struct StartGameResponse
+        {
+            public uint status { get; set; }
+            public long startTime { get; set; }
+        }
+
+        public struct GetRoomStateResponse
+        {
+            public uint status { get; set; }
+            public RoomState roomState { get; set; }
         }
     }
 }
