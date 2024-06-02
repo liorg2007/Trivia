@@ -48,4 +48,10 @@ enum class ProtocolCode : Byte
 	StartGame,
 	GetRoomState,
 	LeaveRoom,
+
+	/* Game State */
+	GetGameResults,
+	SubmitAnswer,
+	GetQuestion,
+	LeaveGame,
 };
