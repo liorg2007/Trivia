@@ -103,6 +103,13 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse& 
 	return buildBuffer(ProtocolCode::LeaveRoom, jsonObj);
 }
 
+Buffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultsResponse& res)
+{
+	json jsonObj{ { "status", res.status },
+								{ "Results", res.Results}};
+	return buildBuffer(ProtocolCode::GetGameResults, jsonObj);
+}
+
 Buffer JsonResponsePacketSerializer::buildBuffer(ProtocolCode resCode, const json& jsonObj)
 {
 	auto msg = jsonObj.dump();
