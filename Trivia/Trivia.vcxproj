@@ -132,6 +132,7 @@
     <ClCompile Include="BaseRoomRequestHandler.cpp" />
     <ClCompile Include="CheckSignupData.cpp" />
     <ClCompile Include="Communicator.cpp" />
+    <ClCompile Include="GameData.h" />
     <ClCompile Include="IDatabase.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
     <ClCompile Include="JsonRequestPacketSerializer.cpp" />
