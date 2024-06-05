@@ -135,7 +135,7 @@
     <ClCompile Include="GameData.h" />
     <ClCompile Include="IDatabase.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
-    <ClCompile Include="JsonRequestPacketSerializer.cpp" />
+    <ClCompile Include="JsonResponsePacketSerializer.cpp" />
     <ClCompile Include="Lib\sqlite3.c" />
     <ClCompile Include="LoggedUser.cpp" />
     <ClCompile Include="LoginManager.cpp" />
@@ -168,7 +168,7 @@
     <ClInclude Include="LoggedUser.h" />
     <ClInclude Include="LoginManager.h" />
     <ClInclude Include="LoginRequestHandler.h" />
-    <ClInclude Include="JsonRequestPacketSerializer.h" />
+    <ClInclude Include="JsonResponsePacketSerializer.h" />
     <ClInclude Include="MenuRequestHandler.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="QuestionsRetriever.h" />
