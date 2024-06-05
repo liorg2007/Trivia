@@ -33,7 +33,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse& r
 
 Buffer JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomResponse& res)
 {
-	json jsonObj{ {"PlayersInRoom", res.players} };
+	json jsonObj{ { "PlayersInRoom", res.players } };
 	return buildBuffer(ProtocolCode::GetPlayersInRoom, jsonObj);
 }
 
@@ -65,7 +65,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatsRes
 			{ "averageAnswerTime", res.statistics.averageAnswerTime},
 			{ "correctAnswers", res.statistics.correctAnswers },
 			{ "totalAnswers", res.statistics.totalAnswers }
-		} 
+		}
 	};
 	return buildBuffer(ProtocolCode::GetPersonalStats, jsonObj);
 }
@@ -89,7 +89,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespons
 		{ "status", res.status, },
 		{ "RoomState",
 			{ "hasGameBegun", res.roomState.hasGameBegun },
-			{ "players", res.roomState.players},
+			{ "players", res.roomState.players },
 			{ "answerCount", res.roomState.answerCount },
 			{ "answerTimeOut", res.roomState.answerTimeout }
 		}
@@ -101,6 +101,39 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse& 
 {
 	json jsonObj{ { "status", res.status } };
 	return buildBuffer(ProtocolCode::LeaveRoom, jsonObj);
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultsResponse& res)
+{
+	json jsonObj
+	{
+		{ "status", res.status },
+		{ "results", res.results }
+	};
+	return buildBuffer(ProtocolCode::GetGameResults, jsonObj);
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse& res)
+{
+	json jsonObj{ { "status", res.status } };
+	return buildBuffer(ProtocolCode::SubmitAnswer, jsonObj);
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(const GetQuestionResponse& res)
+{
+	json jsonObj
+	{
+		{ "status", res.status },
+		{ "question", res.question },
+		{ "answers", res.answers }
+	};
+	return buildBuffer(ProtocolCode::GetGameResults, jsonObj);
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(const LeaveGameResponse& res)
+{
+	json jsonObj{ { "status", res.status } };
+	return buildBuffer(ProtocolCode::LeaveGame, jsonObj);
 }
 
 Buffer JsonResponsePacketSerializer::buildBuffer(ProtocolCode resCode, const json& jsonObj)

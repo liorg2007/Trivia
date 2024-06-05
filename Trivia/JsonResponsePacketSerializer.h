@@ -25,6 +25,11 @@ public:
 	static Buffer serializeResponse(const GetRoomStateResponse& res);
 	static Buffer serializeResponse(const LeaveRoomResponse& res);
 
+	static Buffer serializeResponse(const GetGameResultsResponse& res);
+	static Buffer serializeResponse(const SubmitAnswerResponse& res);
+	static Buffer serializeResponse(const GetQuestionResponse& res);
+	static Buffer serializeResponse(const LeaveGameResponse& res);
+
 private:
 	static Buffer buildBuffer(ProtocolCode resCode, const json& jsonObj);
 };
