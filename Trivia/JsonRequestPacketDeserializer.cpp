@@ -49,6 +49,14 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(co
 	return request;
 }
 
+SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(const Buffer& buff)
+{
+	json data = deserializeJsonObject(buff);
+	SubmitAnswerRequest request;
+	request.answerId = std::move(data.at(ANSWERID_HEADER));
+	return request;
+}
+
 json JsonRequestPacketDeserializer::deserializeJsonObject(const Buffer& buff)
 {
 	if (buff.size() <= HEADER_FIELD_LENGTH)
