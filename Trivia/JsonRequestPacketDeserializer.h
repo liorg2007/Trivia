@@ -16,6 +16,8 @@ public:
 	static JoinRoomRequest deserializeJoinRoomRequest(const Buffer& buff);
 	static CreateRoomRequest deserializeCreateRoomRequest(const Buffer& buff);
 
+	static SubmitAnswerRequest deserializeSubmitAnswerRequest(const Buffer& buff);
+
 private:
 	static json deserializeJsonObject(const Buffer& buff);
 
@@ -31,5 +33,7 @@ private:
 	static constexpr auto MAX_USERS_HEADER = "maxUsers";
 	static constexpr auto QUESTION_COUNT_HEADER = "questionCount";
 	static constexpr auto ANSWER_TIMEOUT_HEADER = "answerTimeout";
+
+	static constexpr auto ANSWERID_HEADER = "answerId";
 
 };
