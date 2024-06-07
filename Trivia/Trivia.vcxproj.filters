@@ -43,6 +43,9 @@
     <Filter Include="Header Files\Game">
       <UniqueIdentifier>{64be79cd-531d-4e89-9a05-5eef150d7594}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{317a5274-d064-4847-b7e0-7c38ab1c7d4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Communicator.cpp">
@@ -70,9 +73,6 @@
       <Filter>Source Files\Room</Filter>
     </ClCompile>
     <ClCompile Include="JsonRequestPacketDeserializer.cpp">
-      <Filter>Source Files\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="JsonRequestPacketSerializer.cpp">
       <Filter>Source Files\Json</Filter>
     </ClCompile>
     <ClCompile Include="LoginManager.cpp">
@@ -105,17 +105,20 @@
     <ClCompile Include="QuestionsRetriever.cpp">
       <Filter>Source Files\Database</Filter>
     </ClCompile>
-    <ClCompile Include="BaseRoomRequestHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RoomAdminRequestHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RoomMemberRequestHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameData.h">
       <Filter>Header Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomAdminRequestHandler.cpp">
+      <Filter>Source Files\Room</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomMemberRequestHandler.cpp">
+      <Filter>Source Files\Room</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonResponsePacketSerializer.cpp">
+      <Filter>Source Files\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseRoomRequestHandler.cpp">
+      <Filter>Source Files\Room</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -135,9 +138,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="JsonRequestPacketDeserializer.h">
-      <Filter>Header Files\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="JsonRequestPacketSerializer.h">
       <Filter>Header Files\Json</Filter>
     </ClInclude>
     <ClInclude Include="json.hpp">
@@ -198,13 +198,25 @@
       <Filter>Header Files\Database</Filter>
     </ClInclude>
     <ClInclude Include="BaseRoomRequestHandler.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Room</Filter>
     </ClInclude>
     <ClInclude Include="RoomAdminRequestHandler.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Room</Filter>
     </ClInclude>
     <ClInclude Include="RoomMemberRequestHandler.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Room</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonResponsePacketSerializer.h">
+      <Filter>Header Files\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRequestHandler.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

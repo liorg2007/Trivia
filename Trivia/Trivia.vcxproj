@@ -160,6 +160,9 @@
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="DatabaseException.hpp" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GameRequestHandler.h" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="json.hpp" />
