@@ -22,8 +22,18 @@ void GameRequestHandler::handleDisconnect()
 
 RequestResult GameRequestHandler::leaveGame(const RequestInfo& reqInfo)
 {
+	LeaveGameResponse res;
+	RequestResult serializedRes;
 
-	return RequestResult();
+	try
+	{
+		_game.removePlayer(_user)
+		res.status = SUCCESS;
+	}
+	catch (...) {} // either way will leave the room, no need to return FAILURE status
+	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
+	serializedRes.newHandler = _handlerFactory.createMenuRequestHandler(_user);
+	return serializedRes;
 }
 
 RequestResult GameRequestHandler::handleRequest(const RequestInfo& reqInfo)
