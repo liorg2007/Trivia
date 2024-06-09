@@ -9,7 +9,7 @@ class Game
 {
 public:
 	Game(unsigned int gameId);
-	void getQuestionForUser(LoggedUser user);
+	Question& getQuestionForUser(LoggedUser user);
 	void submitAnswer(); //might not be the correct function
 	void removePlayer(); //might not be the correct function
 

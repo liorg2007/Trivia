@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "GameManager.h"
 #include "RequestHandlerFactory.h"
+#include "Responses.h"
 
 class GameRequestHandler : public IRequestHandler
 {

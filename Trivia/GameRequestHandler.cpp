@@ -20,6 +20,21 @@ void GameRequestHandler::handleDisconnect()
 	_handlerFactory.getLoginManager().logout(_user.getUsername());
 }
 
+RequestResult GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
+{
+	GetQuestionResponse res;
+	RequestResult serializedRes;
+
+	Question& question = _game.getQuestionForUser(_user);
+
+	res.question = question.getQuestion();
+	res.answers = question.getPossibleAnswers();
+
+	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
+	serializedRes.newHandler = nullptr;
+	return serializedRes;
+}
+
 RequestResult GameRequestHandler::leaveGame(const RequestInfo& reqInfo)
 {
 	LeaveGameResponse res;
