@@ -37,7 +37,8 @@ std::vector<RoomData> RoomManager::getRooms() const
 {
 	std::shared_lock<std::shared_mutex> lock(_mtx);
 
-	std::vector<RoomData> ans(_rooms.size());
+	std::vector<RoomData> ans;
+	ans.reserve(_rooms.size());
 
 	for (const auto& room : _rooms)
 		ans.push_back(room.second.getRoomData());

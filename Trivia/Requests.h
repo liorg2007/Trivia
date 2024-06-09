@@ -52,3 +52,8 @@ struct GetPlayersInRoomRequest
 {
 	unsigned int roomId;
 };
+
+struct SubmitAnswerRequest
+{
+	unsigned int answerId;
+};
