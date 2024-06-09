@@ -1,4 +1,10 @@
 #include "GameRequestHandler.h"
+#include "GameRequestHandler.h"
+#include "GameRequestHandler.h"
+
+GameRequestHandler::GameRequestHandler(const LoggedUser& user)
+{
+}
 
 bool GameRequestHandler::isRequestRelevant(const RequestInfo& reqInfo)
 {
@@ -12,6 +18,12 @@ void GameRequestHandler::handleDisconnect()
 {
 	//Don't remove from room because stats of player should be shown in the end
 	_handlerFactory.getLoginManager().logout(_user.getUsername());
+}
+
+RequestResult GameRequestHandler::leaveGame(const RequestInfo& reqInfo)
+{
+
+	return RequestResult();
 }
 
 RequestResult GameRequestHandler::handleRequest(const RequestInfo& reqInfo)

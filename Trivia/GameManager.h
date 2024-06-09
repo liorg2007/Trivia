@@ -8,11 +8,15 @@
 class GameManager 
 {
 public:
-	GameManager();
+	static GameManager& getInstance();
+	GameManager(GameManager&) = delete;
+
 	Game createGame(const Room& room);
 	void deleteGame(unsigned int gameId);
 
 private:
+	GameManager();
+
 	std::shared_ptr<IDatabase> _database;
 	std::vector<Game> _games;
 };
