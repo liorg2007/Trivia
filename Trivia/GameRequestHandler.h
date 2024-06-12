@@ -5,15 +5,16 @@
 #include "GameManager.h"
 #include "RequestHandlerFactory.h"
 #include "Responses.h"
+#include "JsonResponsePacketSerializer.h"
 
 class GameRequestHandler : public IRequestHandler
 {
 public:
-	GameRequestHandler(const LoggedUser& user);
+	GameRequestHandler(const LoggedUser& user, Game& game);
 
-	virtual bool isRequestRelevant(const RequestInfo& reqInfo) override = 0;
-	virtual RequestResult handleRequest(const RequestInfo& reqInfo) override = 0;
-	virtual void handleDisconnect() override = 0;
+	virtual bool isRequestRelevant(const RequestInfo& reqInfo) override;
+	virtual RequestResult handleRequest(const RequestInfo& reqInfo) override;
+	virtual void handleDisconnect() override;
 
 private:
 	RequestResult getQuestion(const RequestInfo& reqInfo);

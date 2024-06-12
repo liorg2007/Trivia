@@ -42,9 +42,9 @@ std::unique_ptr<RoomMemberRequestHandler> RequestHandlerFactory::createRoomMembe
 	return std::make_unique<RoomMemberRequestHandler>(roomId, user);
 }
 
-std::unique_ptr<GameRequestHandler> RequestHandlerFactory::createGameRequestHandler(const LoggedUser& user)
+std::unique_ptr<GameRequestHandler> RequestHandlerFactory::createGameRequestHandler(const LoggedUser& user, Game& game)
 {
-	return std::make_unique<GameRequestHandler>(user);
+	return std::make_unique<GameRequestHandler>(user, game);
 }
 
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()

@@ -29,7 +29,7 @@ public:
 	std::unique_ptr<RoomAdminRequestHandler> createRoomAdminRequestHandler(int roomId, const LoggedUser& user);
 	std::unique_ptr<RoomMemberRequestHandler> createRoomMemberRequestHandler(int roomId, const LoggedUser& user);
 
-	std::unique_ptr<GameRequestHandler> createGameRequestHandler(const LoggedUser& user);
+	std::unique_ptr<GameRequestHandler> createGameRequestHandler(const LoggedUser& user, Game& game);
 
 	LoginManager& getLoginManager();
 	StatisticsManager& getStatisticsManager();

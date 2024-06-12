@@ -12,6 +12,7 @@ public:
 	GameManager(GameManager&) = delete;
 
 	Game createGame(const Room& room);
+	Game& getGame(unsigned int gameId);
 	void deleteGame(unsigned int gameId);
 
 private:

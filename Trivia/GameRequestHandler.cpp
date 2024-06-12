@@ -1,8 +1,7 @@
 #include "GameRequestHandler.h"
-#include "GameRequestHandler.h"
-#include "GameRequestHandler.h"
 
-GameRequestHandler::GameRequestHandler(const LoggedUser& user)
+GameRequestHandler::GameRequestHandler(const LoggedUser& user, Game& game)
+	:_handlerFactory(RequestHandlerFactory::getInstance()), _gameManager(RequestHandlerFactory::getInstance().getGameManager()), _user(user), _game(game)
 {
 }
 
@@ -25,14 +24,24 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
 	GetQuestionResponse res;
 	RequestResult serializedRes;
 
-	Question& question = _game.getQuestionForUser(_user);
+	std::shared_ptr<Question> question = _game.getQuestionForUser(_user).value_or(nullptr);
 
-	res.question = question.getQuestion();
-	res.answers = question.getPossibleAnswers();
+	res.question = question->getQuestion();
+	res.answers = question->getPossibleAnswers();
 
 	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
 	serializedRes.newHandler = nullptr;
 	return serializedRes;
+}
+
+RequestResult GameRequestHandler::submitAnswer(const RequestInfo& reqInfo)
+{
+	return RequestResult();
+}
+
+RequestResult GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
+{
+	return RequestResult();
 }
 
 RequestResult GameRequestHandler::leaveGame(const RequestInfo& reqInfo)
@@ -42,7 +51,7 @@ RequestResult GameRequestHandler::leaveGame(const RequestInfo& reqInfo)
 
 	try
 	{
-		_game.removePlayer(_user)
+		_game.removePlayer(_user);
 		res.status = SUCCESS;
 	}
 	catch (...) {} // either way will leave the room, no need to return FAILURE status
