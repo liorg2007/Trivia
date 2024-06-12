@@ -15,7 +15,8 @@ struct PlayerResults {
 
 struct GameData
 {
-	Question currentQuestion;
+	std::unique_ptr<Question> currentQuestion;
+	std::time_t lastSubmission;
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
 	unsigned int averageAnswerTime;
