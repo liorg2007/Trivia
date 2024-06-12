@@ -4,6 +4,8 @@
 Game::Game(std::vector<std::string> players, GameDetails gameDetails)
 	:_gameDetails(gameDetails)
 {
+	_questions = QuestionsRetriever::retrieveQuestions(gameDetails.answerCount);
+
 	for (const auto& player : players)
 	{
 		GameData data;
@@ -11,12 +13,10 @@ Game::Game(std::vector<std::string> players, GameDetails gameDetails)
 		data.correctAnswerCount = 0;
 		data.wrongAnswerCount = 0;
 		data.lastSubmission = 0;
-		data.currentQuestion = nullptr;
+		data.currentQuestion = std::make_shared<Question>(_questions.at(0));
 
 		_players.emplace(player, data);
 	}
-
-	_questions = QuestionsRetriever::retrieveQuestions(gameDetails.answerCount);
 }
 
 std::optional<std::shared_ptr<Question>> Game::getQuestionForUser(const LoggedUser& user)
