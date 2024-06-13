@@ -65,7 +65,15 @@ RequestResult RoomAdminRequestHandler::startGame()
 	}
 
 	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
-	serializedRes.newHandler = nullptr;
+
+	if (res.status == SUCCESS)
+	{
+		Game game = GameManager::getInstance().createGame(_roomRef);
+		serializedRes.newHandler = _handlerFactory.createGameRequestHandler(_user, game);
+	}
+	else
+		serializedRes.newHandler = nullptr;
+
 	return serializedRes;
 }
 
