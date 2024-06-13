@@ -9,7 +9,7 @@
 
 struct GameDetails
 {
-	unsigned int _gameId;
+	unsigned int gameId;
 	unsigned int answerCount;
 	unsigned int answerTimeout;
 	std::time_t gameStartTime;

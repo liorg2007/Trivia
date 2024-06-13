@@ -19,5 +19,5 @@ private:
 	GameManager();
 
 	std::shared_ptr<IDatabase> _database;
-	std::vector<Game> _games;
+	std::unordered_map<unsigned int ,Game> _games;
 };
