@@ -53,6 +53,9 @@ void Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 
 void Game::removePlayer(const LoggedUser& user)
 {
+	//player removal requires all his remaining answers to be wrong
+	GameData& userData = _players.at(user.getUsername());
+	userData.wrongAnswerCount = _gameDetails.answerCount - userData.wrongAnswerCount - userData.correctAnswerCount;
 }
 
 void Game::submitGameStatsToDB()

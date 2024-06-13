@@ -16,6 +16,7 @@ bool GameRequestHandler::isRequestRelevant(const RequestInfo& reqInfo)
 void GameRequestHandler::handleDisconnect()
 {
 	//Don't remove from room because stats of player should be shown in the end
+	_game.removePlayer(_user);
 	_handlerFactory.getLoginManager().logout(_user.getUsername());
 }
 

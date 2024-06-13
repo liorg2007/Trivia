@@ -19,6 +19,7 @@ class Game
 {
 public:
 	Game(std::vector<std::string> players, GameDetails gameDetails);
+	~Game();
 	std::optional<std::shared_ptr<Question>> getQuestionForUser(const LoggedUser& user);
 	void submitAnswer(const LoggedUser& user, unsigned int answerId); //might not be the correct function
 	void removePlayer(const LoggedUser& user); //might not be the correct function
