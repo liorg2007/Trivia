@@ -6,6 +6,7 @@
 #include "RequestHandlerFactory.h"
 #include "Responses.h"
 #include "JsonResponsePacketSerializer.h"
+#include "JsonRequestPacketDeserializer.h"
 
 class GameRequestHandler : public IRequestHandler
 {

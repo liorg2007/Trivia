@@ -37,7 +37,14 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
 
 RequestResult GameRequestHandler::submitAnswer(const RequestInfo& reqInfo)
 {
-	return RequestResult();
+	SubmitAnswerResponse res;
+	RequestResult serializedRes;
+
+	auto answer = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(reqInfo.buffer);
+	_game.submitAnswer(_user, answer.answerId);
+
+	serializedRes.newHandler = nullptr;
+	return serializedRes;
 }
 
 RequestResult GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
