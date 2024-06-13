@@ -30,3 +30,8 @@ Game& GameManager::getGame(unsigned int gameId)
 	return _games.at(gameId);
 }
 
+void GameManager::deleteGame(unsigned int gameId)
+{
+	_games.erase(gameId);
+}
+
