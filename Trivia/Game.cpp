@@ -55,7 +55,14 @@ void Game::removePlayer(const LoggedUser& user)
 {
 	//player removal requires all his remaining answers to be wrong
 	GameData& userData = _players.at(user.getUsername());
-	userData.wrongAnswerCount = _gameDetails.answerCount - userData.wrongAnswerCount - userData.correctAnswerCount;
+
+	int totalAnswered = userData.wrongAnswerCount + userData.correctAnswerCount;
+
+	time_t answeredTime = userData.averageAnswerTime * totalAnswered; //avg = answeredTime / totalAnswered. answeredTime = avg * totalAnswered
+	time_t totalTime = answeredTime + _gameDetails.answerTimeout * (_gameDetails.answerCount - totalAnswered); //totalTime = already Answred Time + (answer Timeout * not answered)
+
+	userData.averageAnswerTime = totalTime / _gameDetails.answerCount;
+	userData.wrongAnswerCount = _gameDetails.answerCount - userData.correctAnswerCount;
 }
 
 GameDetails& Game::getGameDetails()
