@@ -23,6 +23,8 @@ public:
 	std::optional<std::shared_ptr<Question>> getQuestionForUser(const LoggedUser& user);
 	void submitAnswer(const LoggedUser& user, unsigned int answerId); //might not be the correct function
 	void removePlayer(const LoggedUser& user); //might not be the correct function
+	GameDetails& getGameDetails();
+	std::shared_ptr< std::unordered_map<std::string, GameData>> getPlayersStats();
 
 private:
 	void submitGameStatsToDB();

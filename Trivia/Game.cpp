@@ -58,6 +58,12 @@ void Game::removePlayer(const LoggedUser& user)
 	userData.wrongAnswerCount = _gameDetails.answerCount - userData.wrongAnswerCount - userData.correctAnswerCount;
 }
 
-void Game::submitGameStatsToDB()
+GameDetails& Game::getGameDetails()
 {
+	return _gameDetails;
+}
+
+std::shared_ptr<std::unordered_map<std::string, GameData>> Game::getPlayersStats()
+{
+	return std::make_shared<std::unordered_map<std::string, GameData>>(_players);
 }

@@ -50,7 +50,50 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo& reqInfo)
 
 RequestResult GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 {
-	return RequestResult();
+	GetGameResultsResponse res;
+	RequestResult serializedRes;
+	std::list<PlayerResults> results;
+	GameDetails gameDetails = _game.getGameDetails();
+
+	if (std::time(nullptr) - gameDetails.answerCount * gameDetails.answerTimeout > gameDetails.gameStartTime) //if user requests game results before game finished
+	{
+		res.status = FAILURE;
+		serializedRes.newHandler = nullptr;
+	}
+	else
+	{
+		PlayerResults result;
+
+		for (const auto& gameStat : *_game.getPlayersStats())
+		{
+			int totalAnswered = gameStat.second.correctAnswerCount + gameStat.second.wrongAnswerCount;
+			result.username = gameStat.first; //username
+			result.wrongAnswerCount = gameDetails.answerCount - gameStat.second.correctAnswerCount; //also satisfies case where user didnt answer everything
+			result.correctAnswerCount = gameStat.second.correctAnswerCount; //all users correct answers
+			
+			if (totalAnswered < gameDetails.answerCount) //if user didnt answer all, add the full time of questions didnt answered to average time
+			{
+				time_t answeredTime = gameStat.second.averageAnswerTime * totalAnswered; //avg = answeredTime / totalAnswered. answeredTime = avg * totalAnswered
+				time_t totalTime = answeredTime + gameDetails.answerTimeout * (gameDetails.answerCount - totalAnswered); //totalTime = already Answred Time + (answer Timeout * not answered)
+
+				result.averageAnswerTime = totalTime / gameDetails.answerCount;
+			}
+			else
+			{
+				result.averageAnswerTime = gameStat.second.averageAnswerTime;
+			}
+
+			//add the result to the list
+			results.push_back(result);
+		}
+
+		res.results = results;
+		res.status = SUCCESS;
+		serializedRes.newHandler = _handlerFactory.createMenuRequestHandler(_user);
+	}
+
+	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
+	return serializedRes;
 }
 
 RequestResult GameRequestHandler::leaveGame(const RequestInfo& reqInfo)
