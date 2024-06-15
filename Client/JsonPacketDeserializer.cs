@@ -191,5 +191,9 @@ namespace Client
         {
             return JsonSerializer.Deserialize<SubmitAnswerResponse>(message);
         }
+        public static GetQuestionResponse DeserializeGetQuestionResponse(string message)
+        {
+            return JsonSerializer.Deserialize<GetQuestionResponse>(message);
+        }
     }
 }

@@ -35,7 +35,10 @@ namespace Client
             LeaveRoom,
 
             /* Game State */
+            GetGameResults,
             SubmitAnswer,
+            GetQuestion,
+            LeaveGame,
         }
 
         public struct ServerResponse
@@ -164,6 +167,13 @@ namespace Client
         {
             public uint status { get; set; }
             public uint correctAnswerId { get; set; }
+        }
+
+        public struct GetQuestionResponse
+        {
+            public uint status { get; set; }
+            public string question { get; set; }
+            public string[] answers { get; set; }
         }
     }
 }

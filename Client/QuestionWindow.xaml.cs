@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 
 using static Client.Requests;
 using System.Text.Json;
+using System.Runtime.CompilerServices;
 
 namespace Client
 {
@@ -35,27 +36,22 @@ namespace Client
 
         private DispatcherTimer timer = new DispatcherTimer();
 
-        private readonly int timeForQuestion;
-        private int timeLeft;
-        private int questionsLeft;
-        private int correctAnswers;
+        private readonly uint timeForQuestion;
+        private uint timeLeft;
+        private uint questionsLeft;
+        private uint correctAnswers;
 
         private bool isShowingResult = false;
 
-        public QuestionWindow(string question, string ans1, string ans2, string ans3, string ans4, int questionTime,
-            int questionsLeft, int correctAnswers)
+        public QuestionWindow(uint questionTime, uint questionsLeft)
         {
             InitializeComponent();
 
-            questionTextBlock.Text = question;
-            answerTextBlock1.Text = ans1;
-            answerTextBlock2.Text = ans2;
-            answerTextBlock3.Text = ans3;
-            answerTextBlock4.Text = ans4;
+            nextQuestion();
 
             timeForQuestion = timeLeft = questionTime;
             this.questionsLeft = questionsLeft;
-            this.correctAnswers = correctAnswers;
+            correctAnswers = 0;
 
             timerTextBlock.Text = questionTime.ToString() + 's';
             questionsLeftTextBlock.Text = questionsLeft.ToString();
@@ -98,17 +94,27 @@ namespace Client
             if (isShowingResult)
             {
                 nextQuestion();
+                selectedAnswerNumber = 0;
+                if (correctAnswerBorder != null)
+                    correctAnswerBorder.Background = nonSelectedAnswerBgBrush;
+                if (selectedAnswerBorder != null)
+                    selectedAnswerBorder.Background = nonSelectedAnswerBgBrush;
                 submitAnswerTextBlock.Text = "Submit Answer";
+                isShowingResult = !isShowingResult;
             }
             else
             {
-                submitAnswer();
-                submitAnswerTextBlock.Text = "Next Question";
+                uint correctAnswerId = submitAnswer();
+                if (correctAnswerId != 0) // an error hasnt occured
+                {
+                    showCorrectAnswer(correctAnswerId);
+                    submitAnswerTextBlock.Text = "Next Question";
+                    isShowingResult = !isShowingResult;
+                }
             }
-            isShowingResult = !isShowingResult;
         }
-        private void submitAnswer()
-        {/*
+        private uint submitAnswer()
+        {
             SubmitAnswerRequest request = new SubmitAnswerRequest();
             request.answerId = selectedAnswerNumber;
             ServerResponse fullResponse = Helper.SendMessageWithByteArr(
@@ -117,13 +123,18 @@ namespace Client
             if (fullResponse.code != Code.SubmitAnswer)
             {
                 Helper.raiseErrorBox("Server error while submitting answer");
-                return;
+                return 0;
             }
             SubmitAnswerResponse response = JsonPacketDeserializer.DeserializeSubmitAnswerResponse(fullResponse.message);
             if (response.status == 1)
-            {*/
-            showCorrectAnswer(4);//response.correctAnswerId);
-            //}
+            {
+                return response.correctAnswerId;
+            }
+            else
+            {
+                Helper.raiseErrorBox("Server error while submitting answer");
+                return 0;
+            }
         }
 
         private void showCorrectAnswer(uint correctAnswerId)
@@ -152,16 +163,27 @@ namespace Client
 
         private void nextQuestion()
         {
-            /* get next question from server */
+            ServerResponse fullResponse = Helper.SendMessageWithCode(Code.GetQuestion, (App)Application.Current);
+            GetQuestionResponse response = JsonPacketDeserializer.DeserializeGetQuestionResponse(fullResponse.message);
+            if (response.status != 1)
+            {
+                Helper.raiseErrorBox("Server error while getting next question");
+                throw new Exception();
+            }
+            showNewQuestion(response.question, response.answers);
 
-            if (correctAnswerBorder != null)
-                correctAnswerBorder.Background = nonSelectedAnswerBgBrush;
-            if (selectedAnswerBorder != null)
-                selectedAnswerBorder.Background = nonSelectedAnswerBgBrush;
-            selectedAnswerNumber = 0;
             timeLeft = timeForQuestion;
             timerTextBlock.Text = timeLeft.ToString() + 's';
             timer.Start();
+        }
+
+        private void showNewQuestion(string question, string[] answers)
+        {
+            questionTextBlock.Text = question;
+            answerTextBlock1.Text = answers[0];
+            answerTextBlock2.Text = answers[1];
+            answerTextBlock3.Text = answers[2];
+            answerTextBlock4.Text = answers[3];
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
