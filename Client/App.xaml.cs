@@ -27,7 +27,8 @@ namespace Client
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            ServerData connDetails = new ServerData();
+            new QuestionWindow("what?" , "1", "2", "3", "4", 20, 3, 3).Show();
+            /*ServerData connDetails = new ServerData();
 
             try
             {
@@ -48,7 +49,7 @@ namespace Client
             startMusic();
 
             LoginWindow mainWindow = new LoginWindow();
-            mainWindow.Show();
+            mainWindow.Show();*/
         }
 
         public void startMusic()

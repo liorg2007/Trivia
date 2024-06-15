@@ -98,7 +98,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Background="#c785ec" CornerRadius="10" Margin="2">
-                    <TextBlock FontSize="20" x:Name="correctAnswerTextBlock">Correct Answers</TextBlock>
+                    <TextBlock FontSize="20" x:Name="numCorrectAnswersTextBlock">Correct Answers</TextBlock>
                 </Border>
                 <Border Grid.Column="1" Background="#a86add" CornerRadius="10" Margin="2">
                     <TextBlock FontSize="20" x:Name="timerTextBlock">Time Left</TextBlock>
@@ -144,22 +144,22 @@
                         <Setter Property="FontSize" Value="22" />
                     </Style>
                 </Grid.Resources>
-                <Border>
+                <Border x:Name="answerBorder1">
                     <Button Click="selectAnswer" Tag="1">
                         <TextBlock x:Name="answerTextBlock1" />
                     </Button>
                 </Border>
-                <Border Grid.Column="1">
+                <Border Grid.Column="1" x:Name="answerBorder2">
                     <Button Click="selectAnswer" Tag="2">
                         <TextBlock x:Name="answerTextBlock2" />
                     </Button>
                 </Border>
-                <Border Grid.Row="1">
+                <Border Grid.Row="1" x:Name="answerBorder3">
                     <Button Click="selectAnswer" Tag="3">
                         <TextBlock x:Name="answerTextBlock3" />
                     </Button>
                 </Border>
-                <Border Grid.Row="1" Grid.Column="1">
+                <Border Grid.Row="1" Grid.Column="1" x:Name="answerBorder4">
                     <Button Click="selectAnswer" Tag="4">
                         <TextBlock x:Name="answerTextBlock4" />
                     </Button>
@@ -171,9 +171,11 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
+                
+                <!-- This button is also used for getting the next question -->
                 <Border Grid.Column="1" Background="#c785ec" CornerRadius="10" Margin="0,5,0,10">
-                    <Button Click="submitAnswer">
-                        <TextBlock FontSize="22">Submit Answer</TextBlock>
+                    <Button Click="submitOrNextQuestionClick" x:Name="submitAnswerButton">
+                        <TextBlock FontSize="22" x:Name="submitAnswerTextBlock">Submit Answer</TextBlock>
                     </Button>
                 </Border>
             </Grid>

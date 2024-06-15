@@ -187,5 +187,9 @@ namespace Client
 
             return res;
         }
+        public static SubmitAnswerResponse DeserializeSubmitAnswerResponse(string message)
+        {
+            return JsonSerializer.Deserialize<SubmitAnswerResponse>(message);
+        }
     }
 }

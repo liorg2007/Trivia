@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 using static Client.DataStructs;
@@ -32,6 +33,9 @@ namespace Client
             StartGame,
             GetRoomState,
             LeaveRoom,
+
+            /* Game State */
+            SubmitAnswer,
         }
 
         public struct ServerResponse
@@ -40,6 +44,7 @@ namespace Client
             public string message;
         }
 
+        // Login/Signup
         public struct LoginRequest
         {
             public string username { get; set; }
@@ -66,6 +71,7 @@ namespace Client
             public int status { get; set; }
         }
 
+        // Main Menu
         public struct StatsRequest
         {
             public uint code { get; set; }
@@ -125,6 +131,7 @@ namespace Client
             public uint status { get; set; }
         }
 
+        // Room
         public struct LeaveRoomResponse
         {
             public uint status { get; set; }
@@ -145,6 +152,18 @@ namespace Client
         {
             public uint status { get; set; }
             public RoomState roomState { get; set; }
+        }
+
+        // Game
+        public struct SubmitAnswerRequest
+        {
+            public uint answerId { get; set; }
+        }
+
+        public struct SubmitAnswerResponse
+        {
+            public uint status { get; set; }
+            public uint correctAnswerId { get; set; }
         }
     }
 }
