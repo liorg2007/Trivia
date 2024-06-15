@@ -1,0 +1,169 @@
+﻿<Window x:Class="Client.Menu.QuestionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client.Menu"
+        mc:Ignorable="d"
+        Title="QuestionWindow" Height="600" Width="760"      
+        xmlns:iconPacks = "http://metro.mahapps.com/winfx/xaml/iconpacks"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStyle="None" ResizeMode="NoResize"
+        MouseDown="Window_MouseDown">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="111*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Color settings -->
+            <Border CornerRadius="10" Grid.RowSpan="2">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#C33764" Offset="0.0"/>
+                        <GradientStop Color="#1D2671" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Height="20" VerticalAlignment="Top">
+                <Button Width="20" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" Click="MinimizeWindow">
+                    <Button.Content>
+                        <Viewbox>
+                            <iconPacks:PackIconCoolicons Kind="MinusCircle" HorizontalAlignment="Center" Height="20" VerticalAlignment="Center" Width="21"/>
+                        </Viewbox>
+                    </Button.Content>
+
+                </Button>
+                <Button Width="20" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" Click="CloseWindow">
+                    <Button.Content>
+                        <Viewbox>
+                            <iconPacks:PackIconCoolicons Kind="OffClose" HorizontalAlignment="Center" Height="20" VerticalAlignment="Center" Width="21"/>
+                        </Viewbox>
+                    </Button.Content>
+
+                </Button>
+            </StackPanel>
+
+            <!-- Logo with name setting -->
+
+            <!-- Image Source="pack://application:,,,/Images/logo.png" Margin="0,0,0,217" Grid.RowSpan="2" -->
+            <StackPanel Orientation="Vertical" Grid.RowSpan="2" Margin="0,10,0,0">
+
+                <Grid>
+                    <Image Source="pack://application:,,,/Images/logoPic.png" Height="97" Width="136" Margin="10,0,10,10" VerticalAlignment="Top" Stretch="Uniform"/>
+
+                    <TextBlock Text="Goon Genius" FontSize="40" 
+                            FontFamily="{StaticResource Blanka}"
+                            HorizontalAlignment="Center"
+                            Margin="0,85,0,0" VerticalAlignment="Top"/>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top"  Margin="54,133,54,0" Height="44">
+                        <Line Stretch="Uniform" Stroke="Black" X1="10" Width="95" Height="44" Margin="185, 0,0,0"/>
+                        <TextBlock  Text="QUIZ" FontSize="35" FontFamily="{StaticResource face-plate-saguage}" Width="85" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        <Line Stretch="Uniform" Stroke="Black" X2="10" Width="95" Height="44"/>
+
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        <Grid Margin="5,200,5,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="8*"/>
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontFamily" Value="{StaticResource face-plate-saguage}" />
+                    <Setter Property="TextWrapping" Value="Wrap" />
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+            </Grid.Resources>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Background="#c785ec" CornerRadius="10" Margin="2">
+                    <TextBlock FontSize="20">Correct Answers</TextBlock>
+                </Border>
+                <Border Grid.Column="1" Background="#a86add" CornerRadius="10" Margin="2">
+                    <TextBlock FontSize="20">Time Left</TextBlock>
+                </Border>
+                <Border Grid.Column="2" Background="#8549a7" CornerRadius="10" Margin="2">
+                    <TextBlock FontSize="20">Questions Left</TextBlock>
+                </Border>
+            </Grid>
+            <Border Grid.Row="1"                    
+                    CornerRadius="10"
+                    Margin="5,12,5,12">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#deb7ff" Offset="0.0"/>
+                        <GradientStop Color="#634087" Offset="2"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <TextBlock FontFamily="{StaticResource face-plate-saguage}" 
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="center"
+                           FontSize="38"
+                           x:Name="questionTextBlock">Question</TextBlock>
+            </Border>
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="BorderThickness" Value="5"/>
+                        <Setter Property="CornerRadius" Value="10"/>
+                        <Setter Property="BorderBrush" Value="#a86add"/>
+                        <Setter Property="Background" Value="#deb7ff"/>
+                    </Style>
+                    <!-- ToolBar.ButtonStyleKey is for empty looking buttons -->
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                        <Setter Property="VerticalAlignment" Value="Stretch" />
+                        <Setter Property="BorderThickness" Value="0" />
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="22" />
+                    </Style>
+                </Grid.Resources>
+                <Border>
+                    <Button Click="">
+                        <TextBlock x:Name="answerTextBlock1">Answer 1</TextBlock>
+                    </Button>
+                </Border>
+                <Border Grid.Column="1">
+                    <Button Click="" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <TextBlock x:Name="answerTextBlock2">Answer 2</TextBlock>
+                    </Button>
+                </Border>
+                <Border Grid.Row="1">
+                    <Button Click="" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <TextBlock x:Name="answerTextBlock3">Answer 3</TextBlock>
+                    </Button>
+                </Border>
+                <Border Grid.Row="1" Grid.Column="1">
+                    <Button Click="" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <TextBlock x:Name="answerTextBlock4">Answer 4</TextBlock>
+                    </Button>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
