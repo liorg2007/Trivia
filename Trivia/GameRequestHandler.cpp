@@ -27,6 +27,7 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
 
 	std::shared_ptr<Question> question = _game.getQuestionForUser(_user).value_or(nullptr);
 
+	res.status = SUCCESS;
 	res.question = question->getQuestion();
 	res.answers = question->getPossibleAnswers();
 
@@ -41,9 +42,10 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo& reqInfo)
 	RequestResult serializedRes;
 
 	auto answer = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(reqInfo.buffer);
-	_game.submitAnswer(_user, answer.answerId);
+	res.isCorrect = _game.submitAnswer(_user, answer.answerId);
 
 	res.status = SUCCESS;
+	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
 	serializedRes.newHandler = nullptr;
 	return serializedRes;
 }

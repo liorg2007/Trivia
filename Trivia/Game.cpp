@@ -29,8 +29,9 @@ std::optional<std::shared_ptr<Question>> Game::getQuestionForUser(const LoggedUs
 	return question;
 }
 
-void Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
+bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 { 
+	bool isCorrect = false; //this is the starting state, if answer is correct it'll be true
 	std::shared_ptr<GameData> userGameData = std::make_shared<GameData>(_players.at(user.getUsername()));
 
 	if (userGameData->currentQuestion == nullptr) //check that question isn't nullptr. !shouldn't happen but in case of some tampering maybe, then server won't crash
@@ -38,8 +39,11 @@ void Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 
 	if (std::time(nullptr) - _gameDetails.answerTimeout >= userGameData->lastSubmission) 	//check if user submitted answer in time
 		++(userGameData->wrongAnswerCount);
-	else if(userGameData->currentQuestion->getCorrectAnswerId() == answerId) 	//check if user submitted correct answer
+	else if (userGameData->currentQuestion->getCorrectAnswerId() == answerId) 	//check if user submitted correct answer
+	{
 		++(userGameData->correctAnswerCount);
+		isCorrect = true;
+	}
 	else
 		++(userGameData->wrongAnswerCount);
 
@@ -47,6 +51,8 @@ void Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 	userGameData->lastSubmission = std::time(nullptr);
 	userGameData->averageAnswerTime = (userGameData->lastSubmission - _gameDetails.gameStartTime) / (userGameData->correctAnswerCount + userGameData->wrongAnswerCount);
 	userGameData->currentQuestion = getQuestionForUser(user).value_or(nullptr);
+
+	return isCorrect;
 }
 
 void Game::removePlayer(const LoggedUser& user)
