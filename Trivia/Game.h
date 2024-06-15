@@ -18,13 +18,12 @@ struct GameDetails
 class Game
 {
 public:
-	Game(std::vector<std::string> players, GameDetails gameDetails);
-	~Game();
+	Game(std::vector<std::string>&& players, const GameDetails& gameDetails, std::vector<Question>&& questions);
 	std::optional<std::shared_ptr<Question>> getQuestionForUser(const LoggedUser& user);
 	void submitAnswer(const LoggedUser& user, unsigned int answerId); //might not be the correct function
 	void removePlayer(const LoggedUser& user); //might not be the correct function
-	GameDetails& getGameDetails();
-	std::shared_ptr< std::unordered_map<std::string, GameData>> getPlayersStats();
+	const GameDetails& getGameDetails() const;
+	std::shared_ptr<std::unordered_map<std::string, GameData>> getPlayersStats();
 
 private:
 	void submitGameStatsToDB();

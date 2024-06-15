@@ -19,7 +19,7 @@ Game GameManager::createGame(const Room& room)
 	details.gameStartTime = roomData.startTime;
 	details.gameId = roomData.id;
 
-	Game game = Game(room.getAllUsers(), details);
+	Game game = Game(room.getAllUsers(), details, _database->getQuestions(details.answerCount));
 	_games.insert({ roomData.id, game });
 
 	return game;

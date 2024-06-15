@@ -1,11 +1,9 @@
 #include "Game.h"
 #include <optional>
 
-Game::Game(std::vector<std::string> players, GameDetails gameDetails)
-	:_gameDetails(gameDetails)
+Game::Game(std::vector<std::string>&& players, const GameDetails& gameDetails, std::vector<Question>&& questions)
+	: _gameDetails(gameDetails), _questions(questions)
 {
-	_questions = QuestionsRetriever::retrieveQuestions(gameDetails.answerCount);
-
 	for (const auto& player : players)
 	{
 		GameData data;
@@ -65,7 +63,7 @@ void Game::removePlayer(const LoggedUser& user)
 	userData.wrongAnswerCount = _gameDetails.answerCount - userData.correctAnswerCount;
 }
 
-GameDetails& Game::getGameDetails()
+const GameDetails& Game::getGameDetails() const
 {
 	return _gameDetails;
 }
