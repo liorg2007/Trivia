@@ -6,51 +6,41 @@ Game::Game(std::vector<std::string>&& players, const GameDetails& gameDetails, s
 {
 	for (const auto& player : players)
 	{
-		GameData data;
-		data.averageAnswerTime = 0;
-		data.correctAnswerCount = 0;
-		data.wrongAnswerCount = 0;
-		data.lastSubmission = 0;
-		data.currentQuestion = std::make_shared<Question>(_questions.at(0));
+		GameData data(_questions.at(0), 0, 0, 0, 0);
 
 		_players.emplace(player, data);
 	}
 }
 
-std::optional<std::shared_ptr<Question>> Game::getQuestionForUser(const LoggedUser& user)
+Question& Game::getQuestionForUser(const LoggedUser& user)
 {
-	std::optional<std::shared_ptr<Question>> question;
-	std::shared_ptr<GameData> userGameData = std::make_shared<GameData>(_players.at(user.getUsername()));
+	GameData& userGameData = _players.at(user.getUsername());
 
-	if (userGameData->correctAnswerCount + userGameData->wrongAnswerCount >= _gameDetails.answerCount)
-		return question;
+	if (userGameData.correctAnswerCount + userGameData.wrongAnswerCount >= _gameDetails.answerCount)
+		throw std::exception();
 
-	question = std::make_shared<Question>(_questions.at(userGameData->correctAnswerCount + userGameData->wrongAnswerCount));
-	return question;
+	return _questions.at(userGameData.correctAnswerCount + userGameData.wrongAnswerCount);
 }
 
 bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 { 
 	bool isCorrect = false; //this is the starting state, if answer is correct it'll be true
-	std::shared_ptr<GameData> userGameData = std::make_shared<GameData>(_players.at(user.getUsername()));
+	GameData& userGameData = _players.at(user.getUsername());
 
-	if (userGameData->currentQuestion == nullptr) //check that question isn't nullptr. !shouldn't happen but in case of some tampering maybe, then server won't crash
-		return;
-
-	if (std::time(nullptr) - _gameDetails.answerTimeout >= userGameData->lastSubmission) 	//check if user submitted answer in time
-		++(userGameData->wrongAnswerCount);
-	else if (userGameData->currentQuestion->getCorrectAnswerId() == answerId) 	//check if user submitted correct answer
+	if (std::time(nullptr) - _gameDetails.answerTimeout >= userGameData.lastSubmission) 	//check if user submitted answer in time
+		++(userGameData.wrongAnswerCount);
+	else if (userGameData.currentQuestion.getCorrectAnswerId() == answerId) 	//check if user submitted correct answer
 	{
-		++(userGameData->correctAnswerCount);
+		++(userGameData.correctAnswerCount);
 		isCorrect = true;
 	}
 	else
-		++(userGameData->wrongAnswerCount);
+		++(userGameData.wrongAnswerCount);
 
 
-	userGameData->lastSubmission = std::time(nullptr);
-	userGameData->averageAnswerTime = (userGameData->lastSubmission - _gameDetails.gameStartTime) / (userGameData->correctAnswerCount + userGameData->wrongAnswerCount);
-	userGameData->currentQuestion = getQuestionForUser(user).value_or(nullptr);
+	userGameData.lastSubmission = std::time(nullptr);
+	userGameData.averageAnswerTime = (userGameData.lastSubmission - _gameDetails.gameStartTime) / (userGameData.correctAnswerCount + userGameData.wrongAnswerCount);
+	userGameData.currentQuestion = getQuestionForUser(user);
 
 	return isCorrect;
 }

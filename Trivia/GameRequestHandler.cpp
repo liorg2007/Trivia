@@ -25,11 +25,16 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo& reqInfo)
 	GetQuestionResponse res;
 	RequestResult serializedRes;
 
-	std::shared_ptr<Question> question = _game.getQuestionForUser(_user).value_or(nullptr);
-
-	res.status = SUCCESS;
-	res.question = question->getQuestion();
-	res.answers = question->getPossibleAnswers();
+	try {
+		Question& question = _game.getQuestionForUser(_user);
+		res.status = SUCCESS;
+		res.question = question.getQuestion();
+		res.answers = question.getPossibleAnswers();
+	}
+	catch (...)
+	{
+		res.status = FAILURE;
+	}
 
 	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
 	serializedRes.newHandler = nullptr;
@@ -72,7 +77,7 @@ RequestResult GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 			result.username = gameStat.first; //username
 			result.wrongAnswerCount = gameDetails.answerCount - gameStat.second.correctAnswerCount; //also satisfies case where user didnt answer everything
 			result.correctAnswerCount = gameStat.second.correctAnswerCount; //all users correct answers
-			
+
 			if (totalAnswered < gameDetails.answerCount) //if user didnt answer all, add the full time of questions didnt answered to average time
 			{
 				time_t answeredTime = gameStat.second.averageAnswerTime * totalAnswered; //avg = answeredTime / totalAnswered. answeredTime = avg * totalAnswered
