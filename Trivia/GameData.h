@@ -18,17 +18,17 @@
 
 struct GameData 
 {
-	Question& currentQuestion;
+	int currentQuestionIndex;
 	std::time_t lastSubmission;
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
 	unsigned int averageAnswerTime;
 
-	GameData(Question& _currentQuestion,
+	GameData(int _currentQuestionIndex,
 	std::time_t _lastSubmission,
 	unsigned int _correctAnswerCount,
 	unsigned int _wrongAnswerCount,
-	unsigned int _averageAnswerTime) : currentQuestion(_currentQuestion), lastSubmission(_lastSubmission), 
+	unsigned int _averageAnswerTime) : currentQuestionIndex(_currentQuestionIndex), lastSubmission(_lastSubmission),
 		correctAnswerCount(_correctAnswerCount), wrongAnswerCount(_wrongAnswerCount),
 		averageAnswerTime(_averageAnswerTime)
 	{}

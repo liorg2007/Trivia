@@ -6,7 +6,7 @@ Game::Game(std::vector<std::string>&& players, const GameDetails& gameDetails, s
 {
 	for (const auto& player : players)
 	{
-		GameData data(_questions.at(0), 0, 0, 0, 0);
+		GameData data(0, 0, 0, 0, 0);
 
 		_players.emplace(player, data);
 	}
@@ -16,10 +16,12 @@ Question& Game::getQuestionForUser(const LoggedUser& user)
 {
 	GameData& userGameData = _players.at(user.getUsername());
 
-	if (userGameData.correctAnswerCount + userGameData.wrongAnswerCount >= _gameDetails.answerCount)
-		throw std::exception();
+	Question& question = _questions.at(userGameData.currentQuestionIndex + 1);
 
-	return _questions.at(userGameData.correctAnswerCount + userGameData.wrongAnswerCount);
+	userGameData.lastSubmission = std::time(nullptr);//the user's time starts when he asks for question
+	userGameData.currentQuestionIndex++; //update, user gets next question
+
+	return question;//used a variable for question so if it crashes the lastSubmission and currentQuestionIndex arent tampered
 }
 
 bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
@@ -29,7 +31,7 @@ bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 
 	if (std::time(nullptr) - _gameDetails.answerTimeout >= userGameData.lastSubmission) 	//check if user submitted answer in time
 		++(userGameData.wrongAnswerCount);
-	else if (userGameData.currentQuestion.getCorrectAnswerId() == answerId) 	//check if user submitted correct answer
+	else if (_questions.at(userGameData.currentQuestionIndex).getCorrectAnswerId() == answerId) 	//check if user submitted correct answer
 	{
 		++(userGameData.correctAnswerCount);
 		isCorrect = true;
@@ -37,10 +39,7 @@ bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 	else
 		++(userGameData.wrongAnswerCount);
 
-
-	userGameData.lastSubmission = std::time(nullptr);
 	userGameData.averageAnswerTime = (userGameData.lastSubmission - _gameDetails.gameStartTime) / (userGameData.correctAnswerCount + userGameData.wrongAnswerCount);
-	userGameData.currentQuestion = getQuestionForUser(user);
 
 	return isCorrect;
 }
