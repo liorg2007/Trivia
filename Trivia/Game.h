@@ -23,7 +23,7 @@ public:
 	bool submitAnswer(const LoggedUser& user, unsigned int answerId); //might not be the correct function
 	void removePlayer(const LoggedUser& user); //might not be the correct function
 	const GameDetails& getGameDetails() const;
-	std::shared_ptr<std::unordered_map<std::string, GameData>> getPlayersStats();
+	std::unordered_map<std::string, GameData>& getPlayersStats();
 
 private:
 	void submitGameStatsToDB();

@@ -64,7 +64,7 @@ const GameDetails& Game::getGameDetails() const
 	return _gameDetails;
 }
 
-std::shared_ptr<std::unordered_map<std::string, GameData>> Game::getPlayersStats()
+std::unordered_map<std::string, GameData>& Game::getPlayersStats()
 {
-	return std::make_shared<std::unordered_map<std::string, GameData>>(_players);
+	return _players;
 }

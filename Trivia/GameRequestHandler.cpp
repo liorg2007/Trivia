@@ -71,7 +71,7 @@ RequestResult GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 	{
 		PlayerResults result;
 
-		for (const auto& gameStat : *_game.getPlayersStats())
+		for (const auto& gameStat : _game.getPlayersStats())
 		{
 			int totalAnswered = gameStat.second.correctAnswerCount + gameStat.second.wrongAnswerCount;
 			result.username = gameStat.first; //username
