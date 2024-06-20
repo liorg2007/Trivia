@@ -1,5 +1,4 @@
 #include "Game.h"
-#include <optional>
 
 Game::Game(std::vector<std::string>&& players, const GameDetails& gameDetails, std::vector<Question>&& questions)
 	: _gameDetails(gameDetails), _questions(std::move(questions))
@@ -24,13 +23,14 @@ Question& Game::getQuestionForUser(const LoggedUser& user)
 
 bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 {
-	bool isCorrect = false;
+	bool isCorrect;
 	GameData& userGameData = _players.at(user.getUsername());
 
 	if (std::time(nullptr) - _gameDetails.answerTimeout > userGameData.currQuestionStartTime // user either didnt submit in time
 		|| _questions.at(userGameData.currentQuestionIndex).getCorrectAnswerId() != answerId) // or the answer is wrong
 	{
 		++userGameData.wrongAnswerCount;
+		isCorrect = false;
 	}
 	else //check if user submitted correct answer
 	{
@@ -64,7 +64,23 @@ const GameDetails& Game::getGameDetails() const
 	return _gameDetails;
 }
 
-std::unordered_map<std::string, GameData>& Game::getPlayersStats()
+std::list<PlayerResults> Game::getPlayersStats() const
 {
-	return _players;
+	std::list<PlayerResults> resultsList;
+	PlayerResults result;
+	for (const auto& gameStat : _players)
+	{
+		const int totalAnswered = gameStat.second.correctAnswerCount + gameStat.second.wrongAnswerCount;
+		result.username = gameStat.first; //username
+		result.wrongAnswerCount = _gameDetails.answerCount - gameStat.second.correctAnswerCount; //also satisfies case where user didnt answer everything
+		result.correctAnswerCount = gameStat.second.correctAnswerCount; //all users correct answers
+
+		result.averageAnswerTime = gameStat.second.averageAnswerTime;
+
+		result.finishedGame = (totalAnswered < _gameDetails.answerCount);
+
+		//add the result to the list
+		resultsList.push_back(result);
+	}
+	return resultsList;
 }

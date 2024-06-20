@@ -60,7 +60,6 @@ RequestResult GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 {
 	GetGameResultsResponse res;
 	RequestResult serializedRes;
-	std::list<PlayerResults> results;
 	GameDetails gameDetails = _game.getGameDetails();
 
 	if (std::time(nullptr) - gameDetails.answerCount * gameDetails.answerTimeout > gameDetails.gameStartTime) //if user requests game results before game finished
@@ -70,24 +69,16 @@ RequestResult GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 	}
 	else
 	{
-		PlayerResults result;
-
-		for (const auto& gameStat : _game.getPlayersStats())
+		try
 		{
-			const int totalAnswered = gameStat.second.correctAnswerCount + gameStat.second.wrongAnswerCount;
-			result.username = gameStat.first; //username
-			result.wrongAnswerCount = gameDetails.answerCount - gameStat.second.correctAnswerCount; //also satisfies case where user didnt answer everything
-			result.correctAnswerCount = gameStat.second.correctAnswerCount; //all users correct answers
-			
-			result.averageAnswerTime = gameStat.second.averageAnswerTime;
-
-			result.finishedGame = (totalAnswered < gameDetails.answerCount);
-
-			//add the result to the list
-			res.results.push_back(result);
+			res.results = _game.getPlayersStats();
+			res.status = SUCCESS;
 		}
-
-		res.status = SUCCESS;
+		catch (...)
+		{
+			res.results.clear();
+			res.status = FAILURE;
+		}
 		serializedRes.newHandler = _handlerFactory.createMenuRequestHandler(_user);
 	}
 
@@ -105,7 +96,7 @@ RequestResult GameRequestHandler::leaveGame(const RequestInfo& reqInfo)
 		_game.removePlayer(_user);
 	}
 	catch (...) {} // either way will leave the room, no need to return FAILURE status
-	
+
 	res.status = SUCCESS;
 	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
 	serializedRes.newHandler = _handlerFactory.createMenuRequestHandler(_user);
@@ -114,12 +105,15 @@ RequestResult GameRequestHandler::leaveGame(const RequestInfo& reqInfo)
 
 RequestResult GameRequestHandler::handleRequest(const RequestInfo& reqInfo)
 {
-	if (reqInfo.id == ProtocolCode::GetQuestion)
+	switch (reqInfo.id)
+	{
+	case ProtocolCode::GetQuestion:
 		return getQuestion(reqInfo);
-	else if (reqInfo.id == ProtocolCode::SubmitAnswer)
+	case ProtocolCode::SubmitAnswer:
 		return submitAnswer(reqInfo);
-	else if (reqInfo.id == ProtocolCode::GetGameResults)
+	case ProtocolCode::GetGameResults:
 		return getGameResults(reqInfo);
-	else
+	default:
 		return leaveGame(reqInfo);
+	}
 }
