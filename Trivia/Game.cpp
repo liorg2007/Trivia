@@ -6,9 +6,7 @@ Game::Game(std::vector<std::string>&& players, const GameDetails& gameDetails, s
 {
 	for (const auto& player : players)
 	{
-		GameData data(0, 0, 0, 0, 0);
-
-		_players.emplace(player, data);
+		_players.emplace(player, GameData(0, 0, 0, 0, 0));
 	}
 }
 
@@ -29,18 +27,15 @@ bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 	bool isCorrect = false;
 	GameData& userGameData = _players.at(user.getUsername());
 
-	if (std::time(nullptr) - _gameDetails.answerTimeout >= userGameData.currQuestionStartTime) 	//check if user submitted answer in time
+	if (std::time(nullptr) - _gameDetails.answerTimeout > userGameData.currQuestionStartTime // user either didnt submit in time
+		|| _questions.at(userGameData.currentQuestionIndex).getCorrectAnswerId() != answerId) // or the answer is wrong
 	{
 		++userGameData.wrongAnswerCount;
 	}
-	else if (_questions.at(userGameData.currentQuestionIndex).getCorrectAnswerId() == answerId) 	//check if user submitted correct answer
+	else //check if user submitted correct answer
 	{
 		++userGameData.correctAnswerCount;
 		isCorrect = true;
-	}
-	else
-	{
-		++userGameData.wrongAnswerCount;
 	}
 
 	userGameData.averageAnswerTime = (userGameData.currQuestionStartTime - _gameDetails.gameStartTime)
