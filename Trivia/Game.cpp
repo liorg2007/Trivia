@@ -48,6 +48,7 @@ void Game::removePlayer(const LoggedUser& user)
 {
 	//player removal requires all his remaining answers to be wrong
 	GameData& userData = _players.at(user.getUsername());
+	userData.hasLeftGame = true;
 
 	int totalAnswered = userData.wrongAnswerCount + userData.correctAnswerCount;
 
