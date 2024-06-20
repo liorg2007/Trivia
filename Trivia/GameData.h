@@ -19,7 +19,7 @@
 struct GameData 
 {
 	int currentQuestionIndex;
-	std::time_t lastSubmission;
+	std::time_t currQuestionStartTime;
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
 	unsigned int averageAnswerTime;
@@ -28,7 +28,7 @@ struct GameData
 	std::time_t _lastSubmission,
 	unsigned int _correctAnswerCount,
 	unsigned int _wrongAnswerCount,
-	unsigned int _averageAnswerTime) : currentQuestionIndex(_currentQuestionIndex), lastSubmission(_lastSubmission),
+	unsigned int _averageAnswerTime) : currentQuestionIndex(_currentQuestionIndex), currQuestionStartTime(_lastSubmission),
 		correctAnswerCount(_correctAnswerCount), wrongAnswerCount(_wrongAnswerCount),
 		averageAnswerTime(_averageAnswerTime)
 	{}
