@@ -22,7 +22,6 @@ struct GameData
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
 	unsigned int averageAnswerTime;
-	bool hasLeftGame;
 
 	GameData(int _currentQuestionIndex,
 		std::time_t _lastSubmission,
@@ -30,6 +29,6 @@ struct GameData
 		unsigned int _wrongAnswerCount,
 		unsigned int _averageAnswerTime) : currentQuestionIndex(_currentQuestionIndex), currQuestionStartTime(_lastSubmission),
 		correctAnswerCount(_correctAnswerCount), wrongAnswerCount(_wrongAnswerCount),
-		averageAnswerTime(_averageAnswerTime), hasLeftGame(false)
+		averageAnswerTime(_averageAnswerTime)
 	{}
 };

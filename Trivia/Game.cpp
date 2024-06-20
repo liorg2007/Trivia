@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "GameManager.h"
 
 Game::Game(std::vector<std::string>&& players, const GameDetails& gameDetails, std::vector<Question>&& questions)
 	: _gameDetails(gameDetails), _questions(std::move(questions))
@@ -48,15 +49,21 @@ void Game::removePlayer(const LoggedUser& user)
 {
 	//player removal requires all his remaining answers to be wrong
 	GameData& userData = _players.at(user.getUsername());
-	userData.hasLeftGame = true;
-
 	int totalAnswered = userData.wrongAnswerCount + userData.correctAnswerCount;
 
-	time_t answeredTime = userData.averageAnswerTime * totalAnswered; //avg = answeredTime / totalAnswered. answeredTime = avg * totalAnswered
-	time_t totalTime = answeredTime + _gameDetails.answerTimeout * (_gameDetails.answerCount - totalAnswered); //totalTime = already Answred Time + (answer Timeout * not answered)
+	if (totalAnswered != _gameDetails.answerCount)
+	{
+		time_t answeredTime = userData.averageAnswerTime * totalAnswered; //avg = answeredTime / totalAnswered. answeredTime = avg * totalAnswered
+		time_t totalTime = answeredTime + _gameDetails.answerTimeout * (_gameDetails.answerCount - totalAnswered); //totalTime = already Answred Time + (answer Timeout * not answered)
 
-	userData.averageAnswerTime = totalTime / _gameDetails.answerCount;
-	userData.wrongAnswerCount = _gameDetails.answerCount - userData.correctAnswerCount;
+		userData.averageAnswerTime = totalTime / _gameDetails.answerCount;
+		userData.wrongAnswerCount = _gameDetails.answerCount - userData.correctAnswerCount;
+	}
+
+	if (++_leftPlayersCount == _players.size())
+	{
+		closeGame();
+	}
 }
 
 const GameDetails& Game::getGameDetails() const
@@ -83,4 +90,10 @@ std::list<PlayerResults> Game::getPlayersStats() const
 		resultsList.push_back(result);
 	}
 	return resultsList;
+}
+
+void Game::closeGame()
+{
+	// TODO: submit stats to db
+	GameManager::getInstance().deleteGame(_gameDetails.gameId);
 }

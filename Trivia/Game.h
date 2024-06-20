@@ -26,9 +26,11 @@ public:
 	std::list<PlayerResults> getPlayersStats() const;
 
 private:
+	void closeGame();
 	void submitGameStatsToDB();
 
 	std::vector<Question> _questions;
 	std::unordered_map<std::string, GameData> _players;
 	GameDetails _gameDetails;
+	int _leftPlayersCount;
 };

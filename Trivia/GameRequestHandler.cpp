@@ -71,14 +71,11 @@ RequestResult GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 	{
 		try
 		{
+			_game.removePlayer(_user);
 			res.results = _game.getPlayersStats();
 			res.status = SUCCESS;
 		}
-		catch (...)
-		{
-			res.results.clear();
-			res.status = FAILURE;
-		}
+		catch (...) {}
 		serializedRes.newHandler = _handlerFactory.createMenuRequestHandler(_user);
 	}
 
