@@ -82,8 +82,8 @@ namespace Client.Rooms
                         QuestionWindow gameWindow = new(roomState.answerTimeout, roomState.answerCount);
                         gameWindow.Show();
                         currWindow.Close();
-                    }, null, TimeSpan.Zero, timeToWait);
-            });
+                    });
+            }, null, TimeSpan.Zero, timeToWait);
         }
 
         public static bool GetLeaveRoomResponse(string message)

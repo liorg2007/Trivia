@@ -96,11 +96,8 @@ namespace Client.Rooms
                     }
 
                     //handle the start game
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        WaitingRoomCommands.startGameInTime(start_time, this, roomState);
-                        ContinueBackgroundThread = false;
-                    });
+                    ContinueBackgroundThread = false;
+                    WaitingRoomCommands.startGameInTime(start_time, this, roomState);
                 }
                 else
                 {
