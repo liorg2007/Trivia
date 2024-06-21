@@ -89,6 +89,7 @@ struct GetGameResultsResponse
 struct SubmitAnswerResponse
 {
 	unsigned int status;
+	bool isCorrect;
 };
 
 struct GetQuestionResponse

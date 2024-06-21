@@ -19,7 +19,7 @@ public:
 	bool doesUserExist(const std::string& username) override;
 	bool doesPasswordMatch(const std::string& username, const std::string& password) override;
 
-	std::list<Question> getQuestions(int amount) override;
+	std::vector<Question> getQuestions(int amount) override;
 
 	/* Statistics Queries */
 	double getPlayerAverageAnswerTime(const std::string& userName) override;

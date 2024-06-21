@@ -6,7 +6,8 @@ RequestHandlerFactory::RequestHandlerFactory()
 	: _database(IDatabase::getInstance()),
 	_loginManager(LoginManager::getInstance()),
 	_roomManager(RoomManager::getInstance()),
-	_statisticsManager(StatisticsManager::getInstance())
+	_statisticsManager(StatisticsManager::getInstance()),
+	_gameManager(GameManager::getInstance())
 {
 }
 
@@ -41,9 +42,9 @@ std::unique_ptr<RoomMemberRequestHandler> RequestHandlerFactory::createRoomMembe
 	return std::make_unique<RoomMemberRequestHandler>(roomId, user);
 }
 
-std::unique_ptr<IRequestHandler> RequestHandlerFactory::createGameRequestHandler()
+std::unique_ptr<GameRequestHandler> RequestHandlerFactory::createGameRequestHandler(const LoggedUser& user, Game& game)
 {
-	return nullptr;
+	return std::make_unique<GameRequestHandler>(user, game);
 }
 
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()
@@ -54,4 +55,9 @@ StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 RoomManager& RequestHandlerFactory::getRoomManager()
 {
 	return _roomManager;
+}
+
+GameManager& RequestHandlerFactory::getGameManager()
+{
+	return _gameManager;
 }

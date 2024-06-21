@@ -6,7 +6,7 @@
 
 #pragma comment(lib, "wininet.lib")
 
-std::forward_list<Question> QuestionsRetriever::retrieveQuestions(int amount)
+std::vector<Question> QuestionsRetriever::retrieveQuestions(int amount)
 {
 	static std::time_t lastSentRequestTime = 0;
 	std::time_t now = std::time(nullptr);
@@ -50,9 +50,9 @@ Buffer QuestionsRetriever::HTTPSRequest(const std::string& url)
 	return response;
 }
 
-std::forward_list<Question> QuestionsRetriever::deserializeQuestionsJson(Buffer& buff, int questionAmount)
+std::vector<Question> QuestionsRetriever::deserializeQuestionsJson(Buffer& buff, int questionAmount)
 {
-	std::forward_list<Question> questionsList;
+	std::vector<Question> questionsList;
 	json questions = json::parse((char*)buff.data());
 	if (questions.at(RESPONSE_CODE_JSON) != 0)
 	{
@@ -62,7 +62,7 @@ std::forward_list<Question> QuestionsRetriever::deserializeQuestionsJson(Buffer&
 	{
 		int correctAnswerIndex; // gets set by the getAnswers function
 		auto answers = getAnswersFromQuestion(question, correctAnswerIndex);
-		questionsList.emplace_front(std::move(question.at(QUESTION_STRING_JSON)), std::move(answers), correctAnswerIndex);
+		questionsList.emplace_back(std::move(question.at(QUESTION_STRING_JSON)), std::move(answers), correctAnswerIndex);
 	}
 	return questionsList;
 }

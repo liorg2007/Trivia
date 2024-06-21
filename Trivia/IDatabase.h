@@ -19,7 +19,7 @@ public:
 	virtual bool doesPasswordMatch(const std::string& username, const std::string& password) = 0;
 
 	/* Trivia Questions Queries */
-	virtual std::list<Question> getQuestions(int amount) = 0;
+	virtual std::vector<Question> getQuestions(int amount) = 0;
 
 	/* Statistics Queries */
 	virtual double getPlayerAverageAnswerTime(const std::string& userName) = 0;

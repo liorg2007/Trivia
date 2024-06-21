@@ -115,7 +115,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultsRespo
 
 Buffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse& res)
 {
-	json jsonObj{ { "status", res.status } };
+	json jsonObj{ { "status", res.status }, {"isCorrect", res.isCorrect }};
 	return buildBuffer(ProtocolCode::SubmitAnswer, jsonObj);
 }
 

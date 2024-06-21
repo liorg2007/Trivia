@@ -9,10 +9,10 @@ using json = nlohmann::json;
 class QuestionsRetriever
 {
 public:
-	static std::forward_list<Question> retrieveQuestions(int amount);
+	static std::vector<Question> retrieveQuestions(int amount);
 private:
 	static Buffer HTTPSRequest(const std::string& url);
-	static std::forward_list<Question> deserializeQuestionsJson(Buffer& buff, int questionAmount);
+	static std::vector<Question> deserializeQuestionsJson(Buffer& buff, int questionAmount);
 	static std::vector<std::string> getAnswersFromQuestion(json& question, int& correctAnswerIndex);
 	
 	static constexpr auto ANSWER_AMOUNT = 4;

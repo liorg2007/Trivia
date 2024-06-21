@@ -98,10 +98,11 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
 	return userPassword == password;
 }
 
-std::list<Question> SqliteDatabase::getQuestions(int amount)
+std::vector<Question> SqliteDatabase::getQuestions(int amount)
 {
 	insertNewQuestionsIfNeeded(amount);
-	std::list<Question> questions;
+	std::vector<Question> questions;
+	questions.reserve(amount);
 	auto query = "SELECT * FROM QUESTIONS ORDER BY RANDOM() LIMIT " + std::to_string(amount) + ';';
 	execQuery(query, getQuestionsCallback, &questions);
 	return questions;
@@ -263,7 +264,7 @@ int SqliteDatabase::getHighScoresCallback(void* data, int argc, char** argv, cha
 
 int SqliteDatabase::getQuestionsCallback(void* data, int argc, char** argv, char** azColName)
 {
-	std::list<Question>& questions = *((std::list<Question>*)data);
+	std::vector<Question>& questions = *((std::vector<Question>*)data);
 	std::vector<std::string> answers;
 	char* questionPromptPtr;
 	int correctAnswerId;
