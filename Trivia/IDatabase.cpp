@@ -4,7 +4,7 @@
 
 std::shared_ptr<IDatabase> IDatabase::getInstance()
 {
-	// Here we choose what type of database the Server will use
-	static std::shared_ptr<IDatabase> instance(new SqliteDatabase(DATABASE_FILE_NAME));
+	// Here we choose what type of database the server will use
+	static std::shared_ptr<IDatabase> instance = std::make_shared<SqliteDatabase>(DATABASE_FILE_NAME);
 	return instance;
 }
