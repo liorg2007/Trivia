@@ -47,7 +47,7 @@ private:
 	StatisticsManager& _statisticsManager;
 	GameManager& _gameManager;
 
-	IDatabase* _database;
+	std::shared_ptr<IDatabase> _database;
 
 };
 

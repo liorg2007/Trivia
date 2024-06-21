@@ -2,9 +2,9 @@
 #include "SqliteDatabase.h"
 #include "Constants.h"
 
-IDatabase* IDatabase::getInstance()
+std::shared_ptr<IDatabase> IDatabase::getInstance()
 {
 	// Here we choose what type of database the Server will use
-	static IDatabase* instance = new SqliteDatabase(DATABASE_FILE_NAME);
+	static std::shared_ptr<IDatabase> instance(new SqliteDatabase(DATABASE_FILE_NAME));
 	return instance;
 }

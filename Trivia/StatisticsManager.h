@@ -15,5 +15,5 @@ public:
 private:
 	StatisticsManager();
 
-	IDatabase* _database;
+	std::shared_ptr<IDatabase> _database;
 };
