@@ -1,6 +1,7 @@
 #include "GameManager.h"
 
 GameManager::GameManager()
+	: _database(IDatabase::getInstance())
 {
 }
 

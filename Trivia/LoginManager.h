@@ -23,7 +23,7 @@ private:
 	LoginManager();
 
 	std::mutex _loggedUserMtx;
-	IDatabase* _database;
+	std::shared_ptr<IDatabase> _database;
 	std::vector<LoggedUser> _loggedUsers;
 };
 

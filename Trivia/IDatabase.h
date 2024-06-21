@@ -2,6 +2,7 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <memory>
 #include "DatabaseException.hpp"
 #include "Question.h"
 #include "Constants.h"
@@ -32,7 +33,7 @@ public:
 	IDatabase(IDatabase&) = delete;
 	void operator=(const IDatabase&) = delete;
 
-	static IDatabase* getInstance();
+	static std::shared_ptr<IDatabase> getInstance();
 protected:
 	/* Default c'tor must be declared since the copy c'tor is deleted */
 	IDatabase() = default;
