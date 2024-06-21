@@ -72,7 +72,7 @@
         </Grid>
         <Grid Margin="5,200,5,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="8*"/>
                 <RowDefinition Height="2*"/>
@@ -98,13 +98,22 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Background="#c785ec" CornerRadius="10" Margin="2">
-                    <TextBlock FontSize="20" x:Name="numCorrectAnswersTextBlock">Correct Answers</TextBlock>
+                    <StackPanel>
+                        <TextBlock FontSize="16" TextDecorations="Underline" Text="Correct Answers" FontFamily="{StaticResource face-plate-saguage}"/>
+                        <TextBlock FontSize="20" x:Name="numCorrectAnswersTextBlock" />
+                    </StackPanel>
                 </Border>
                 <Border Grid.Column="1" Background="#a86add" CornerRadius="10" Margin="2">
-                    <TextBlock FontSize="20" x:Name="timerTextBlock">Time Left</TextBlock>
+                    <StackPanel>
+                        <TextBlock FontSize="16" TextDecorations="Underline" Text="Time Left" FontFamily="{StaticResource face-plate-saguage}"/>
+                        <TextBlock FontSize="20" x:Name="timerTextBlock" />
+                    </StackPanel>
                 </Border>
                 <Border Grid.Column="2" Background="#8549a7" CornerRadius="10" Margin="2">
-                    <TextBlock FontSize="20" x:Name="questionsLeftTextBlock">Questions Left</TextBlock>
+                    <StackPanel>
+                        <TextBlock FontSize="16" TextDecorations="Underline" Text="Questions Left" FontFamily="{StaticResource face-plate-saguage}"/>
+                        <TextBlock FontSize="20" x:Name="questionsLeftTextBlock" />
+                    </StackPanel>
                 </Border>
             </Grid>
             <Border Grid.Row="1"                    
@@ -171,7 +180,7 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                
+
                 <!-- This button is also used for getting the next question -->
                 <Border Grid.Column="1" Background="#c785ec" CornerRadius="10" Margin="0,5,0,10">
                     <Button Click="submitOrNextQuestionClick" x:Name="submitAnswerButton">
