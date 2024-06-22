@@ -106,7 +106,7 @@ namespace Client.Rooms
                 }
 
                 mut.ReleaseMutex();
-                Thread.Sleep(3000);
+                Thread.Sleep(300);
             }
         }
 
