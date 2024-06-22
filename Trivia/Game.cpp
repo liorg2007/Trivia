@@ -94,6 +94,12 @@ std::list<PlayerResults> Game::getPlayersStats() const
 	return resultsList;
 }
 
+void Game::submitGameStatsToDB(const std::shared_ptr<IDatabase>& db)
+{
+	db.get()->submitGameStatsToDB(_players);
+}
+
+
 void Game::closeGame()
 {
 	// TODO: submit stats to db

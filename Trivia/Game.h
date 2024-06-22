@@ -24,10 +24,10 @@ public:
 	void removePlayer(const LoggedUser& user); //might not be the correct function
 	const GameDetails& getGameDetails() const;
 	std::list<PlayerResults> getPlayersStats() const;
+	void submitGameStatsToDB(const std::shared_ptr<IDatabase>& db);
 
 private:
 	void closeGame();
-	void submitGameStatsToDB();
 
 	std::vector<Question> _questions;
 	std::unordered_map<std::string, GameData> _players;
