@@ -91,7 +91,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespons
 			{ "hasGameBegun", res.roomState.hasGameBegun },
 			{ "players", res.roomState.players },
 			{ "answerCount", res.roomState.answerCount },
-			{ "answerTimeOut", res.roomState.answerTimeout }
+			{ "answerTimeout", res.roomState.answerTimeout }
 		}
 	};
 	return buildBuffer(ProtocolCode::GetRoomState, jsonObj);
@@ -115,7 +115,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultsRespo
 
 Buffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse& res)
 {
-	json jsonObj{ { "status", res.status }, {"isCorrect", res.isCorrect }};
+	json jsonObj{ { "status", res.status }, { "correctAnswerId", res.correctAnswerId } };
 	return buildBuffer(ProtocolCode::SubmitAnswer, jsonObj);
 }
 

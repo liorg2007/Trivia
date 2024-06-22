@@ -1,16 +1,23 @@
 #include "GameRequestHandler.h"
 
 GameRequestHandler::GameRequestHandler(const LoggedUser& user, Game& game)
-	:_handlerFactory(RequestHandlerFactory::getInstance()), _gameManager(RequestHandlerFactory::getInstance().getGameManager()), _user(user), _game(game)
+	: _handlerFactory(RequestHandlerFactory::getInstance()),
+	_gameManager(RequestHandlerFactory::getInstance().getGameManager()), _user(user), 
+	_game(game), _hasGameStarted(false)
 {
 }
 
 bool GameRequestHandler::isRequestRelevant(const RequestInfo& reqInfo)
 {
-	return reqInfo.id == ProtocolCode::GetQuestion
+	if (!_hasGameStarted)
+	{
+		// to avoid calling std::time many times
+		_hasGameStarted = (_game.getGameDetails().gameStartTime <= std::time(nullptr));
+	}
+	return (reqInfo.id == ProtocolCode::GetQuestion
 		|| reqInfo.id == ProtocolCode::SubmitAnswer
 		|| reqInfo.id == ProtocolCode::GetGameResults
-		|| reqInfo.id == ProtocolCode::LeaveGame;
+		|| reqInfo.id == ProtocolCode::LeaveGame) && _hasGameStarted;
 }
 
 void GameRequestHandler::handleDisconnect()
@@ -48,7 +55,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo& reqInfo)
 	RequestResult serializedRes;
 
 	auto answer = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(reqInfo.buffer);
-	res.isCorrect = _game.submitAnswer(_user, answer.answerId);
+	res.correctAnswerId = _game.submitAnswer(_user, answer.answerId);
 
 	res.status = SUCCESS;
 	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);
