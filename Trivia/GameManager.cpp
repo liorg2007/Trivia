@@ -33,6 +33,7 @@ Game& GameManager::getGame(unsigned int gameId)
 
 void GameManager::deleteGame(unsigned int gameId)
 {
+	_games.at(gameId).submitGameStatsToDB(_database);
 	_games.erase(gameId);
 }
 

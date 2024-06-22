@@ -6,6 +6,7 @@
 #include "DatabaseException.hpp"
 #include "Question.h"
 #include "Constants.h"
+#include "GameData.h"
 
 class IDatabase {
 public:
@@ -29,6 +30,8 @@ public:
 	virtual int getNumOfPlayerGames(const std::string& userName) = 0;
 	virtual int getPlayerScore(const std::string& userName) = 0;
 	virtual ScoreList getHighScores() = 0;
+
+	virtual void submitGameStatsToDB(const std::unordered_map<std::string, GameData>& gameData) = 0;
 
 	IDatabase(IDatabase&) = delete;
 	void operator=(const IDatabase&) = delete;
