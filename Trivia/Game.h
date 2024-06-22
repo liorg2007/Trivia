@@ -26,10 +26,14 @@ public:
 	void removePlayer(const LoggedUser& user); //might not be the correct function
 	const GameDetails& getGameDetails() const;
 	std::list<PlayerResults> getPlayersStats() const;
+	bool isGameFinished() const;
 
 private:
 	void closeGame();
 	void submitGameStatsToDB();
+
+	int _answersCount;
+	const int _totalAnswers;
 
 	std::vector<Question> _questions;
 	std::unordered_map<std::string, GameData> _players;
