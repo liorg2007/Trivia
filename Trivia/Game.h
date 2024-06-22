@@ -25,9 +25,13 @@ public:
 	const GameDetails& getGameDetails() const;
 	std::list<PlayerResults> getPlayersStats() const;
 	void submitGameStatsToDB(const std::shared_ptr<IDatabase>& db);
+	bool isGameFinished() const;
 
 private:
 	void closeGame();
+
+	int _answersCount;
+	const int _totalAnswers;
 
 	std::vector<Question> _questions;
 	std::unordered_map<std::string, GameData> _players;
