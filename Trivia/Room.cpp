@@ -10,11 +10,13 @@ Room::Room(RoomData&& roomData, const LoggedUser& roomAdmin)
 
 const RoomData& Room::getRoomData() const
 {
+	std::shared_lock<std::shared_mutex> lock(_mtx);
 	return _roomData;
 }
 
 void Room::addUser(const LoggedUser& loggedUser)
 {
+	std::unique_lock<std::shared_mutex> lock(_mtx);
 	if (_roomData.maxPlayers == _users.size())
 	{
 		throw std::runtime_error("Max players amount reached");
@@ -24,6 +26,7 @@ void Room::addUser(const LoggedUser& loggedUser)
 
 void Room::removeUser(const LoggedUser& loggedUser)
 {
+	std::unique_lock<std::shared_mutex> lock(_mtx);
 	auto position = std::find(_users.begin(), _users.end(), loggedUser);
 
 	if (position != _users.end())
@@ -41,6 +44,7 @@ void Room::startGame(std::time_t startTime)
 
 std::vector<std::string> Room::getAllUsers() const
 {
+	std::shared_lock<std::shared_mutex> lock(_mtx);
 	std::vector<std::string> ans;
 
 	for (const auto& user : _users)

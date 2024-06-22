@@ -6,6 +6,8 @@
 #include "QuestionsRetriever.h"
 #include <vector>
 #include <unordered_map>
+#include <shared_mutex>
+
 
 struct GameDetails
 {
@@ -32,5 +34,6 @@ private:
 	std::vector<Question> _questions;
 	std::unordered_map<std::string, GameData> _players;
 	GameDetails _gameDetails;
+	mutable std::shared_mutex _mtx;
 	int _leftPlayersCount;
 };

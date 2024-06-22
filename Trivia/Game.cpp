@@ -20,6 +20,8 @@ Question& Game::getQuestionForUser(const LoggedUser& user)
 	GameData& userGameData = search->second;
 	Question& question = _questions.at(userGameData.currentQuestionIndex + 1);
 
+	std::unique_lock<std::shared_mutex> lock(_mtx);
+
 	userGameData.currQuestionStartTime = std::time(nullptr);//the user's time starts when he asks for question
 	userGameData.currentQuestionIndex++; //update, user gets next question
 
@@ -28,6 +30,8 @@ Question& Game::getQuestionForUser(const LoggedUser& user)
 
 bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 {
+	std::unique_lock<std::shared_mutex> lock(_mtx);
+
 	GameData& userGameData = _players.at(user.getUsername());
 	unsigned int correctAnswerId = _questions.at(userGameData.currentQuestionIndex).getCorrectAnswerId();
 
@@ -49,6 +53,8 @@ bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 
 void Game::removePlayer(const LoggedUser& user)
 {
+	std::unique_lock<std::shared_mutex> lock(_mtx);
+
 	//player removal requires all his remaining answers to be wrong
 	GameData& userData = _players.at(user.getUsername());
 	int totalAnswered = userData.wrongAnswerCount + userData.correctAnswerCount;
@@ -70,11 +76,14 @@ void Game::removePlayer(const LoggedUser& user)
 
 const GameDetails& Game::getGameDetails() const
 {
+	std::shared_lock<std::shared_mutex> lock(_mtx);
 	return _gameDetails;
 }
 
 std::list<PlayerResults> Game::getPlayersStats() const
 {
+	std::shared_lock<std::shared_mutex> lock(_mtx);
+
 	std::list<PlayerResults> resultsList;
 	PlayerResults result;
 	for (const auto& gameStat : _players)
