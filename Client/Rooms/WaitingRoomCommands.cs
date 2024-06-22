@@ -71,6 +71,20 @@ namespace Client.Rooms
 
         }
 
+        public static void startGameInTime(DateTime gameStartTime, Window currWindow, RoomState roomState)
+        {
+            var timeToWait = gameStartTime - DateTime.Now;
+            Helper.raiseSuccessBox("Game starts in " + timeToWait.Seconds + " seconds");
+            Timer timer = new Timer(o =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        QuestionWindow gameWindow = new(roomState.answerTimeout, roomState.answerCount);
+                        gameWindow.Show();
+                        currWindow.Close();
+                    });
+            }, null, TimeSpan.Zero, timeToWait);
+        }
 
         public static bool GetLeaveRoomResponse(string message)
         {
@@ -79,7 +93,7 @@ namespace Client.Rooms
             return res.status == 1;
         }
 
-        public static void HandleRoomData(App app, Window window, string message)
+        public static RoomState? HandleRoomData(App app, Window window, string message)
         {
             RoomState roomState;
             try
@@ -89,7 +103,7 @@ namespace Client.Rooms
             catch (Exception e)
             {
                 Helper.raiseErrorBox(e.Message);
-                return;
+                return null;
             }
 
             window.Dispatcher.Invoke(() =>
@@ -113,6 +127,7 @@ namespace Client.Rooms
                     Helper.raiseErrorBox("PlayerList ListBox not found");
                 }
             });
+            return roomState;
         }
     }
 }
