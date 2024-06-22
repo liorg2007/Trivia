@@ -23,7 +23,7 @@ namespace Client.Rooms
         private string username;
         private bool ContinueBackgroundThread;
         private static Mutex mut = new Mutex();
-        private DataStructs.RoomState roomState;
+
         public RoomAdmin(string username)
         {
             ContinueBackgroundThread = true;
@@ -56,13 +56,16 @@ namespace Client.Rooms
             {
                 start_time = WaitingRoomCommands.StartGame((App)Application.Current);
                 ContinueBackgroundThread = false;
-                mut.ReleaseMutex();
                 //handle the start game
-                WaitingRoomCommands.startGameInTime(start_time, this, roomState);
+
+                Helper.raiseSuccessBox("Game starts at: " + start_time);
             }
             catch (Exception ex)
             {
                 Helper.raiseErrorBox(ex.Message);
+            }
+            finally
+            {
                 mut.ReleaseMutex();
             }
         }
@@ -81,8 +84,7 @@ namespace Client.Rooms
                 }
 
                 ServerResponse response = Helper.SendMessageWithCode(Code.GetRoomState, (App)Application.Current);
-                roomState = WaitingRoomCommands.HandleRoomData((App)Application.Current, this, response.message)
-                    ?? roomState;
+                WaitingRoomCommands.HandleRoomData((App)Application.Current, this, response.message);
 
                 mut.ReleaseMutex();
                 Thread.Sleep(300);

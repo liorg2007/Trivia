@@ -25,8 +25,6 @@ namespace Client.Rooms
         private bool ContinueBackgroundThread;
         private static Mutex mut = new Mutex();
 
-        private DataStructs.RoomState roomState;
-
         public RoomMember(string username)
         {
             ContinueBackgroundThread = true;
@@ -59,10 +57,7 @@ namespace Client.Rooms
                 mut.WaitOne();
 
                 if (!ContinueBackgroundThread)//check if while waiting state was changed
-                {
-                    mut.ReleaseMutex();
                     break;
-                }
 
                 ServerResponse response = Helper.SendMessageWithCode(Code.GetRoomState, (App)Application.Current);
 
@@ -96,17 +91,16 @@ namespace Client.Rooms
                     }
 
                     //handle the start game
-                    ContinueBackgroundThread = false;
-                    WaitingRoomCommands.startGameInTime(start_time, this, roomState);
+                    Helper.raiseSuccessBox("Game starts at: " + start_time);
+                    break;
                 }
                 else
                 {
-                    roomState = WaitingRoomCommands.HandleRoomData((App)Application.Current, this, response.message)
-                        ?? roomState;
+                    WaitingRoomCommands.HandleRoomData((App)Application.Current, this, response.message);
                 }
 
                 mut.ReleaseMutex();
-                Thread.Sleep(3000);
+                Thread.Sleep(300);
             }
         }
 
