@@ -48,7 +48,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo& reqInfo)
 	RequestResult serializedRes;
 
 	auto answer = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(reqInfo.buffer);
-	res.isCorrect = _game.submitAnswer(_user, answer.answerId);
+	res.correctAnswerId = _game.submitAnswer(_user, answer.answerId);
 
 	res.status = SUCCESS;
 	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);

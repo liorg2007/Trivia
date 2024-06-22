@@ -28,25 +28,23 @@ Question& Game::getQuestionForUser(const LoggedUser& user)
 
 bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 {
-	bool isCorrect;
 	GameData& userGameData = _players.at(user.getUsername());
+	unsigned int correctAnswerId = _questions.at(userGameData.currentQuestionIndex).getCorrectAnswerId();
 
 	if (std::time(nullptr) - _gameDetails.answerTimeout > userGameData.currQuestionStartTime // user either didnt submit in time
-		|| _questions.at(userGameData.currentQuestionIndex).getCorrectAnswerId() != answerId) // or the answer is wrong
+		|| correctAnswerId != answerId) // or the answer is wrong
 	{
 		++userGameData.wrongAnswerCount;
-		isCorrect = false;
 	}
 	else //check if user submitted correct answer
 	{
 		++userGameData.correctAnswerCount;
-		isCorrect = true;
 	}
 
 	userGameData.averageAnswerTime = (userGameData.currQuestionStartTime - _gameDetails.gameStartTime)
 		/ (userGameData.correctAnswerCount + userGameData.wrongAnswerCount);
 
-	return isCorrect;
+	return correctAnswerId;
 }
 
 void Game::removePlayer(const LoggedUser& user)
