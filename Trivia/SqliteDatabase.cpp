@@ -32,7 +32,7 @@ bool SqliteDatabase::open()
 			"email TEXT NOT NULL,"
 			"address TEXT NOT NULL, "
 			"phoneNumber TEXT NOT NULL, "
-			"birthDate TEXT NOT NULL);"
+			"birthDate TEXT NOT NULL, "
 			"score INTEGER); "
 
 			// create questions table if it doesnt exists
