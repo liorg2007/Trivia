@@ -6,7 +6,7 @@ Game::Game(std::vector<std::string>&& players, const GameDetails& gameDetails, s
 {
 	for (const auto& player : players)
 	{
-		_players.emplace(std::piecewise_construct, std::make_tuple(player), std::make_tuple(0, 0, 0, 0, 0));
+		_players.emplace(std::piecewise_construct, std::make_tuple(player), std::make_tuple(-1, 0, 0, 0, 0));
 	}
 }
 
