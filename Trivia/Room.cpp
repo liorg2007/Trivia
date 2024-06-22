@@ -28,6 +28,9 @@ void Room::removeUser(const LoggedUser& loggedUser)
 
 	if (position != _users.end())
 		_users.erase(position);
+
+	if (_users.empty())
+		RoomManager::getInstance().deleteRoom(_roomData.id);
 }
 
 void Room::startGame(std::time_t startTime)

@@ -37,6 +37,7 @@ RequestResult BaseRoomRequestHandler::getRoomState() const
 		RequestResult result;
 		result.response = JsonResponsePacketSerializer::serializeResponse(res);
 		result.newHandler = _handlerFactory.createGameRequestHandler(_user, GameManager::getInstance().getGame(_roomId));
+		_roomRef.removeUser(_user);
 		return result;
 	}
 	
