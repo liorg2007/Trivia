@@ -120,7 +120,7 @@ namespace Client
             return response;
         }
         
-        public static GetUsersInRoomResponse DeseriializeGetUsersInRoomsRequests(string message)
+        public static GetUsersInRoomResponse DeserializeGetUsersInRoomsRequests(string message)
         {
             return JsonSerializer.Deserialize<GetUsersInRoomResponse>(message);
         }
@@ -194,6 +194,10 @@ namespace Client
         public static GetQuestionResponse DeserializeGetQuestionResponse(string message)
         {
             return JsonSerializer.Deserialize<GetQuestionResponse>(message);
+        }
+        public static GetGameResultsResponse DeserializeGetGameResultsResponse(string message)
+        {
+            return JsonSerializer.Deserialize<GetGameResultsResponse>(message);
         }
     }
 }

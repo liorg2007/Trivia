@@ -179,7 +179,7 @@ namespace Client
         public struct GetGameResultsResponse
         {
             public uint status { get; set; }
-            public PlayerResults[] results { get; set; }
+            public List<PlayerResults> results { get; set; }
         }
     }
 }

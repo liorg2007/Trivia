@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using static Client.DataStructs;
+using static Client.Requests;
 
 namespace Client
 {
@@ -20,13 +21,34 @@ namespace Client
     /// </summary>
     public partial class GameResultsWindow : Window
     {
-        public GameResultsWindow(List<PlayerResults> results)
+        private const int TIME_BETWEEN_REFRESHES = 3000;
+
+        public GameResultsWindow()
         {
             InitializeComponent();
-            setResults(results);
+            StartWaitingForResults();
         }
 
-        private void setResults(List<PlayerResults> results)
+        private async void StartWaitingForResults()
+        {
+            bool stillRunning = true;
+            await Task.Run(async () =>
+            {
+                while (stillRunning)
+                {
+                    ServerResponse response = Helper.SendMessageWithCode(Code.GetGameResults, (App)Application.Current);
+                    GetGameResultsResponse serializedRes = JsonPacketDeserializer.DeserializeGetGameResultsResponse(response.message);
+                    if (serializedRes.status == 1)
+                    {
+                        stillRunning = false;
+                        await Application.Current.Dispatcher.InvokeAsync(() => SetResults(serializedRes.results));
+                    }
+                    await Task.Delay(TIME_BETWEEN_REFRESHES);
+                }
+            });
+        }
+
+        private void SetResults(List<PlayerResults> results)
         {
             var orderedResults = results.OrderBy(res => res.correctAnswerCount).ThenBy(res => res.averageAnswerTime);
             resultsListBox.Items.Clear();
