@@ -147,6 +147,10 @@ ScoreList SqliteDatabase::getHighScores()
 	return answer;
 }
 
+void SqliteDatabase::submitGameStatsToDB(const std::unordered_map<std::string, GameData>& gameData)
+{
+}
+
 int SqliteDatabase::getNumOfTotalAnswers(const std::string& userName)
 {
 	std::string answer;

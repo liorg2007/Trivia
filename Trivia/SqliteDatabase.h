@@ -29,6 +29,8 @@ public:
 	int getPlayerScore(const std::string& userName) override;
 	ScoreList getHighScores() override;
 
+	void submitGameStatsToDB(const std::unordered_map<std::string, GameData>& gameData) override;
+
 private:
 	/* Private Members */
 	std::string _dbFileName;
