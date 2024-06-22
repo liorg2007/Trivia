@@ -47,8 +47,8 @@ bool SqliteDatabase::open()
 
 			// create statistics table if it doesnt exists
 			"CREATE TABLE IF NOT EXISTS STATISTICS ("
-			"gameAmount INTEGER, "
 			"username TEXT NOT NULL UNIQUE, "
+			"gameAmount INTEGER, "
 			"questions INTEGER, "
 			"isCorrect INTEGER, "
 			"avgTime REAL, "
@@ -71,8 +71,15 @@ bool SqliteDatabase::close()
 
 void SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email, const std::string& address, const std::string& phoneNumber, const std::string& birthDate)
 {
+	//create the user in USERS table
 	std::string query = "INSERT INTO USERS(username, password, email, address, phoneNumber, birthDate, score) "
 		"VALUES('" + username + "', '" + password + "', '" + email + "', '" + address + "', '" + phoneNumber + "', '" + birthDate + "', 0)";
+
+	execQuery(query);
+
+	//create the user in STATISTICS table
+	query = "INSERT INTO STATISTICS(username, gameAmount, questions, isCorrect, avgTime) "
+		"VALUES('" + username + "', 0, 0, 0, 0.0);";
 
 	execQuery(query);
 }
