@@ -66,8 +66,7 @@ namespace Client
             timerTextBlock.Text = (--timeLeft).ToString() + 's';
             if (timeLeft == 0)
             {
-                timer.Stop();
-                submitAnswer();
+                submitAnswerAndShowResults();
             }
         }
 
@@ -88,7 +87,7 @@ namespace Client
                 selectedAnswerNumber = newAnswerNumber; // char to int conversion
             }
         }
-        private void submitOrNextQuestionClick(object? sender, RoutedEventArgs e)
+        private void submitOrNextQuestionClick(object? sender, RoutedEventArgs? e)
         {
             if (isShowingResult)
             {
@@ -105,13 +104,17 @@ namespace Client
             }
             else
             {
-                uint correctAnswerId = submitAnswer();
-                if (correctAnswerId != 0) // an error hasnt occured
-                {
-                    showCorrectAnswer(correctAnswerId);
-                    submitAnswerTextBlock.Text = "Next Question";
-                    isShowingResult = !isShowingResult;
-                }
+                submitAnswerAndShowResults();
+            }
+        }
+        private void submitAnswerAndShowResults()
+        {
+            uint correctAnswerId = submitAnswer();
+            if (correctAnswerId != 0) // an error hasnt occured
+            {
+                showCorrectAnswer(correctAnswerId);
+                submitAnswerTextBlock.Text = "Next Question";
+                isShowingResult = !isShowingResult;
             }
         }
         private uint submitAnswer()

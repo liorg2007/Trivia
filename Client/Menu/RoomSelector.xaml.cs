@@ -39,32 +39,48 @@ namespace Client.Menu
         {
             List<Room> rooms = GetRooms();
 
-            //now display each room in the listBox
-            foreach (Room room in rooms)
+            if (rooms.Count > 0)
             {
+                // display each room in the listBox
+                foreach (Room room in rooms)
+                {
+                    ListBoxItem listBoxItem = new ListBoxItem();
+
+                    StackPanel stackPanel = new StackPanel();
+                    stackPanel.Orientation = Orientation.Horizontal;
+
+                    TextBlock roomNameText = new TextBlock();
+                    roomNameText.Text = room.roomData.name;
+
+                    TextBlock playerCountText = new TextBlock();
+                    playerCountText.Text = room.players.Count.ToString() + "/" + room.roomData.maxPlayers;
+                    playerCountText.TextAlignment = TextAlignment.Right;
+
+                    Button joinButton = new Button();
+                    joinButton.Content = "Join";
+                    joinButton.Click += (sender, e) => JoinRoom(room.roomData.id);
+
+                    stackPanel.Children.Add(roomNameText);
+                    stackPanel.Children.Add(playerCountText);
+                    stackPanel.Children.Add(joinButton);
+
+                    listBoxItem.Content = stackPanel;
+
+                    roomList.Items.Add(listBoxItem);
+                }
+            }
+            else
+            {
+                // Prompt a message saying there are no rooms open in the ListBox
                 ListBoxItem listBoxItem = new ListBoxItem();
+                listBoxItem.HorizontalContentAlignment = HorizontalAlignment.Stretch;
 
-                StackPanel stackPanel = new StackPanel();
-                stackPanel.Orientation = Orientation.Horizontal;
+                TextBlock textBlock = new TextBlock();
+                textBlock.Text = "There are no rooms open!";
+                textBlock.TextAlignment = TextAlignment.Center;
+                textBlock.Width = double.NaN; // same as "Auto" in the XAML
 
-                TextBlock textBlock1 = new TextBlock();
-                textBlock1.Text = room.roomData.name;
-
-                TextBlock textBlock2 = new TextBlock();
-                textBlock2.Text = room.players.Count.ToString() + "/" + room.roomData.maxPlayers;
-                textBlock2.Width = 150;
-
-                Button joinButton = new Button();
-                joinButton.Content = "Join";
-                joinButton.Click += (sender, e) => JoinRoom(room.roomData.id);
-
-
-                stackPanel.Children.Add(textBlock1);
-                stackPanel.Children.Add(textBlock2);
-                stackPanel.Children.Add(joinButton);
-
-                listBoxItem.Content = stackPanel;
-
+                listBoxItem.Content = textBlock;
                 roomList.Items.Add(listBoxItem);
             }
         }
