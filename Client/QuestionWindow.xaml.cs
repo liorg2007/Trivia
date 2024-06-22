@@ -46,6 +46,8 @@ namespace Client
         public QuestionWindow(uint questionTime, uint questionsLeft)
         {
             InitializeComponent();
+            timer.Tick += new EventHandler(timerTick);
+            timer.Interval = new TimeSpan(0, 0, 1);
 
             nextQuestion();
 
@@ -57,9 +59,6 @@ namespace Client
             questionsLeftTextBlock.Text = questionsLeft.ToString();
             numCorrectAnswersTextBlock.Text = correctAnswers.ToString();
 
-            timer.Tick += new EventHandler(timerTick);
-            timer.Interval = new TimeSpan(0, 0, 1);
-            timer.Start();
         }
 
         private void timerTick(object? sender, EventArgs e)
@@ -93,14 +92,16 @@ namespace Client
         {
             if (isShowingResult)
             {
-                nextQuestion();
-                selectedAnswerNumber = 0;
-                if (correctAnswerBorder != null)
-                    correctAnswerBorder.Background = nonSelectedAnswerBgBrush;
-                if (selectedAnswerBorder != null)
-                    selectedAnswerBorder.Background = nonSelectedAnswerBgBrush;
-                submitAnswerTextBlock.Text = "Submit Answer";
-                isShowingResult = !isShowingResult;
+                if (nextQuestion()) // if succeeded
+                {
+                    selectedAnswerNumber = 0;
+                    if (correctAnswerBorder != null)
+                        correctAnswerBorder.Background = nonSelectedAnswerBgBrush;
+                    if (selectedAnswerBorder != null)
+                        selectedAnswerBorder.Background = nonSelectedAnswerBgBrush;
+                    submitAnswerTextBlock.Text = "Submit Answer";
+                    isShowingResult = !isShowingResult;
+                }
             }
             else
             {
@@ -161,20 +162,24 @@ namespace Client
             questionsLeftTextBlock.Text = (--questionsLeft).ToString();
         }
 
-        private void nextQuestion()
+        private bool nextQuestion()
         {
             ServerResponse fullResponse = Helper.SendMessageWithCode(Code.GetQuestion, (App)Application.Current);
             GetQuestionResponse response = JsonPacketDeserializer.DeserializeGetQuestionResponse(fullResponse.message);
             if (response.status != 1)
             {
                 Helper.raiseErrorBox("Server error while getting next question");
-                throw new Exception();
+                return false; // failed
             }
-            showNewQuestion(response.question, response.answers);
+            else
+            {
+                showNewQuestion(response.question, response.answers);
 
-            timeLeft = timeForQuestion;
-            timerTextBlock.Text = timeLeft.ToString() + 's';
-            timer.Start();
+                timeLeft = timeForQuestion;
+                timerTextBlock.Text = timeLeft.ToString() + 's';
+                timer.Start();
+                return true; // succeeded
+            }
         }
 
         private void showNewQuestion(string question, string[] answers)

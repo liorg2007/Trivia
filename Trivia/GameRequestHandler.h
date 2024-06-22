@@ -27,4 +27,5 @@ private:
 	LoggedUser _user;
 	GameManager& _gameManager; 
 	RequestHandlerFactory& _handlerFactory;
+	bool _hasGameStarted;
 };

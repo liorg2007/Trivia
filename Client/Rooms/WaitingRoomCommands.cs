@@ -76,7 +76,7 @@ namespace Client.Rooms
             var timeToWait = gameStartTime - DateTime.Now;
             if (timeToWait < TimeSpan.Zero) timeToWait = TimeSpan.Zero;
             Helper.raiseSuccessBox("Game starts in " + timeToWait.Seconds + " seconds");
-            Timer timer = new Timer(o =>
+            Task.Delay(timeToWait).ContinueWith(_ =>
             {
                 Application.Current.Dispatcher.Invoke(() =>
                     {
@@ -84,51 +84,51 @@ namespace Client.Rooms
                         gameWindow.Show();
                         currWindow.Close();
                     });
-            }, null, TimeSpan.Zero, timeToWait);
-        }
-
-        public static bool GetLeaveRoomResponse(string message)
-        {
-            LeaveRoomResponse res = JsonPacketDeserializer.DeserializeLeaveRoomResponse(message);
-
-            return res.status == 1;
-        }
-
-        public static RoomState? HandleRoomData(App app, Window window, string message)
-        {
-            RoomState roomState;
-            try
-            {
-                roomState = GetRoomStateResponse(message);
-            }
-            catch (Exception e)
-            {
-                Helper.raiseErrorBox(e.Message);
-                return null;
-            }
-
-            window.Dispatcher.Invoke(() =>
-            {
-                var listBox = (ListBox)window.FindName("PlayerList");
-                if (listBox != null)
-                {
-                    listBox.Items.Clear();  // Clear existing items
-
-                    foreach (var player in roomState.players)
-                    {
-                        var listBoxItem = new ListBoxItem
-                        {
-                            Content = player // Assuming player has a Name property
-                        };
-                        listBox.Items.Add(listBoxItem);
-                    }
-                }
-                else
-                {
-                    Helper.raiseErrorBox("PlayerList ListBox not found");
-                }
             });
-            return roomState;
         }
+
+    public static bool GetLeaveRoomResponse(string message)
+    {
+        LeaveRoomResponse res = JsonPacketDeserializer.DeserializeLeaveRoomResponse(message);
+
+        return res.status == 1;
     }
+
+    public static RoomState? HandleRoomData(App app, Window window, string message)
+    {
+        RoomState roomState;
+        try
+        {
+            roomState = GetRoomStateResponse(message);
+        }
+        catch (Exception e)
+        {
+            Helper.raiseErrorBox(e.Message);
+            return null;
+        }
+
+        window.Dispatcher.Invoke(() =>
+        {
+            var listBox = (ListBox)window.FindName("PlayerList");
+            if (listBox != null)
+            {
+                listBox.Items.Clear();  // Clear existing items
+
+                foreach (var player in roomState.players)
+                {
+                    var listBoxItem = new ListBoxItem
+                    {
+                        Content = player // Assuming player has a Name property
+                    };
+                    listBox.Items.Add(listBoxItem);
+                }
+            }
+            else
+            {
+                Helper.raiseErrorBox("PlayerList ListBox not found");
+            }
+        });
+        return roomState;
+    }
+}
 }
