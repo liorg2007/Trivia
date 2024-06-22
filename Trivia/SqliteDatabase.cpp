@@ -149,7 +149,6 @@ ScoreList SqliteDatabase::getHighScores()
 
 void SqliteDatabase::submitGameStatsToDB(const std::unordered_map<std::string, GameData>& gameData)
 {
-	char* errMsg = nullptr;
 	int updatedScore;
 
 	for (const auto& pair : gameData) {
@@ -174,12 +173,6 @@ void SqliteDatabase::submitGameStatsToDB(const std::unordered_map<std::string, G
 		updateUserScoreSQL << "UPDATE USERS SET score = " << updatedScore << " WHERE username = '" << username << "';";
 
 		execQuery(updateUserScoreSQL.str(), nullptr, nullptr);
-	}
-
-	if (errMsg) {
-		std::cerr << "SQL error: " << errMsg << std::endl;
-		sqlite3_free(errMsg);
-		errMsg = nullptr;
 	}
 }
 
