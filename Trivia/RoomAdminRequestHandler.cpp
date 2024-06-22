@@ -74,6 +74,8 @@ RequestResult RoomAdminRequestHandler::startGame()
 	else
 		serializedRes.newHandler = nullptr;
 
+	_roomRef.removeUser(_user);
+
 	return serializedRes;
 }
 

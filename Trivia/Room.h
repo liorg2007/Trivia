@@ -2,12 +2,14 @@
 #include "RoomData.h"
 #include "LoggedUser.h"
 #include <vector>
+#include <shared_mutex>
 
 class Room {
 private:
 	RoomData _roomData;
 	LoggedUser _adminUser;
 	std::vector<LoggedUser> _users;
+	mutable std::shared_mutex _mtx;
 
 public:
 	Room(RoomData&& roomData, const LoggedUser& roomAdmin);

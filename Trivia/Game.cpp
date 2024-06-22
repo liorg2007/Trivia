@@ -6,7 +6,7 @@ Game::Game(std::vector<std::string>&& players, const GameDetails& gameDetails, s
 {
 	for (const auto& player : players)
 	{
-		_players.emplace(std::piecewise_construct, std::make_tuple(player), std::make_tuple(0, 0, 0, 0, 0));
+		_players.emplace(std::piecewise_construct, std::make_tuple(player), std::make_tuple(-1, 0, 0, 0, 0));
 	}
 }
 
@@ -20,6 +20,8 @@ Question& Game::getQuestionForUser(const LoggedUser& user)
 	GameData& userGameData = search->second;
 	Question& question = _questions.at(userGameData.currentQuestionIndex + 1);
 
+	std::unique_lock<std::shared_mutex> lock(_mtx);
+
 	userGameData.currQuestionStartTime = std::time(nullptr);//the user's time starts when he asks for question
 	userGameData.currentQuestionIndex++; //update, user gets next question
 
@@ -28,6 +30,8 @@ Question& Game::getQuestionForUser(const LoggedUser& user)
 
 bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 {
+	std::unique_lock<std::shared_mutex> lock(_mtx);
+
 	GameData& userGameData = _players.at(user.getUsername());
 	unsigned int correctAnswerId = _questions.at(userGameData.currentQuestionIndex).getCorrectAnswerId();
 
@@ -51,6 +55,8 @@ bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 
 void Game::removePlayer(const LoggedUser& user)
 {
+	std::unique_lock<std::shared_mutex> lock(_mtx);
+
 	//player removal requires all his remaining answers to be wrong
 	GameData& userData = _players.at(user.getUsername());
 	int totalAnswered = userData.wrongAnswerCount + userData.correctAnswerCount;
@@ -73,11 +79,14 @@ void Game::removePlayer(const LoggedUser& user)
 
 const GameDetails& Game::getGameDetails() const
 {
+	std::shared_lock<std::shared_mutex> lock(_mtx);
 	return _gameDetails;
 }
 
 std::list<PlayerResults> Game::getPlayersStats() const
 {
+	std::shared_lock<std::shared_mutex> lock(_mtx);
+
 	std::list<PlayerResults> resultsList;
 	PlayerResults result;
 	for (const auto& gameStat : _players)
@@ -97,12 +106,6 @@ std::list<PlayerResults> Game::getPlayersStats() const
 	return resultsList;
 }
 
-void Game::submitGameStatsToDB(const std::shared_ptr<IDatabase>& db)
-{
-	db.get()->submitGameStatsToDB(_players);
-}
-
-
 bool Game::isGameFinished() const
 {
 	return _answersCount == _totalAnswers;
@@ -110,6 +113,6 @@ bool Game::isGameFinished() const
 
 void Game::closeGame()
 {
-	// TODO: submit stats to db
+	IDatabase::getInstance()->submitGameStatsToDB(_players);
 	GameManager::getInstance().deleteGame(_gameDetails.gameId);
 }
