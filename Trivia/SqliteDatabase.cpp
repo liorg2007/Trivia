@@ -32,7 +32,7 @@ bool SqliteDatabase::open()
 			"email TEXT NOT NULL,"
 			"address TEXT NOT NULL, "
 			"phoneNumber TEXT NOT NULL, "
-			"birthDate TEXT NOT NULL, "
+			"birthDate TEXT NOT NULL);"
 			"score INTEGER); "
 
 			// create questions table if it doesnt exists
@@ -47,13 +47,12 @@ bool SqliteDatabase::open()
 
 			// create statistics table if it doesnt exists
 			"CREATE TABLE IF NOT EXISTS STATISTICS ("
-			"gameId INTEGER, "
-			"username TEXT NOT NULL, "
-			"questionId INTEGER, "
+			"gameAmount INTEGER, "
+			"username TEXT NOT NULL UNIQUE, "
+			"questions INTEGER, "
 			"isCorrect INTEGER, "
-			"time REAL, "
-			"FOREIGN KEY(username) REFERENCES USERS(username), "
-			"FOREIGN KEY(gameId) REFERENCES GAMES(id));";
+			"avgTime REAL, "
+			"FOREIGN KEY(username) REFERENCES USERS(username));";
 		execQuery(tableQuery);
 		insertNewQuestionsIfNeeded(QUESTIONS_MINIMUM_AMOUNT);
 	}
@@ -111,7 +110,7 @@ std::vector<Question> SqliteDatabase::getQuestions(int amount)
 double SqliteDatabase::getPlayerAverageAnswerTime(const std::string& userName)
 {
 	double answer;
-	std::string query = "SELECT AVG(time) FROM STATISTICS WHERE username = '" + userName + "'";
+	std::string query = "SELECT avgTime FROM STATISTICS WHERE username = '" + userName + "'";
 
 	execQuery(query, getDoubleCallback, &answer);
 
@@ -121,7 +120,7 @@ double SqliteDatabase::getPlayerAverageAnswerTime(const std::string& userName)
 int SqliteDatabase::getNumOfCorrectAnswers(const std::string& userName)
 {
 	std::string answer;
-	std::string query = "SELECT COUNT(*) FROM STATISTICS WHERE username = '" + userName + "' AND isCorrect = 1";
+	std::string query = "SELECT isCorrect FROM STATISTICS WHERE username = '" + userName + "' AND isCorrect = 1";
 
 	execQuery(query, getSingleStringCallback, &answer);
 
@@ -151,7 +150,7 @@ ScoreList SqliteDatabase::getHighScores()
 int SqliteDatabase::getNumOfTotalAnswers(const std::string& userName)
 {
 	std::string answer;
-	std::string query = "SELECT COUNT(*) FROM STATISTICS WHERE username = '" + userName + "'";
+	std::string query = "SELECT questions FROM STATISTICS WHERE username = '" + userName + "'";
 
 	execQuery(query, getSingleStringCallback, &answer);
 
@@ -161,7 +160,7 @@ int SqliteDatabase::getNumOfTotalAnswers(const std::string& userName)
 int SqliteDatabase::getNumOfPlayerGames(const std::string& userName)
 {
 	std::string answer;
-	std::string query = "SELECT COUNT(DISTINCT gameId) FROM STATISTICS WHERE username = '" + userName + "'";
+	std::string query = "SELECT gameAmount FROM STATISTICS WHERE username = '" + userName + "'";
 
 	execQuery(query, getSingleStringCallback, &answer);
 
