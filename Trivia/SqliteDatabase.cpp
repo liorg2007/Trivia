@@ -50,7 +50,7 @@ bool SqliteDatabase::open()
 			"username TEXT NOT NULL UNIQUE, "
 			"gameAmount INTEGER, "
 			"questions INTEGER, "
-			"isCorrect INTEGER, "
+			"correctAnswers INTEGER, "
 			"avgTime REAL, "
 			"FOREIGN KEY(username) REFERENCES USERS(username));";
 		execQuery(tableQuery);
@@ -78,7 +78,7 @@ void SqliteDatabase::addNewUser(const std::string& username, const std::string& 
 	execQuery(query);
 
 	//create the user in STATISTICS table
-	query = "INSERT INTO STATISTICS(username, gameAmount, questions, isCorrect, avgTime) "
+	query = "INSERT INTO STATISTICS(username, gameAmount, questions, correctAnswers, avgTime) "
 		"VALUES('" + username + "', 0, 0, 0, 0.0);";
 
 	execQuery(query);
@@ -127,7 +127,7 @@ double SqliteDatabase::getPlayerAverageAnswerTime(const std::string& userName)
 int SqliteDatabase::getNumOfCorrectAnswers(const std::string& userName)
 {
 	std::string answer;
-	std::string query = "SELECT isCorrect FROM STATISTICS WHERE username = '" + userName + "' AND isCorrect = 1";
+	std::string query = "SELECT correctAnswers FROM STATISTICS WHERE username = '" + userName + "'";
 
 	execQuery(query, getSingleStringCallback, &answer);
 
@@ -154,7 +154,7 @@ ScoreList SqliteDatabase::getHighScores()
 	return answer;
 }
 
-void SqliteDatabase::submitGameStatsToDB(const std::unordered_map<std::string, GameData>& gameData)
+void SqliteDatabase::submitGameStatsToDB(const std::unordered_map<std::string, GameData>& gameData) 
 {
 	int updatedScore;
 
@@ -171,7 +171,7 @@ void SqliteDatabase::submitGameStatsToDB(const std::unordered_map<std::string, G
 			<< "avgTime = ((avgTime * (gameAmount - 1)) + " << data.averageAnswerTime << ") / gameAmount "
 			<< "WHERE username = '" << username << "';";
 
-		execQuery(updateStatsSQL.str(), nullptr, nullptr);
+		execQuery(updateStatsSQL.str());
 
 		// Update the user's score in the USERS table
 		updatedScore = calculateScore(username);
@@ -179,7 +179,7 @@ void SqliteDatabase::submitGameStatsToDB(const std::unordered_map<std::string, G
 		std::stringstream updateUserScoreSQL;
 		updateUserScoreSQL << "UPDATE USERS SET score = " << updatedScore << " WHERE username = '" << username << "';";
 
-		execQuery(updateUserScoreSQL.str(), nullptr, nullptr);
+		execQuery(updateUserScoreSQL.str());
 	}
 }
 
