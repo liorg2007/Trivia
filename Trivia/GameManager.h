@@ -2,7 +2,6 @@
 #include "IDatabase.h"
 #include "Game.h"
 #include "Room.h"
-#include <vector>
 #include <memory>
 
 class GameManager 
@@ -18,6 +17,7 @@ public:
 private:
 	GameManager();
 
+	std::shared_mutex _mtx;
 	std::shared_ptr<IDatabase> _database;
 	std::unordered_map<unsigned int ,Game> _games;
 };
