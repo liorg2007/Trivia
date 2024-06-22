@@ -69,7 +69,7 @@ RequestResult GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 	RequestResult serializedRes;
 	GameDetails gameDetails = _game.getGameDetails();
 
-	if (std::time(nullptr) - gameDetails.answerCount * gameDetails.answerTimeout > gameDetails.gameStartTime) //if user requests game results before game finished
+	if (!_game.isGameFinished()) //if user requests game results before game finished
 	{
 		res.status = FAILURE;
 		serializedRes.newHandler = nullptr;

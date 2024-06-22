@@ -2,7 +2,7 @@
 #include "GameManager.h"
 
 Game::Game(std::vector<std::string>&& players, const GameDetails& gameDetails, std::vector<Question>&& questions)
-	: _gameDetails(gameDetails), _questions(std::move(questions)), _leftPlayersCount(0)
+	: _gameDetails(gameDetails), _questions(std::move(questions)), _leftPlayersCount(0), _totalAnswers(players.size() * gameDetails.answerCount), _answersCount(0)
 {
 	for (const auto& player : players)
 	{
@@ -48,6 +48,8 @@ bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 	userGameData.averageAnswerTime = (userGameData.currQuestionStartTime - _gameDetails.gameStartTime)
 		/ (userGameData.correctAnswerCount + userGameData.wrongAnswerCount);
 
+	_answersCount++;
+
 	return correctAnswerId;
 }
 
@@ -66,6 +68,7 @@ void Game::removePlayer(const LoggedUser& user)
 
 		userData.averageAnswerTime = totalTime / _gameDetails.answerCount;
 		userData.wrongAnswerCount = _gameDetails.answerCount - userData.correctAnswerCount;
+		_answersCount += _gameDetails.answerCount - totalAnswered;
 	}
 
 	if (++_leftPlayersCount == _players.size())
@@ -103,8 +106,13 @@ std::list<PlayerResults> Game::getPlayersStats() const
 	return resultsList;
 }
 
+bool Game::isGameFinished() const
+{
+	return _answersCount == _totalAnswers;
+}
+
 void Game::closeGame()
 {
-	// TODO: submit stats to db
+	IDatabase::getInstance()->submitGameStatsToDB(_players);
 	GameManager::getInstance().deleteGame(_gameDetails.gameId);
 }

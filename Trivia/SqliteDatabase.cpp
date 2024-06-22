@@ -47,13 +47,12 @@ bool SqliteDatabase::open()
 
 			// create statistics table if it doesnt exists
 			"CREATE TABLE IF NOT EXISTS STATISTICS ("
-			"gameId INTEGER, "
-			"username TEXT NOT NULL, "
-			"questionId INTEGER, "
-			"isCorrect INTEGER, "
-			"time REAL, "
-			"FOREIGN KEY(username) REFERENCES USERS(username), "
-			"FOREIGN KEY(gameId) REFERENCES GAMES(id));";
+			"username TEXT NOT NULL UNIQUE, "
+			"gameAmount INTEGER, "
+			"questions INTEGER, "
+			"correctAnswers INTEGER, "
+			"avgTime REAL, "
+			"FOREIGN KEY(username) REFERENCES USERS(username));";
 		execQuery(tableQuery);
 		insertNewQuestionsIfNeeded(QUESTIONS_MINIMUM_AMOUNT);
 	}
@@ -72,8 +71,15 @@ bool SqliteDatabase::close()
 
 void SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email, const std::string& address, const std::string& phoneNumber, const std::string& birthDate)
 {
+	//create the user in USERS table
 	std::string query = "INSERT INTO USERS(username, password, email, address, phoneNumber, birthDate, score) "
 		"VALUES('" + username + "', '" + password + "', '" + email + "', '" + address + "', '" + phoneNumber + "', '" + birthDate + "', 0)";
+
+	execQuery(query);
+
+	//create the user in STATISTICS table
+	query = "INSERT INTO STATISTICS(username, gameAmount, questions, correctAnswers, avgTime) "
+		"VALUES('" + username + "', 0, 0, 0, 0.0);";
 
 	execQuery(query);
 }
@@ -111,7 +117,7 @@ std::vector<Question> SqliteDatabase::getQuestions(int amount)
 double SqliteDatabase::getPlayerAverageAnswerTime(const std::string& userName)
 {
 	double answer;
-	std::string query = "SELECT AVG(time) FROM STATISTICS WHERE username = '" + userName + "'";
+	std::string query = "SELECT avgTime FROM STATISTICS WHERE username = '" + userName + "'";
 
 	execQuery(query, getDoubleCallback, &answer);
 
@@ -121,7 +127,7 @@ double SqliteDatabase::getPlayerAverageAnswerTime(const std::string& userName)
 int SqliteDatabase::getNumOfCorrectAnswers(const std::string& userName)
 {
 	std::string answer;
-	std::string query = "SELECT COUNT(*) FROM STATISTICS WHERE username = '" + userName + "' AND isCorrect = 1";
+	std::string query = "SELECT correctAnswers FROM STATISTICS WHERE username = '" + userName + "'";
 
 	execQuery(query, getSingleStringCallback, &answer);
 
@@ -148,10 +154,39 @@ ScoreList SqliteDatabase::getHighScores()
 	return answer;
 }
 
+void SqliteDatabase::submitGameStatsToDB(const std::unordered_map<std::string, GameData>& gameData) 
+{
+	int updatedScore;
+
+	for (const auto& pair : gameData) {
+		const std::string& username = pair.first;
+		const GameData& data = pair.second;
+
+		// Update existing statistics
+		std::stringstream updateStatsSQL;
+		updateStatsSQL << "UPDATE STATISTICS SET "
+			<< "gameAmount = gameAmount + 1, "
+			<< "questions = questions + " << data.correctAnswerCount + data.wrongAnswerCount << ", "
+			<< "correctAnswers = correctAnswers + " << data.correctAnswerCount << ", "
+			<< "avgTime = ((avgTime * (gameAmount - 1)) + " << data.averageAnswerTime << ") / gameAmount "
+			<< "WHERE username = '" << username << "';";
+
+		execQuery(updateStatsSQL.str());
+
+		// Update the user's score in the USERS table
+		updatedScore = calculateScore(username);
+
+		std::stringstream updateUserScoreSQL;
+		updateUserScoreSQL << "UPDATE USERS SET score = " << updatedScore << " WHERE username = '" << username << "';";
+
+		execQuery(updateUserScoreSQL.str());
+	}
+}
+
 int SqliteDatabase::getNumOfTotalAnswers(const std::string& userName)
 {
 	std::string answer;
-	std::string query = "SELECT COUNT(*) FROM STATISTICS WHERE username = '" + userName + "'";
+	std::string query = "SELECT questions FROM STATISTICS WHERE username = '" + userName + "'";
 
 	execQuery(query, getSingleStringCallback, &answer);
 
@@ -161,7 +196,7 @@ int SqliteDatabase::getNumOfTotalAnswers(const std::string& userName)
 int SqliteDatabase::getNumOfPlayerGames(const std::string& userName)
 {
 	std::string answer;
-	std::string query = "SELECT COUNT(DISTINCT gameId) FROM STATISTICS WHERE username = '" + userName + "'";
+	std::string query = "SELECT gameAmount FROM STATISTICS WHERE username = '" + userName + "'";
 
 	execQuery(query, getSingleStringCallback, &answer);
 
@@ -226,13 +261,25 @@ void SqliteDatabase::insertNewQuestions(int amount)
 
 int SqliteDatabase::calculateScore(const std::string& userName)
 {
-	int correctAnswers = getNumOfCorrectAnswers(userName);
-	int totalAnswers = getNumOfTotalAnswers(userName);
-	int averageTime = getPlayerAverageAnswerTime(userName);
+	ScoreData scoreData = { 0, 0, 0 };
 
-	double timeFunction = 1.0 / averageTime;
+	std::stringstream query;
+	query << "SELECT "
+		<< "correctAnswers, "
+		<< "questions, "
+		<< "avgTime "
+		<< "FROM STATISTICS "
+		<< "WHERE username = '" << userName << "';";
 
-	return ((correctAnswers / totalAnswers) * CORRECT_ANSWER_WEIGHT * timeFunction) + (((double)totalAnswers / averageTime) * ANSWER_TIME_WEIGHT);
+	execQuery(query.str(), scoreDataCallback, &scoreData);
+
+	// Avoid division by zero
+	if (scoreData.totalAnswers == 0 || scoreData.averageTime == 0) 
+		return 0; 
+
+	double timeFunction = 1.0 / scoreData.averageTime;
+
+	return ((scoreData.correctAnswers / scoreData.totalAnswers) * CORRECT_ANSWER_WEIGHT * timeFunction) + (((double)scoreData.totalAnswers / scoreData.averageTime) * ANSWER_TIME_WEIGHT);
 }
 
 int SqliteDatabase::getCountCallback(void* data, int argc, char** argv, char** azColName)
@@ -259,6 +306,15 @@ int SqliteDatabase::getDoubleCallback(void* data, int argc, char** argv, char** 
 int SqliteDatabase::getHighScoresCallback(void* data, int argc, char** argv, char** azColName)
 {
 	((ScoreList*)data)->push_back(std::make_pair(argv[FIRST_VALUE], atoi(argv[SECOND_VALUE])));
+	return 0;
+}
+
+int SqliteDatabase::scoreDataCallback(void* data, int argc, char** argv, char** azColName)
+{
+	ScoreData* scoreData = static_cast<ScoreData*>(data);
+	scoreData->correctAnswers = std::stoi(argv[0] ? argv[0] : "0");
+	scoreData->totalAnswers = std::stoi(argv[1] ? argv[1] : "0");
+	scoreData->averageTime = std::stoi(argv[2] ? argv[2] : "0");
 	return 0;
 }
 
