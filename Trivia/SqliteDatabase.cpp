@@ -149,6 +149,38 @@ ScoreList SqliteDatabase::getHighScores()
 
 void SqliteDatabase::submitGameStatsToDB(const std::unordered_map<std::string, GameData>& gameData)
 {
+	char* errMsg = nullptr;
+	int updatedScore;
+
+	for (const auto& pair : gameData) {
+		const std::string& username = pair.first;
+		const GameData& data = pair.second;
+
+		// Update existing statistics
+		std::stringstream updateStatsSQL;
+		updateStatsSQL << "UPDATE STATISTICS SET "
+			<< "gameAmount = gameAmount + 1, "
+			<< "questions = questions + " << data.correctAnswerCount + data.wrongAnswerCount << ", "
+			<< "isCorrect = isCorrect + " << data.correctAnswerCount << ", "
+			<< "avgTime = ((avgTime * (gameAmount - 1)) + " << data.averageAnswerTime << ") / gameAmount "
+			<< "WHERE username = '" << username << "';";
+
+		execQuery(updateStatsSQL.str(), nullptr, nullptr);
+
+		// Update the user's score in the USERS table
+		updatedScore = calculateScore(username);
+
+		std::stringstream updateUserScoreSQL;
+		updateUserScoreSQL << "UPDATE USERS SET score = " << updatedScore << " WHERE username = '" << username << "';";
+
+		execQuery(updateUserScoreSQL.str(), nullptr, nullptr);
+	}
+
+	if (errMsg) {
+		std::cerr << "SQL error: " << errMsg << std::endl;
+		sqlite3_free(errMsg);
+		errMsg = nullptr;
+	}
 }
 
 int SqliteDatabase::getNumOfTotalAnswers(const std::string& userName)
