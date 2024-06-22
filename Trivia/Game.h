@@ -26,7 +26,6 @@ public:
 	void removePlayer(const LoggedUser& user); //might not be the correct function
 	const GameDetails& getGameDetails() const;
 	std::list<PlayerResults> getPlayersStats() const;
-	void submitGameStatsToDB(const std::shared_ptr<IDatabase>& db);
 	bool isGameFinished() const;
 
 private:

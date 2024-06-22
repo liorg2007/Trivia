@@ -35,7 +35,6 @@ Game& GameManager::getGame(unsigned int gameId)
 
 void GameManager::deleteGame(unsigned int gameId)
 {
-	_games.at(gameId).submitGameStatsToDB(_database);
 	std::unique_lock<std::shared_mutex> lock(_mtx);
 	_games.erase(gameId);
 }
