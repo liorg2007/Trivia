@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client
 {
-    internal static class DataStructs
+    public static class DataStructs
     {
         public struct UserStatistics
         {
@@ -43,6 +43,15 @@ namespace Client
             public List<string> players { get; set; }
             public uint answerCount { get; set; }
             public uint answerTimeout { get; set; }
+        }
+
+        public struct PlayerResults
+        {
+            public string username { get; set; }
+            public uint correctAnswerCount { get; set; }
+            public uint wrongAnswerCount { get; set; }
+            public double averageAnswerTime { get; set; }
+            public bool finishedGame { get; set; }
         }
     }
 }

@@ -194,6 +194,7 @@ namespace Client
             answerTextBlock4.Text = answers[3];
         }
 
+        /* Window Functions */
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
