@@ -11,7 +11,7 @@ GameManager& GameManager::getInstance()
 	return instance;
 }
 
-Game GameManager::createGame(const Room& room)
+Game& GameManager::createGame(const Room& room)
 {
 	auto roomData = room.getRoomData();
 	GameDetails details;
@@ -20,10 +20,10 @@ Game GameManager::createGame(const Room& room)
 	details.gameStartTime = roomData.startTime;
 	details.gameId = roomData.id;
 
-	Game game = Game(room.getAllUsers(), details, _database->getQuestions(details.answerCount));
-	_games.insert({ roomData.id, game });
+	const auto& newGameIt = _games.emplace(std::piecewise_construct, std::make_tuple(roomData.id),
+		std::make_tuple(room.getAllUsers(), details, _database->getQuestions(details.answerCount)));
 
-	return game;
+	return newGameIt.first->second;
 }
 
 Game& GameManager::getGame(unsigned int gameId)

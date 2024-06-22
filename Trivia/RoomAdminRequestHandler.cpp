@@ -68,7 +68,7 @@ RequestResult RoomAdminRequestHandler::startGame()
 
 	if (res.status == SUCCESS)
 	{
-		Game game = GameManager::getInstance().createGame(_roomRef);
+		Game& game = GameManager::getInstance().createGame(_roomRef);
 		serializedRes.newHandler = _handlerFactory.createGameRequestHandler(_user, game);
 	}
 	else

@@ -74,6 +74,7 @@ namespace Client.Rooms
         public static void startGameInTime(DateTime gameStartTime, Window currWindow, RoomState roomState)
         {
             var timeToWait = gameStartTime - DateTime.Now;
+            if (timeToWait < TimeSpan.Zero) timeToWait = TimeSpan.Zero;
             Helper.raiseSuccessBox("Game starts in " + timeToWait.Seconds + " seconds");
             Timer timer = new Timer(o =>
             {

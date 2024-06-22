@@ -2,18 +2,22 @@
 #include "GameManager.h"
 
 Game::Game(std::vector<std::string>&& players, const GameDetails& gameDetails, std::vector<Question>&& questions)
-	: _gameDetails(gameDetails), _questions(std::move(questions))
+	: _gameDetails(gameDetails), _questions(std::move(questions)), _leftPlayersCount(0)
 {
 	for (const auto& player : players)
 	{
-		_players.emplace(player, GameData(0, 0, 0, 0, 0));
+		_players.emplace(std::piecewise_construct, std::make_tuple(player), std::make_tuple(0, 0, 0, 0, 0));
 	}
 }
 
 Question& Game::getQuestionForUser(const LoggedUser& user)
 {
-	GameData& userGameData = _players.at(user.getUsername());
-
+	const auto& search = _players.find(user.getUsername());
+	if (search == _players.end())
+	{
+		throw std::exception("Player not in game");
+	}
+	GameData& userGameData = search->second;
 	Question& question = _questions.at(userGameData.currentQuestionIndex + 1);
 
 	userGameData.currQuestionStartTime = std::time(nullptr);//the user's time starts when he asks for question

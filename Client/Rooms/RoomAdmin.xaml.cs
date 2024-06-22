@@ -56,13 +56,15 @@ namespace Client.Rooms
             {
                 start_time = WaitingRoomCommands.StartGame((App)Application.Current);
                 ContinueBackgroundThread = false;
-                mut.ReleaseMutex();
                 //handle the start game
                 WaitingRoomCommands.startGameInTime(start_time, this, roomState);
             }
             catch (Exception ex)
             {
                 Helper.raiseErrorBox(ex.Message);
+            }
+            finally
+            {
                 mut.ReleaseMutex();
             }
         }
