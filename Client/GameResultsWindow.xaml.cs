@@ -58,10 +58,9 @@ namespace Client
                 ColumnDefinition placeColumn = new();
                 placeColumn.Width = new GridLength(0.5, GridUnitType.Star);
                 grid.ColumnDefinitions.Add(placeColumn);
-                ColumnDefinition otherColumns = new();
                 for (int i = 0; i < 4; i++)
                 {
-                    grid.ColumnDefinitions.Add(otherColumns);
+                    grid.ColumnDefinitions.Add(new ColumnDefinition());
                 }
                 TextBlock placeTB = new();
                 TextBlock usernameTB = new();

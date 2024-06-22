@@ -91,6 +91,12 @@ namespace Client
         {
             if (isShowingResult)
             {
+                if (questionsLeft == 0)
+                {
+                    new GameResultsWindow().Show();
+                    this.Close();
+                    return;
+                }
                 if (nextQuestion()) // if succeeded
                 {
                     selectedAnswerNumber = 0;
