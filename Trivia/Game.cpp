@@ -106,6 +106,12 @@ std::list<PlayerResults> Game::getPlayersStats() const
 	return resultsList;
 }
 
+void Game::submitGameStatsToDB(const std::shared_ptr<IDatabase>& db)
+{
+	db.get()->submitGameStatsToDB(_players);
+}
+
+
 bool Game::isGameFinished() const
 {
 	return _answersCount == _totalAnswers;

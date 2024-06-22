@@ -29,6 +29,8 @@ public:
 	int getPlayerScore(const std::string& userName) override;
 	ScoreList getHighScores() override;
 
+	void submitGameStatsToDB(const std::unordered_map<std::string, GameData>& gameData) override;
+
 private:
 	/* Private Members */
 	std::string _dbFileName;
@@ -53,6 +55,7 @@ private:
 	static int getDoubleCallback(void* data, int argc, char** argv, char** azColName);
 	static int getQuestionsCallback(void* data, int argc, char** argv, char** azColName);
 	static int getHighScoresCallback(void* data, int argc, char** argv, char** azColName);
+	static int scoreDataCallback(void* data, int argc, char** argv, char** azColName);
 
 	/* Questions table count */
 	static constexpr auto QUESTIONS_MINIMUM_AMOUNT = 10;
@@ -60,4 +63,10 @@ private:
 	/* Callbacks constants */
 	static constexpr auto FIRST_VALUE = 0;
 	static constexpr auto SECOND_VALUE = 1;
+};
+
+struct ScoreData {
+	int correctAnswers;
+	int totalAnswers;
+	int averageTime;
 };
