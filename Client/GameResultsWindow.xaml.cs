@@ -22,9 +22,11 @@ namespace Client
     public partial class GameResultsWindow : Window
     {
         private const int TIME_BETWEEN_REFRESHES = 3000;
+        private string username;
 
-        public GameResultsWindow()
+        public GameResultsWindow(string username)
         {
+            this.username = username;
             InitializeComponent();
             StartWaitingForResults();
         }
@@ -109,6 +111,12 @@ namespace Client
         private void MinimizeWindow(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+        }
+
+        private void BackToMenu_Click(object sender, RoutedEventArgs e)
+        {
+            new MainMenu(username).Show();
+            this.Close();
         }
     }
 }

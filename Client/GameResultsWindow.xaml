@@ -74,6 +74,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="7*"/>
+                <RowDefinition Height="1.25*"/>
             </Grid.RowDefinitions>
 
             <TextBlock Text="Results" FontFamily="{StaticResource kontanter}" FontSize="45"
@@ -146,6 +147,9 @@
                         </ListBox>
                     </Border>
                 </Grid>
+            <Button Grid.Row="2" Style="{StaticResource RoomLobbyStyleBtn}" Margin="5" FontSize="30" Background="#c785ec"
+                    HorizontalAlignment="Stretch" Height="Auto" Width="300" Content="Menu" Click="BackToMenu_Click">
+            </Button>
         </Grid>
     </Grid>
 </Window>
