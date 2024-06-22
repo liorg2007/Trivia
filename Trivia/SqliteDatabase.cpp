@@ -261,13 +261,25 @@ void SqliteDatabase::insertNewQuestions(int amount)
 
 int SqliteDatabase::calculateScore(const std::string& userName)
 {
-	int correctAnswers = getNumOfCorrectAnswers(userName);
-	int totalAnswers = getNumOfTotalAnswers(userName);
-	int averageTime = getPlayerAverageAnswerTime(userName);
+	ScoreData scoreData = { 0, 0, 0 };
 
-	double timeFunction = 1.0 / averageTime;
+	std::stringstream query;
+	query << "SELECT "
+		<< "correctAnswers, "
+		<< "questions, "
+		<< "avgTime "
+		<< "FROM STATISTICS "
+		<< "WHERE username = '" << userName << "';";
 
-	return ((correctAnswers / totalAnswers) * CORRECT_ANSWER_WEIGHT * timeFunction) + (((double)totalAnswers / averageTime) * ANSWER_TIME_WEIGHT);
+	execQuery(query.str(), scoreDataCallback, &scoreData);
+
+	// Avoid division by zero
+	if (scoreData.totalAnswers == 0 || scoreData.averageTime == 0) 
+		return 0; 
+
+	double timeFunction = 1.0 / scoreData.averageTime;
+
+	return ((scoreData.correctAnswers / scoreData.totalAnswers) * CORRECT_ANSWER_WEIGHT * timeFunction) + (((double)scoreData.totalAnswers / scoreData.averageTime) * ANSWER_TIME_WEIGHT);
 }
 
 int SqliteDatabase::getCountCallback(void* data, int argc, char** argv, char** azColName)
@@ -294,6 +306,15 @@ int SqliteDatabase::getDoubleCallback(void* data, int argc, char** argv, char** 
 int SqliteDatabase::getHighScoresCallback(void* data, int argc, char** argv, char** azColName)
 {
 	((ScoreList*)data)->push_back(std::make_pair(argv[FIRST_VALUE], atoi(argv[SECOND_VALUE])));
+	return 0;
+}
+
+int SqliteDatabase::scoreDataCallback(void* data, int argc, char** argv, char** azColName)
+{
+	ScoreData* scoreData = static_cast<ScoreData*>(data);
+	scoreData->correctAnswers = std::stoi(argv[0] ? argv[0] : "0");
+	scoreData->totalAnswers = std::stoi(argv[1] ? argv[1] : "0");
+	scoreData->averageTime = std::stoi(argv[2] ? argv[2] : "0");
 	return 0;
 }
 
