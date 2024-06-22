@@ -167,7 +167,7 @@ void SqliteDatabase::submitGameStatsToDB(const std::unordered_map<std::string, G
 		updateStatsSQL << "UPDATE STATISTICS SET "
 			<< "gameAmount = gameAmount + 1, "
 			<< "questions = questions + " << data.correctAnswerCount + data.wrongAnswerCount << ", "
-			<< "isCorrect = isCorrect + " << data.correctAnswerCount << ", "
+			<< "correctAnswers = correctAnswers + " << data.correctAnswerCount << ", "
 			<< "avgTime = ((avgTime * (gameAmount - 1)) + " << data.averageAnswerTime << ") / gameAmount "
 			<< "WHERE username = '" << username << "';";
 
