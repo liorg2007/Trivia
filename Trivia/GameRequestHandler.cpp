@@ -83,7 +83,7 @@ RequestResult GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 			res.status = SUCCESS;
 			serializedRes.newHandler = _handlerFactory.createMenuRequestHandler(_user);
 		}
-		catch (...)
+		catch (const std::exception& ex)
 		{
 			res.status = FAILURE;
 			serializedRes.newHandler = nullptr;
