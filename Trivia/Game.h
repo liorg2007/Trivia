@@ -22,7 +22,7 @@ class Game
 public:
 	Game(std::vector<std::string>&& players, const GameDetails& gameDetails, std::vector<Question>&& questions);
 	Question& getQuestionForUser(const LoggedUser& user);
-	bool submitAnswer(const LoggedUser& user, unsigned int answerId); //might not be the correct function
+	unsigned int submitAnswer(const LoggedUser& user, unsigned int answerId); //might not be the correct function
 	void removePlayer(const LoggedUser& user); //might not be the correct function
 	const GameDetails& getGameDetails() const;
 	std::list<PlayerResults> getPlayersStats() const;

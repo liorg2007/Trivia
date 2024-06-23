@@ -28,7 +28,7 @@ Question& Game::getQuestionForUser(const LoggedUser& user)
 	return question;//used a variable for question so if it crashes the lastSubmission and currentQuestionIndex arent tampered
 }
 
-bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
+unsigned int Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 {
 	std::unique_lock<std::shared_mutex> lock(_mtx);
 
@@ -113,6 +113,6 @@ bool Game::isGameFinished() const
 
 void Game::closeGame()
 {
-	IDatabase::getInstance()->submitGameStatsToDB(_players);
 	GameManager::getInstance().deleteGame(_gameDetails.gameId);
+	IDatabase::getInstance()->submitGameStatsToDB(_players);
 }
