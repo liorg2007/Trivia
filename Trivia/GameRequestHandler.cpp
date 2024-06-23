@@ -2,7 +2,7 @@
 
 GameRequestHandler::GameRequestHandler(const LoggedUser& user, Game& game)
 	: _handlerFactory(RequestHandlerFactory::getInstance()),
-	_gameManager(RequestHandlerFactory::getInstance().getGameManager()), _user(user), 
+	_gameManager(RequestHandlerFactory::getInstance().getGameManager()), _user(user),
 	_game(game), _hasGameStarted(false)
 {
 }
@@ -67,7 +67,7 @@ RequestResult GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 {
 	GetGameResultsResponse res;
 	RequestResult serializedRes;
-	GameDetails gameDetails = _game.getGameDetails();
+	const GameDetails& gameDetails = _game.getGameDetails();
 
 	if (!_game.isGameFinished()) //if user requests game results before game finished
 	{
@@ -78,12 +78,16 @@ RequestResult GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 	{
 		try
 		{
-			_game.removePlayer(_user);
 			res.results = _game.getPlayersStats();
 			res.status = SUCCESS;
+			_game.removePlayer(_user);
+			serializedRes.newHandler = _handlerFactory.createMenuRequestHandler(_user);
 		}
-		catch (...) {}
-		serializedRes.newHandler = _handlerFactory.createMenuRequestHandler(_user);
+		catch (...)
+		{
+			res.status = FAILURE;
+			serializedRes.newHandler = nullptr;
+		}
 	}
 
 	serializedRes.response = JsonResponsePacketSerializer::serializeResponse(res);

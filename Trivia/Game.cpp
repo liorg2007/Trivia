@@ -113,6 +113,6 @@ bool Game::isGameFinished() const
 
 void Game::closeGame()
 {
-	IDatabase::getInstance()->submitGameStatsToDB(_players);
 	GameManager::getInstance().deleteGame(_gameDetails.gameId);
+	IDatabase::getInstance()->submitGameStatsToDB(_players);
 }
