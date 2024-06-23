@@ -101,17 +101,19 @@ namespace Client
                 }
                 if (nextQuestion()) // if succeeded
                 {
-                    selectedAnswerNumber = 0;
                     if (correctAnswerBorder != null)
                         correctAnswerBorder.Background = nonSelectedAnswerBgBrush;
                     if (selectedAnswerBorder != null)
                         selectedAnswerBorder.Background = nonSelectedAnswerBgBrush;
+                    selectedAnswerNumber = 0;
+                    selectedAnswerBorder = null;
                     submitAnswerTextBlock.Text = "Submit Answer";
                     isShowingResult = !isShowingResult;
                 }
             }
             else
             {
+                if (selectedAnswerNumber == 0) return; // dont do anything if nothing is selected
                 submitAnswerAndShowResults();
             }
         }
@@ -128,7 +130,8 @@ namespace Client
         private uint submitAnswer()
         {
             SubmitAnswerRequest request = new SubmitAnswerRequest();
-            request.answerId = selectedAnswerNumber;
+            if (selectedAnswerNumber == 0) request.answerId = 4; // above the max index (3) so no answer will be submitted
+            else request.answerId = selectedAnswerNumber - 1; // answerId in zero-based index in the server
             ServerResponse fullResponse = Helper.SendMessageWithByteArr(
                 Helper.createProtocol(Code.SubmitAnswer, JsonSerializer.SerializeToUtf8Bytes(request)),
                 (App)Application.Current);
