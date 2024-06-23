@@ -57,7 +57,7 @@ namespace Client.Rooms
                 start_time = WaitingRoomCommands.StartGame((App)Application.Current);
                 ContinueBackgroundThread = false;
                 //handle the start game
-                WaitingRoomCommands.startGameInTime(start_time, this, roomState);
+                WaitingRoomCommands.startGameInTime(start_time, this, roomState, username);
             }
             catch (Exception ex)
             {

@@ -175,5 +175,11 @@ namespace Client
             public string question { get; set; }
             public string[] answers { get; set; }
         }
+
+        public struct GetGameResultsResponse
+        {
+            public uint status { get; set; }
+            public List<PlayerResults> results { get; set; }
+        }
     }
 }

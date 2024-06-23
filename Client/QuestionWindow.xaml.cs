@@ -25,6 +25,7 @@ namespace Client
     /// </summary>
     public partial class QuestionWindow : Window
     {
+        private string playerUsername;
         private uint selectedAnswerNumber = 0; // a number in the range 1-4, 0 means unselected
         private Border? selectedAnswerBorder = null;
         private Border? correctAnswerBorder = null;
@@ -43,7 +44,7 @@ namespace Client
 
         private bool isShowingResult = false;
 
-        public QuestionWindow(uint questionTime, uint questionsLeft)
+        public QuestionWindow(uint questionTime, uint questionsLeft, string playerUsername)
         {
             InitializeComponent();
             timer.Tick += new EventHandler(timerTick);
@@ -59,6 +60,7 @@ namespace Client
             questionsLeftTextBlock.Text = questionsLeft.ToString();
             numCorrectAnswersTextBlock.Text = correctAnswers.ToString();
 
+            this.playerUsername = playerUsername;
         }
 
         private void timerTick(object? sender, EventArgs e)
@@ -91,19 +93,27 @@ namespace Client
         {
             if (isShowingResult)
             {
+                if (questionsLeft == 0)
+                {
+                    new GameResultsWindow(playerUsername).Show();
+                    this.Close();
+                    return;
+                }
                 if (nextQuestion()) // if succeeded
                 {
-                    selectedAnswerNumber = 0;
                     if (correctAnswerBorder != null)
                         correctAnswerBorder.Background = nonSelectedAnswerBgBrush;
                     if (selectedAnswerBorder != null)
                         selectedAnswerBorder.Background = nonSelectedAnswerBgBrush;
+                    selectedAnswerNumber = 0;
+                    selectedAnswerBorder = null;
                     submitAnswerTextBlock.Text = "Submit Answer";
                     isShowingResult = !isShowingResult;
                 }
             }
             else
             {
+                if (selectedAnswerNumber == 0) return; // dont do anything if nothing is selected
                 submitAnswerAndShowResults();
             }
         }
@@ -120,7 +130,8 @@ namespace Client
         private uint submitAnswer()
         {
             SubmitAnswerRequest request = new SubmitAnswerRequest();
-            request.answerId = selectedAnswerNumber;
+            if (selectedAnswerNumber == 0) request.answerId = 4; // above the max index (3) so no answer will be submitted
+            else request.answerId = selectedAnswerNumber - 1; // answerId in zero-based index in the server
             ServerResponse fullResponse = Helper.SendMessageWithByteArr(
                 Helper.createProtocol(Code.SubmitAnswer, JsonSerializer.SerializeToUtf8Bytes(request)),
                 (App)Application.Current);
@@ -194,6 +205,7 @@ namespace Client
             answerTextBlock4.Text = answers[3];
         }
 
+        /* Window Functions */
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)

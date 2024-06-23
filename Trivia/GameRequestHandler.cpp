@@ -78,8 +78,8 @@ RequestResult GameRequestHandler::getGameResults(const RequestInfo& reqInfo)
 	{
 		try
 		{
-			_game.removePlayer(_user);
 			res.results = _game.getPlayersStats();
+			_game.removePlayer(_user);
 			res.status = SUCCESS;
 		}
 		catch (...) {}

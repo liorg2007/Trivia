@@ -97,7 +97,7 @@ namespace Client.Rooms
 
                     //handle the start game
                     ContinueBackgroundThread = false;
-                    WaitingRoomCommands.startGameInTime(start_time, this, roomState);
+                    WaitingRoomCommands.startGameInTime(start_time, this, roomState, username);
                 }
                 else
                 {

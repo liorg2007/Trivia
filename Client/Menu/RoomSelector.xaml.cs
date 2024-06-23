@@ -163,7 +163,7 @@ namespace Client.Menu
             {
                 if (response.code == Code.GetPlayersInRoom)
                 {
-                    playersResponse = DeseriializeGetUsersInRoomsRequests(response.message);
+                    playersResponse = DeserializeGetUsersInRoomsRequests(response.message);
                 }
                 else
                 {
