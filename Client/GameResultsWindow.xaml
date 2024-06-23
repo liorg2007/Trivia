@@ -128,22 +128,7 @@
                                     Waiting for other players to finish the game...
                                 </TextBlock>
                             </ListBoxItem>
-                            <ListBoxItem>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.50*"/>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" FontSize="30">1</TextBlock>
-                                    <TextBlock Grid.Column="1">Mr bruh</TextBlock>
-                                    <TextBlock Grid.Column="2">20</TextBlock>
-                                    <TextBlock Grid.Column="3">1</TextBlock>
-                                    <TextBlock Grid.Column="4">5.0s</TextBlock>
-                                </Grid>
-                            </ListBoxItem>
+                            
                         </ListBox>
                     </Border>
                 </Grid>
