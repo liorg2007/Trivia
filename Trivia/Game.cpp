@@ -28,7 +28,7 @@ Question& Game::getQuestionForUser(const LoggedUser& user)
 	return question;//used a variable for question so if it crashes the lastSubmission and currentQuestionIndex arent tampered
 }
 
-bool Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
+unsigned int Game::submitAnswer(const LoggedUser& user, unsigned int answerId)
 {
 	std::unique_lock<std::shared_mutex> lock(_mtx);
 
