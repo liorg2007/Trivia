@@ -79,7 +79,7 @@ void SqliteDatabase::addNewUser(const std::string& username, const std::string& 
 
 	//create the user in STATISTICS table
 	query = "INSERT INTO STATISTICS(username, gameAmount, questions, correctAnswers, avgTime) "
-		"VALUES('" + username + "', 0, 0, 0, 0.0);";
+		"VALUES('" + username + "', 0, 0, 0, 0);";
 
 	execQuery(query);
 }
@@ -168,7 +168,8 @@ void SqliteDatabase::submitGameStatsToDB(const std::unordered_map<std::string, G
 			<< "gameAmount = gameAmount + 1, "
 			<< "questions = questions + " << data.correctAnswerCount + data.wrongAnswerCount << ", "
 			<< "correctAnswers = correctAnswers + " << data.correctAnswerCount << ", "
-			<< "avgTime = ((avgTime * (gameAmount - 1)) + " << data.averageAnswerTime << ") / gameAmount "
+			<< "avgTime = ((avgTime * (questions - " << data.correctAnswerCount << " - " << data.wrongAnswerCount << ") + " 
+			<< data.averageAnswerTime << ") / questions) "
 			<< "WHERE username = '" << username << "';";
 
 		execQuery(updateStatsSQL.str());
