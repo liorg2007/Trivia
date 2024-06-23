@@ -315,7 +315,7 @@ int SqliteDatabase::scoreDataCallback(void* data, int argc, char** argv, char** 
 	ScoreData* scoreData = static_cast<ScoreData*>(data);
 	scoreData->correctAnswers = std::stoi(argv[0] ? argv[0] : "0");
 	scoreData->totalAnswers = std::stoi(argv[1] ? argv[1] : "0");
-	scoreData->averageTime = std::stoi(argv[2] ? argv[2] : "0");
+	scoreData->averageTime = std::stod(argv[2] ? argv[2] : "0.0");
 	return 0;
 }
 
