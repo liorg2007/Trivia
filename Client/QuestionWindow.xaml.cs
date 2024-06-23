@@ -143,7 +143,7 @@ namespace Client
             SubmitAnswerResponse response = JsonPacketDeserializer.DeserializeSubmitAnswerResponse(fullResponse.message);
             if (response.status == 1)
             {
-                return response.correctAnswerId;
+                return response.correctAnswerId + 1;
             }
             else
             {
