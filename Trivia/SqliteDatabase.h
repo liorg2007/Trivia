@@ -68,5 +68,5 @@ private:
 struct ScoreData {
 	int correctAnswers;
 	int totalAnswers;
-	int averageTime;
+	double averageTime;
 };

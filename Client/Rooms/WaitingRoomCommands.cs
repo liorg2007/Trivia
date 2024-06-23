@@ -71,7 +71,7 @@ namespace Client.Rooms
 
         }
 
-        public static void startGameInTime(DateTime gameStartTime, Window currWindow, RoomState roomState)
+        public static void startGameInTime(DateTime gameStartTime, Window currWindow, RoomState roomState, string playerUsername)
         {
             var timeToWait = gameStartTime - DateTime.Now;
             if (timeToWait < TimeSpan.Zero) timeToWait = TimeSpan.Zero;
@@ -80,7 +80,7 @@ namespace Client.Rooms
             {
                 Application.Current.Dispatcher.Invoke(() =>
                     {
-                        QuestionWindow gameWindow = new(roomState.answerTimeout, roomState.answerCount);
+                        QuestionWindow gameWindow = new(roomState.answerTimeout, roomState.answerCount, playerUsername);
                         gameWindow.Show();
                         currWindow.Close();
                     });
