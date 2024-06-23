@@ -78,15 +78,15 @@ namespace Client
                 avgTimeTB.Text = result.averageAnswerTime.ToString();
 
                 grid.Children.Add(placeTB);
-                Grid.SetRow(placeTB, 0);
+                Grid.SetColumn(placeTB, 0);
                 grid.Children.Add(usernameTB);
-                Grid.SetRow(usernameTB, 1);
+                Grid.SetColumn(usernameTB, 1);
                 grid.Children.Add(correctAnswersTB);
-                Grid.SetRow(correctAnswersTB, 2);
+                Grid.SetColumn(correctAnswersTB, 2);
                 grid.Children.Add(wrongAnswersTB);
-                Grid.SetRow(wrongAnswersTB, 3);
+                Grid.SetColumn(wrongAnswersTB, 3);
                 grid.Children.Add(avgTimeTB);
-                Grid.SetRow(avgTimeTB, 4);
+                Grid.SetColumn(avgTimeTB, 4);
 
                 ListBoxItem listBoxItem = new();
                 listBoxItem.Content = grid;
