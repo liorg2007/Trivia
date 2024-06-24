@@ -14,6 +14,7 @@ private:
 	static Buffer HTTPSRequest(const std::string& url);
 	static std::vector<Question> deserializeQuestionsJson(Buffer& buff, int questionAmount);
 	static std::vector<std::string> getAnswersFromQuestion(json& question, int& correctAnswerIndex);
+	static void parseHTMLString(std::string& string);
 	
 	static constexpr auto ANSWER_AMOUNT = 4;
 

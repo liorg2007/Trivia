@@ -9,7 +9,8 @@
 int main()
 {
 	WSAInitializer wsaInit;
-
+	auto a = QuestionsRetriever::retrieveQuestions(5);
+	/*
 	try {
 		Server& server = Server::getInstance();
 		server.run();
@@ -18,6 +19,7 @@ int main()
 	{
 		std::cout << e.what() << "\n";
 	}
+	*/
 
 	system("PAUSE");
 

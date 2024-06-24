@@ -61,8 +61,11 @@ std::vector<Question> QuestionsRetriever::deserializeQuestionsJson(Buffer& buff,
 	for (auto& question : questions.at(RESULTS_JSON))
 	{
 		int correctAnswerIndex; // gets set by the getAnswers function
-		auto answers = getAnswersFromQuestion(question, correctAnswerIndex);
-		questionsList.emplace_back(std::move(question.at(QUESTION_STRING_JSON)), std::move(answers), correctAnswerIndex);
+		std::vector<std::string> answers = getAnswersFromQuestion(question, correctAnswerIndex);
+		parseHTMLString(question.at(QUESTION_STRING_JSON).get_ref<std::string&>());
+		for (auto& ans : answers)
+			parseHTMLString(ans);
+		questionsList.emplace_back(std::move(question.at(QUESTION_STRING_JSON).get_ref<std::string&>()), std::move(answers), correctAnswerIndex);
 	}
 	return questionsList;
 }
@@ -92,8 +95,38 @@ std::vector<std::string> QuestionsRetriever::getAnswersFromQuestion(json& questi
 		}
 		else if (incorrectAnswerIt != incorrectAnswers.end())
 		{
-			answers.emplace_back(std::move(*(++incorrectAnswerIt)));
+			answers.emplace_back(std::move(*(incorrectAnswerIt++)));
 		}
 	}
 	return answers;
+}
+
+void QuestionsRetriever::parseHTMLString(std::string& str)
+{
+	static std::unordered_map<std::string, std::string> HTMLToAscii
+	{
+		{ "&Eacute;", "E" },
+		{ "&Aacute;", "A" },
+		{ "&quot;",  "\'" },
+		{ "&rsquo;",  "\'" },
+		{ "&apos;",  "\'" },
+		{ "&#34;",   "\'" },
+		{ "&#039;",  "\'" },
+		{ "&amp;",   "&"  },
+		{ "&gt;",    ">"  },
+		{ "&lt;",    "<"  },
+		{ "&frasl;", "/"  },
+		{ "&nbsp;",  " "  },
+		{ "&reg;",   ""   },
+		{ "&copy;",  ""   }
+	};
+	for (const auto& [toReplace, replaceWith] : HTMLToAscii)
+	{
+		auto pos = str.find(toReplace);
+		while (pos != std::string::npos)
+		{
+			str.replace(pos, toReplace.size(), replaceWith);
+			pos = str.find(toReplace, pos + replaceWith.size());
+		}
+	}
 }
