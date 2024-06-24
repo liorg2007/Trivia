@@ -9,10 +9,6 @@ Server::Server()
 {
 }
 
-Server::~Server()
-{
-}
-
 Server& Server::getInstance()
 {
 	static Server instance;
