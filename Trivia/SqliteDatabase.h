@@ -44,8 +44,7 @@ private:
 	inline void execQuery(const std::string& query);
 
 	/* Score Components Weights */
-	static constexpr double CORRECT_ANSWER_WEIGHT = 0.6;
-	static constexpr double ANSWER_TIME_WEIGHT = 0.4;
+	static constexpr double SCALING_FACTOR = 1000.0;
 
 	int calculateScore(const std::string& userName);
 

@@ -280,9 +280,8 @@ int SqliteDatabase::calculateScore(const std::string& userName)
 
 	double accuracy = static_cast<double>(scoreData.correctAnswers) / scoreData.totalAnswers;
 	double timeFactor = 1.0 / scoreData.averageTime;
-	double k = 1000.0; // Adjust this scaling factor as necessary
 
-	double score = (accuracy * 100) * (timeFactor * k);
+	double score = (accuracy * 100) * (timeFactor * SCALING_FACTOR);
 
 	return static_cast<int>(score);
 }
