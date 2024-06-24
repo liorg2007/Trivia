@@ -3,6 +3,7 @@
 #include "LoggedUser.h"
 #include "Room.h"
 #include "RoomManager.h"
+#include <variant>
 
 // Defined here in order to prevent linker errors
 // src: https://gamedev.stackexchange.com/questions/162229/base-class-undefined
