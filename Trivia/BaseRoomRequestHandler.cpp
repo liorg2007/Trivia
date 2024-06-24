@@ -27,7 +27,7 @@ RequestResult BaseRoomRequestHandler::getRoomState() const
 		return result;
 	}
 
-	if (roomStateRes.roomState.hasGameBegun == true)
+	if (roomStateRes.roomState.hasGameBegun)
 	{
 		// Tell the player the game started
 		StartGameResponse res;
