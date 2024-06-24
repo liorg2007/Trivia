@@ -92,7 +92,7 @@ std::vector<std::string> QuestionsRetriever::getAnswersFromQuestion(json& questi
 		}
 		else if (incorrectAnswerIt != incorrectAnswers.end())
 		{
-			answers.emplace_back(std::move(*(incorrectAnswerIt++)));
+			answers.emplace_back(std::move(*(++incorrectAnswerIt)));
 		}
 	}
 	return answers;
