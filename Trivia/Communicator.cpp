@@ -46,7 +46,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		while (keepHandling)
 		{
 			auto handlerSearch = _clients.find(clientSocket);
-			if(handlerSearch == _clients.end()) //check if user isnt in handler search
+			if (handlerSearch == _clients.end()) //check if user isnt in handler search
 			{
 				terminateConnection(clientSocket, handlerSearch);
 				keepHandling = false;
@@ -100,7 +100,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 void Communicator::sendData(SOCKET clientSocket, const Buffer& buff) const
 {
-	if (send(clientSocket, reinterpret_cast<const char*>(& buff.at(0)), buff.size(), 0) == INVALID_SOCKET)
+	if (send(clientSocket, reinterpret_cast<const char*>(&buff.at(0)), buff.size(), 0) == INVALID_SOCKET)
 	{
 		throw std::exception("Error while sending message to client");
 	}
@@ -112,7 +112,7 @@ RequestInfo Communicator::recieveData(SOCKET clientSocket) const
 	req.buffer = Buffer(HEADER_FIELD_LENGTH);
 	uint32_t msgSize = 0;
 
-	if (recv(clientSocket, reinterpret_cast<char*>(& req.buffer.at(0)), HEADER_FIELD_LENGTH, 0) != HEADER_FIELD_LENGTH)
+	if (recv(clientSocket, reinterpret_cast<char*>(&req.buffer.at(0)), HEADER_FIELD_LENGTH, 0) != HEADER_FIELD_LENGTH)
 	{
 		throw std::exception("Invalid packet protocol");
 	}
