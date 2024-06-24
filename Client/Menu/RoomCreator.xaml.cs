@@ -74,7 +74,7 @@ namespace Client.Menu
                 System.Environment.Exit(0);
             }
 
-            ServerResponse response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
+            ServerResponse response = ((App)Application.Current)._server.receiveMessage();
 
             try
             {

@@ -8,7 +8,7 @@ using static Client.DataStructs;
 
 namespace Client
 {
-    internal static class Requests
+    public static class Requests
     {
         /* MUST be identical to the enum at the server side at all times */
         public enum Code : byte
