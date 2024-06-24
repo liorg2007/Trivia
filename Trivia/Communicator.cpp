@@ -16,6 +16,11 @@ void Communicator::bindAndListen()
 		throw std::exception(__FUNCTION__ " - listen");
 	std::cout << "Listening on port " << _PORT << std::endl;
 
+	acceptClients();
+}
+
+void Communicator::acceptClients()
+{
 	while (true)
 	{
 		std::cout << "Waiting for client connection request" << std::endl;
@@ -35,15 +40,19 @@ void Communicator::bindAndListen()
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
+	bool keepHandling = true;
 	try
 	{
-		while (true)
+		while (keepHandling)
 		{
 			auto handlerSearch = _clients.find(clientSocket);
-			if (handlerSearch == _clients.end())
+			if (handlerSearch == _clients.end()) //check if user isnt in handler search
 			{
-				throw std::exception("Can't find client's state");
+				terminateConnection(clientSocket, handlerSearch);
+				keepHandling = false;
+				continue;
 			}
+
 			RequestInfo reqInfo;
 			try
 			{
@@ -85,21 +94,13 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	}
 	catch (...)
 	{
-		std::cerr << "User " << clientSocket << " disconnected." << std::endl;
-		auto handlerSearch = _clients.find(clientSocket);
-		if (handlerSearch != _clients.end())
-		{
-			handlerSearch->second->handleDisconnect();
-			handlerSearch->second.release();
-			_clients.erase(clientSocket);
-		}
-		closesocket(clientSocket);
+		terminateConnection(clientSocket, std::nullopt);
 	}
 }
 
 void Communicator::sendData(SOCKET clientSocket, const Buffer& buff) const
 {
-	if (send(clientSocket, (const char*)&buff.at(0), buff.size(), 0) == INVALID_SOCKET)
+	if (send(clientSocket, reinterpret_cast<const char*>(&buff.at(0)), buff.size(), 0) == INVALID_SOCKET)
 	{
 		throw std::exception("Error while sending message to client");
 	}
@@ -111,18 +112,18 @@ RequestInfo Communicator::recieveData(SOCKET clientSocket) const
 	req.buffer = Buffer(HEADER_FIELD_LENGTH);
 	uint32_t msgSize = 0;
 
-	if (recv(clientSocket, (char*)&req.buffer.at(0), HEADER_FIELD_LENGTH, 0) != HEADER_FIELD_LENGTH)
+	if (recv(clientSocket, reinterpret_cast<char*>(&req.buffer.at(0)), HEADER_FIELD_LENGTH, 0) != HEADER_FIELD_LENGTH)
 	{
 		throw std::exception("Invalid packet protocol");
 	}
 	std::memcpy(&msgSize, &req.buffer.at(CODE_FIELD_LENGTH), SIZE_FIELD_LENGTH);
 	req.buffer.resize(HEADER_FIELD_LENGTH + msgSize);
 	if (msgSize > 0)
-		if (recv(clientSocket, (char*)&req.buffer.at(HEADER_FIELD_LENGTH), msgSize, 0) != msgSize)
+		if (recv(clientSocket, reinterpret_cast<char*>(&req.buffer.at(HEADER_FIELD_LENGTH)), msgSize, 0) != msgSize)
 		{
 			throw std::exception("Packet length is not as expected");
 		}
-	req.id = (ProtocolCode)req.buffer.at(0);
+	req.id = static_cast<ProtocolCode>(req.buffer.at(0));
 	req.receivalTime = std::time(0);
 	// std::cout << "Client says: " << (char*)&req.buffer.at(0) << std::endl;
 	return req;
@@ -133,6 +134,19 @@ Buffer Communicator::parseErrorMessage(std::string&& errMsg) const
 	ErrorResponse res;
 	res.message = std::move(errMsg);
 	return JsonResponsePacketSerializer::serializeResponse(res);
+}
+
+void Communicator::terminateConnection(SOCKET clientSocket, const std::optional<map_iterator>& handlerSearchResult)
+{
+	std::cerr << "User " << clientSocket << " disconnected." << std::endl;
+	auto handlerSearch = handlerSearchResult.value_or(_clients.find(clientSocket));
+	if (handlerSearch != _clients.end())
+	{
+		handlerSearch->second->handleDisconnect();
+		handlerSearch->second.release();
+		_clients.erase(clientSocket);
+	}
+	closesocket(clientSocket);
 }
 
 Communicator::Communicator()
@@ -153,17 +167,13 @@ Communicator& Communicator::getInstance()
 
 Communicator::~Communicator()
 {
-	try
+	for (const auto& pThread : _threadPool)
 	{
-		for (const auto& pThread : _threadPool)
-		{
-			pThread->join();
-			delete pThread;
-		}
-
-		closesocket(_serverSocket);
+		pThread->join();
+		delete pThread;
 	}
-	catch (...) {}
+
+	closesocket(_serverSocket);
 }
 
 void Communicator::startHandleRequests()

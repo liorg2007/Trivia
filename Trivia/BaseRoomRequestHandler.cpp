@@ -10,42 +10,45 @@ BaseRoomRequestHandler::BaseRoomRequestHandler(int roomId, const LoggedUser& use
 
 RequestResult BaseRoomRequestHandler::getRoomState() const
 {
-	GetRoomStateResponse roomStateRes;
+	RequestResult result;
+	std::variant<GetRoomStateResponse, LeaveRoomResponse, StartGameResponse> res;
+
 	try
 	{
+		GetRoomStateResponse roomStateRes;
 		roomStateRes.roomState = _roomManager.getRoomState(_roomId);
+
+		if (roomStateRes.roomState.hasGameBegun)
+		{
+			// The game has started
+			StartGameResponse startGameRes;
+			startGameRes.startTime = _roomRef.getRoomData().startTime;
+			res = startGameRes;
+
+			result.newHandler = _handlerFactory.createGameRequestHandler(_user, GameManager::getInstance().getGame(_roomId));
+			_roomRef.removeUser(_user);
+		}
+		else
+		{
+			// Room hasn't started or closed, return a normal GetRoomStateResult
+			res = roomStateRes;
+			result.newHandler = nullptr;
+		}
 	}
 	catch (...)
 	{
 		// Exception: room not found, player needs to leave the room
-		LeaveRoomResponse res;
-		res.status = SUCCESS;
+		LeaveRoomResponse leaveRoomRes;
+		res = leaveRoomRes;
 
-		RequestResult result;
-		result.response = JsonResponsePacketSerializer::serializeResponse(res);
 		result.newHandler = _handlerFactory.createMenuRequestHandler(_user);
-		return result;
 	}
 
-	if (roomStateRes.roomState.hasGameBegun == true)
-	{
-		// Tell the player the game started
-		StartGameResponse res;
-		res.status = SUCCESS;
-		res.startTime = _roomRef.getRoomData().startTime;
+	// Serialize the response
+	std::visit([&](auto&& arg) {
+		arg.status = SUCCESS;
+		result.response = JsonResponsePacketSerializer::serializeResponse(arg);
+		}, res);
 
-		RequestResult result;
-		result.response = JsonResponsePacketSerializer::serializeResponse(res);
-		result.newHandler = _handlerFactory.createGameRequestHandler(_user, GameManager::getInstance().getGame(_roomId));
-		_roomRef.removeUser(_user);
-		return result;
-	}
-	
-	// Room hasn't started or closed, return a normal GetRoomStateResult
-	roomStateRes.status = SUCCESS;
-
-	RequestResult result;
-	result.response = JsonResponsePacketSerializer::serializeResponse(roomStateRes);
-	result.newHandler = nullptr;
 	return result;
 }

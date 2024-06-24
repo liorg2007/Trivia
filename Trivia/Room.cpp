@@ -27,7 +27,7 @@ void Room::addUser(const LoggedUser& loggedUser)
 void Room::removeUser(const LoggedUser& loggedUser)
 {
 	std::unique_lock<std::shared_mutex> lock(_mtx);
-	auto position = std::find(_users.begin(), _users.end(), loggedUser);
+	const auto& position = std::find(_users.begin(), _users.end(), loggedUser);
 
 	if (position != _users.end())
 		_users.erase(position);

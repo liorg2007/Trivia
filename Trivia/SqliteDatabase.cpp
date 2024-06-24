@@ -280,37 +280,36 @@ int SqliteDatabase::calculateScore(const std::string& userName)
 
 	double accuracy = static_cast<double>(scoreData.correctAnswers) / scoreData.totalAnswers;
 	double timeFactor = 1.0 / scoreData.averageTime;
-	double k = 1000.0; // Adjust this scaling factor as necessary
 
-	double score = (accuracy * 100) * (timeFactor * k);
+	double score = (accuracy * 100) * (timeFactor * SCALING_FACTOR);
 
 	return static_cast<int>(score);
 }
 
 int SqliteDatabase::getCountCallback(void* data, int argc, char** argv, char** azColName)
 {
-	*((int*)data) = atoi(argv[FIRST_VALUE]);
+	*(reinterpret_cast<int*>(data)) = atoi(argv[FIRST_VALUE]);
 	return 0;
 }
 
 int SqliteDatabase::getSingleStringCallback(void* data, int argc, char** argv, char** azColName)
 {
-	*((std::string*)data) = argv[FIRST_VALUE];
+	*(reinterpret_cast<std::string*>(data)) = argv[FIRST_VALUE];
 	return 0;
 }
 
 int SqliteDatabase::getDoubleCallback(void* data, int argc, char** argv, char** azColName)
 {
 	if (*argv == NULL)
-		*((double*)data) = 0;
+		*(reinterpret_cast<double*>(data)) = 0;
 	else
-		*((double*)data) = std::stod(argv[FIRST_VALUE]);
+		*(reinterpret_cast<double*>(data)) = std::stod(argv[FIRST_VALUE]);
 	return 0;
 }
 
 int SqliteDatabase::getHighScoresCallback(void* data, int argc, char** argv, char** azColName)
 {
-	((ScoreList*)data)->push_back(std::make_pair(argv[FIRST_VALUE], atoi(argv[SECOND_VALUE])));
+	(reinterpret_cast<ScoreList*>(data))->push_back(std::make_pair(argv[FIRST_VALUE], atoi(argv[SECOND_VALUE])));
 	return 0;
 }
 
@@ -325,7 +324,7 @@ int SqliteDatabase::scoreDataCallback(void* data, int argc, char** argv, char** 
 
 int SqliteDatabase::getQuestionsCallback(void* data, int argc, char** argv, char** azColName)
 {
-	std::vector<Question>& questions = *((std::vector<Question>*)data);
+	std::vector<Question>& questions = *(reinterpret_cast<std::vector<Question>*>(data));
 	std::vector<std::string> answers;
 	char* questionPromptPtr;
 	int correctAnswerId;

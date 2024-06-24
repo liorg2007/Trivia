@@ -1,5 +1,6 @@
 #pragma once
 #pragma comment(lib, "ws2_32.lib")
+#include <optional>
 #include <WinSock2.h>
 #include <Windows.h>
 #include <unordered_map>
@@ -10,6 +11,7 @@
 #include "LoginRequestHandler.h"
 #include "RequestHandlerFactory.h"
 
+typedef std::unordered_map<SOCKET, std::unique_ptr<IRequestHandler>>::iterator map_iterator;
 
 class Communicator {
 private:
@@ -24,6 +26,7 @@ private:
 
 	/* Initialize listening socket for the server */
 	void bindAndListen();
+	void acceptClients();
 
 	/* handles a client socket */
 	void handleNewClient(SOCKET clientSocket);
@@ -31,6 +34,8 @@ private:
 	void sendData(SOCKET clientSocket, const Buffer& buff) const;
 	RequestInfo recieveData(SOCKET clientSocket) const;
 	Buffer parseErrorMessage(std::string&& errMsg) const;
+
+	void terminateConnection(SOCKET clientSocket, const std::optional<map_iterator>& handlerSearchResult);
 
 	Communicator();
 public:

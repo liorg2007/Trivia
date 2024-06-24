@@ -24,7 +24,7 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo& req)
 
 RequestResult MenuRequestHandler::handleRequest(const RequestInfo& req)
 {
-	auto it = codeToFunction.find(req.id);
+	const auto& it = codeToFunction.find(req.id);
 	return (this->*(it->second))(req);
 }
 
@@ -71,13 +71,15 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& req)
 	RequestResult result;
 	CreateRoomRequest request = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(req.buffer);
 	CreateRoomResponse response;
-	RoomData newRoomData;
-	newRoomData.id = 0; // will be set in RoomManager's createRoom
-	newRoomData.isActive = INACTIVE_ROOM;
-	newRoomData.maxPlayers = request.maxUsers;
-	newRoomData.name = std::move(request.roomName);
-	newRoomData.numOfQuestionsInGame = request.answerCount;
-	newRoomData.timerPerQuestion = request.answerTimeout;
+	RoomData newRoomData(
+		0, // will be set in RoomManager's createRoom
+		request.roomName,
+		request.maxUsers,
+		request.answerCount,
+		request.answerTimeout,
+		static_cast<unsigned int>(INACTIVE_ROOM),
+		0);
+
 	try
 	{
 		roomId = _handlerFactory.getRoomManager().createRoom(_user, std::move(newRoomData));

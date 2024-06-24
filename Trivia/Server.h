@@ -11,8 +11,6 @@ private:
 
 	Server();
 public:
-	~Server();
-
 	void run();
 
 	Server(Server&) = delete;
