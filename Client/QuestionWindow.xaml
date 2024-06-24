@@ -125,12 +125,18 @@
                         <GradientStop Color="#634087" Offset="2"/>
                     </LinearGradientBrush>
                 </Border.Background>
-                <TextBlock FontFamily="{StaticResource face-plate-saguage}" 
-                           TextWrapping="Wrap"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="center"
-                           FontSize="38"
-                           x:Name="questionTextBlock">Question</TextBlock>
+                <Viewbox Stretch="Uniform">
+                    <TextBlock FontFamily="{StaticResource face-plate-saguage}"
+                               FontSize="38"
+                               Width="1000"
+                               TextWrapping="Wrap"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               TextAlignment="Center"
+                               x:Name="questionTextBlock"
+                               Text="Question"
+                    />
+                </Viewbox>
             </Border>
             <Grid Grid.Row="2">
                 <Grid.RowDefinitions>
