@@ -24,7 +24,7 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo& req)
 
 RequestResult MenuRequestHandler::handleRequest(const RequestInfo& req)
 {
-	auto it = codeToFunction.find(req.id);
+	const auto& it = codeToFunction.find(req.id);
 	return (this->*(it->second))(req);
 }
 

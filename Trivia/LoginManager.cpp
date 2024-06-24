@@ -54,7 +54,7 @@ bool LoginManager::login(const std::string& username, const std::string& passwor
 bool LoginManager::logout(const std::string& username)
 {
 	std::lock_guard<std::mutex> lock(_loggedUserMtx);
-	auto search = std::find(_loggedUsers.begin(), _loggedUsers.end(), username);
+	const auto& search = std::find(_loggedUsers.begin(), _loggedUsers.end(), username);
 	if (search != _loggedUsers.end())
 	{
 		_loggedUsers.erase(search);
