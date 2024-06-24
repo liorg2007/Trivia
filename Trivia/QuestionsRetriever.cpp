@@ -75,18 +75,17 @@ std::vector<std::string> QuestionsRetriever::getAnswersFromQuestion(json& questi
 	/* For randomily organizing the answers.
 	 * (Has to be static since all shuffles must have the random same engine) */
 	static auto randomEngine = std::default_random_engine();
-	static std::uniform_int_distribution<> randomAnswerIndexGenerator(0, ANSWER_AMOUNT - 1);
 
 	std::vector<std::string> answers;
 	answers.reserve(ANSWER_AMOUNT);
 
-	correctAnswerIndex = randomAnswerIndexGenerator(randomEngine);
+	correctAnswerIndex = std::rand() % ANSWER_AMOUNT;
 	json& correctAnswer = question.at(CORRECT_ANSWER_JSON);
 
 	json& incorrectAnswers = question.at(INCORRECT_ANSWERS_ARRAY_JSON);
 	std::shuffle(incorrectAnswers.begin(), incorrectAnswers.end(), randomEngine);
-	auto incorrectAnswerIt = incorrectAnswers.begin();
 
+	auto incorrectAnswerIt = incorrectAnswers.begin();
 	for (int i = 0; i < ANSWER_AMOUNT; ++i)
 	{
 		if (i == correctAnswerIndex)
