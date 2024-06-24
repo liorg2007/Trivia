@@ -66,19 +66,8 @@ namespace Client.Menu
             var message = RoomManagement.CreateCreateRoomRequest(request);
             try
             {
-                ((App)Application.Current)._server.sendMessage(message);
-            }
-            catch
-            {
-                raiseErrorBox("Server problem");
-                System.Environment.Exit(0);
-            }
-
-            ServerResponse response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
-
-            try
-            {
-                if(response.code != Code.CreateRoom  || DeserializeCreateRoomResponseResponse(response.message).status != 1)
+                ServerResponse response = Helper.SendMessageWithByteArr(message, (App)Application.Current);
+                if (response.code != Code.CreateRoom || DeserializeCreateRoomResponseResponse(response.message).status != 1)
                 {
                     raiseErrorBox("Can't create room");
                 }
@@ -91,7 +80,7 @@ namespace Client.Menu
             }
             catch (Exception ex)
             {
-                raiseErrorBox(ex.Message);
+                raiseErrorBox("Server error");
                 System.Environment.Exit(0);
             }
         }

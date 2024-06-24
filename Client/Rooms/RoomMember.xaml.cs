@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.PeerToPeer.Collaboration;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using static Client.Requests;
 
 namespace Client.Rooms
@@ -22,19 +24,18 @@ namespace Client.Rooms
     public partial class RoomMember : Window
     {
         private string username;
-        private bool ContinueBackgroundThread;
         private static Mutex mut = new Mutex();
+        private const int TIME_BETWEEN_UPDATES = 3000;
+        private bool ContinueBackgroundThread = true;
 
         private DataStructs.RoomState roomState;
 
         public RoomMember(string username)
         {
-            ContinueBackgroundThread = true;
             InitializeComponent();
             this.username = username;
 
-            Thread thread1 = new Thread(Background_Update_Thread);
-            thread1.Start();
+            BackgroundUpdate();
         }
 
         /* Button events */
@@ -52,62 +53,65 @@ namespace Client.Rooms
         }
 
         /* Get Update Thread */
-        private void Background_Update_Thread()
+        private async void BackgroundUpdate()
         {
-            while (ContinueBackgroundThread)
+            await Task.Run(async () =>
             {
-                mut.WaitOne();
-
-                if (!ContinueBackgroundThread)//check if while waiting state was changed
+                while (ContinueBackgroundThread)
                 {
-                    mut.ReleaseMutex();
-                    break;
-                }
+                    mut.WaitOne();
 
-                ServerResponse response = Helper.SendMessageWithCode(Code.GetRoomState, (App)Application.Current);
-
-                if (response.code == Code.LeaveRoom)
-                {
-                    if (WaitingRoomCommands.GetLeaveRoomResponse(response.message))
+                    if (!ContinueBackgroundThread)//check if while waiting state was changed
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
+                        mut.ReleaseMutex();
+                        break;
+                    }
+
+                    ServerResponse response = Helper.SendMessageWithCode(Code.GetRoomState, (App)Application.Current);
+
+                    if (response.code == Code.LeaveRoom)
+                    {
+                        if (WaitingRoomCommands.GetLeaveRoomResponse(response.message))
                         {
-                            MainMenu window = new MainMenu(username);
-                            window.Show();
-                            this.Close();
-                            ContinueBackgroundThread = false;
-                        });
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                MainMenu window = new MainMenu(username);
+                                window.Show();
+                                this.Close();
+                                ContinueBackgroundThread = false;
+                            });
+                        }
+                        else
+                            Helper.raiseErrorBox("can't leave room");
+                    }
+                    else if (response.code == Code.StartGame)
+                    {
+                        DateTime start_time;
+
+                        try
+                        {
+                            start_time = WaitingRoomCommands.GetStartGameResponse(response.message);
+                        }
+                        catch (Exception ex)
+                        {
+                            Helper.raiseErrorBox(ex.Message);
+                            continue;
+                        }
+
+                        //handle the start game
+                        ContinueBackgroundThread = false;
+                        WaitingRoomCommands.startGameInTime(start_time, this, gameStartText, exitButton, roomState, username);
                     }
                     else
-                        Helper.raiseErrorBox("can't leave room");
-                }
-                else if (response.code == Code.StartGame)
-                {
-                    DateTime start_time;
-
-                    try
                     {
-                        start_time = WaitingRoomCommands.GetStartGameResponse(response.message);
-                    }
-                    catch (Exception ex)
-                    {
-                        Helper.raiseErrorBox(ex.Message);
-                        continue;
+                        roomState = WaitingRoomCommands.HandleRoomData((App)Application.Current, this, response.message)
+                            ?? roomState;
                     }
 
-                    //handle the start game
-                    ContinueBackgroundThread = false;
-                    WaitingRoomCommands.startGameInTime(start_time, this, roomState, username);
+                    mut.ReleaseMutex();
+                    await Task.Delay(TIME_BETWEEN_UPDATES);
                 }
-                else
-                {
-                    roomState = WaitingRoomCommands.HandleRoomData((App)Application.Current, this, response.message)
-                        ?? roomState;
-                }
-
-                mut.ReleaseMutex();
-                Thread.Sleep(300);
-            }
+            });
         }
 
         /* Default screen events*/

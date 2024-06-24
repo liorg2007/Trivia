@@ -73,12 +73,18 @@ namespace Client
             _socket.Flush();
         }
 
-        public byte[] receiveMessage()
+        public ServerResponse receiveMessage()
         {
-            byte[] buffer = new byte[4096];
-            int bytesRead = _socket.Read(buffer, 0, 4096);
+            byte[] headerBuff = new byte[Helper.HEADER_LENGTH];
+            _socket.Read(headerBuff, 0, Helper.HEADER_LENGTH);
+            Code code = (Code)headerBuff[0];
+            int messageLength = BitConverter.ToInt32(headerBuff, 1);
 
-            return buffer;
+            byte[] messageBuffer = new byte[messageLength];
+            _socket.Read(messageBuffer, 0, messageLength);
+            string message = Encoding.UTF8.GetString(messageBuffer);
+
+            return new ServerResponse() { code = code, message = message };
         }
     }
 }

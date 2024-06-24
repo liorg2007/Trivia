@@ -72,14 +72,14 @@ namespace Client
 
             app._server.sendMessage(message);
 
-            return Helper.decodeProtocol(app._server.receiveMessage());
+            return app._server.receiveMessage();
         }
 
         public static ServerResponse SendMessageWithByteArr(byte[] message, App app)
         {
             app._server.sendMessage(message);
 
-            return Helper.decodeProtocol(app._server.receiveMessage());
+            return app._server.receiveMessage();
         }
     }
 }

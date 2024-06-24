@@ -169,7 +169,7 @@ namespace Client
                 // answer selected is wrong
                 selectedAnswerBorder.Background = wrongAnswerBgBrush;
             }
-            else
+            else if (selectedAnswerNumber != 0)
             {
                 numCorrectAnswersTextBlock.Text = (++correctAnswers).ToString();
             }

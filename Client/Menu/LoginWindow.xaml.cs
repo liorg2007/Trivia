@@ -46,18 +46,7 @@ namespace Client
             var message = LoginSignup.CreateLoginRequest(request);
             try
             {
-                ((App)Application.Current)._server.sendMessage(message);
-            }
-            catch
-            {
-                raiseErrorBox("Server problem");
-                System.Environment.Exit(0);
-            }
-
-            ServerResponse response = decodeProtocol(((App)Application.Current)._server.receiveMessage());
-
-            try
-            {
+                ServerResponse response = Helper.SendMessageWithByteArr(message, (App)Application.Current);
                 if (CheckLogin(response))
                 {
                     MainMenu window = new MainMenu(request.username);
@@ -66,12 +55,12 @@ namespace Client
                 }
                 else
                 {
-                    raiseErrorBox("Login bad");
+                    raiseErrorBox("Login credentials are invalid.");
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                raiseErrorBox(ex.Message);
+                raiseErrorBox("Server error");
                 System.Environment.Exit(0);
             }
 
@@ -80,7 +69,7 @@ namespace Client
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 DragMove();
             }
@@ -106,7 +95,7 @@ namespace Client
 
         private void UsernameLostFocus(object sender, RoutedEventArgs e)
         {
-            if(((TextBox)sender).Text == "")
+            if (((TextBox)sender).Text == "")
                 ((TextBox)sender).Text = "Username";
         }
 

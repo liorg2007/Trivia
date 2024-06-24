@@ -101,11 +101,14 @@
                         </Style>
                     </ListBox.Resources>
                 </ListBox>
-
-                <StackPanel Orientation="Horizontal">
-                    <Button Width="80" Height="50" FontSize="20" Content="Exit" Margin="110, 30, 50,0" Style="{StaticResource LoginSignup}" Click="exitPress"/>
-                    <Button Width="80" Height="50" FontSize="20" Content="Start" Margin="60, 30, 50,0" Style="{StaticResource LoginSignup}" Click="startPress"/>
-                </StackPanel>
+                <TextBlock Visibility="Collapsed" FontFamily="{StaticResource Azonix}" HorizontalAlignment="Center" FontSize="25"
+                           Background="DarkOrange" x:Name="gameStartText">
+                    Game starts in
+                </TextBlock>
+                <DockPanel x:Name="buttonsPanel">
+                    <Button DockPanel.Dock="Left" Width="80" Height="50" FontSize="20" Content="Exit" Margin="110,0,50,0" Style="{StaticResource LoginSignup}" Click="exitPress"/>
+                    <Button DockPanel.Dock="Right" Width="80" Height="50" FontSize="20" Content="Start" Margin="60,0,110,0" Style="{StaticResource LoginSignup}" Click="startPress"/>
+                </DockPanel>
             </StackPanel>
         </Grid>
     </Grid>
