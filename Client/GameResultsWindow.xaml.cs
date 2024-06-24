@@ -52,7 +52,7 @@ namespace Client
 
         private void SetResults(List<PlayerResults> results)
         {
-            var orderedResults = results.OrderBy(res => res.correctAnswerCount).ThenBy(res => res.averageAnswerTime);
+            var orderedResults = results.OrderByDescending(res => res.correctAnswerCount).ThenBy(res => res.averageAnswerTime);
             resultsListBox.Items.Clear();
             foreach (var (result, index) in orderedResults.Select((result, index) => (result, index)))
             {

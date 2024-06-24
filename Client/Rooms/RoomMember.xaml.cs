@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.PeerToPeer.Collaboration;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -97,7 +98,7 @@ namespace Client.Rooms
 
                     //handle the start game
                     ContinueBackgroundThread = false;
-                    WaitingRoomCommands.startGameInTime(start_time, this, roomState, username);
+                    WaitingRoomCommands.startGameInTime(start_time, this, gameStartText, exitButton, roomState, username);
                 }
                 else
                 {

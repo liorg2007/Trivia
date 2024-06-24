@@ -71,64 +71,69 @@ namespace Client.Rooms
 
         }
 
-        public static void startGameInTime(DateTime gameStartTime, Window currWindow, RoomState roomState, string playerUsername)
+        public static void startGameInTime(DateTime gameStartTime, Window currWindow, TextBlock gameStartsText, UIElement buttonsToHide, RoomState roomState, string playerUsername)
         {
-            var timeToWait = gameStartTime - DateTime.Now;
+            TimeSpan timeToWait = gameStartTime - DateTime.Now;
             if (timeToWait < TimeSpan.Zero) timeToWait = TimeSpan.Zero;
-            Helper.raiseSuccessBox("Game starts in " + timeToWait.Seconds + " seconds");
+            Application.Current.Dispatcher.Invoke(() =>
+                {
+                    gameStartsText.Text += " " + timeToWait.Seconds + " seconds...";
+                    gameStartsText.Visibility = Visibility.Visible;
+                    buttonsToHide.Visibility = Visibility.Collapsed;
+                });
             Task.Delay(timeToWait).ContinueWith(_ =>
             {
                 Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        QuestionWindow gameWindow = new(roomState.answerTimeout, roomState.answerCount, playerUsername);
-                        gameWindow.Show();
-                        currWindow.Close();
-                    });
+                {
+                    QuestionWindow gameWindow = new QuestionWindow(roomState.answerTimeout, roomState.answerCount, playerUsername);
+                    gameWindow.Show();
+                    currWindow.Close();
+                });
             });
         }
 
-    public static bool GetLeaveRoomResponse(string message)
-    {
-        LeaveRoomResponse res = JsonPacketDeserializer.DeserializeLeaveRoomResponse(message);
-
-        return res.status == 1;
-    }
-
-    public static RoomState? HandleRoomData(App app, Window window, string message)
-    {
-        RoomState roomState;
-        try
+        public static bool GetLeaveRoomResponse(string message)
         {
-            roomState = GetRoomStateResponse(message);
-        }
-        catch (Exception e)
-        {
-            Helper.raiseErrorBox(e.Message);
-            return null;
+            LeaveRoomResponse res = JsonPacketDeserializer.DeserializeLeaveRoomResponse(message);
+
+            return res.status == 1;
         }
 
-        window.Dispatcher.Invoke(() =>
+        public static RoomState? HandleRoomData(App app, Window window, string message)
         {
-            var listBox = (ListBox)window.FindName("PlayerList");
-            if (listBox != null)
+            RoomState roomState;
+            try
             {
-                listBox.Items.Clear();  // Clear existing items
+                roomState = GetRoomStateResponse(message);
+            }
+            catch (Exception e)
+            {
+                Helper.raiseErrorBox(e.Message);
+                return null;
+            }
 
-                foreach (var player in roomState.players)
+            window.Dispatcher.Invoke(() =>
+            {
+                var listBox = (ListBox)window.FindName("PlayerList");
+                if (listBox != null)
                 {
-                    var listBoxItem = new ListBoxItem
+                    listBox.Items.Clear();  // Clear existing items
+
+                    foreach (var player in roomState.players)
                     {
-                        Content = player // Assuming player has a Name property
-                    };
-                    listBox.Items.Add(listBoxItem);
+                        var listBoxItem = new ListBoxItem
+                        {
+                            Content = player // Assuming player has a Name property
+                        };
+                        listBox.Items.Add(listBoxItem);
+                    }
                 }
-            }
-            else
-            {
-                Helper.raiseErrorBox("PlayerList ListBox not found");
-            }
-        });
-        return roomState;
+                else
+                {
+                    Helper.raiseErrorBox("PlayerList ListBox not found");
+                }
+            });
+            return roomState;
+        }
     }
-}
 }
