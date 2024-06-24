@@ -35,15 +35,19 @@ void Communicator::bindAndListen()
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
+	bool keepHandling = true;
 	try
 	{
-		while (true)
+		while (keepHandling)
 		{
 			auto handlerSearch = _clients.find(clientSocket);
-			if (handlerSearch == _clients.end())
+			if(handlerSearch == _clients.end()) //check if user isnt in handler search
 			{
-				throw std::exception("Can't find client's state");
+				terminateConnection(clientSocket, handlerSearch);
+				keepHandling = false;
+				continue;
 			}
+
 			RequestInfo reqInfo;
 			try
 			{
@@ -85,15 +89,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	}
 	catch (...)
 	{
-		std::cerr << "User " << clientSocket << " disconnected." << std::endl;
-		auto handlerSearch = _clients.find(clientSocket);
-		if (handlerSearch != _clients.end())
-		{
-			handlerSearch->second->handleDisconnect();
-			handlerSearch->second.release();
-			_clients.erase(clientSocket);
-		}
-		closesocket(clientSocket);
+		terminateConnection(clientSocket, std::nullopt);
 	}
 }
 
@@ -133,6 +129,19 @@ Buffer Communicator::parseErrorMessage(std::string&& errMsg) const
 	ErrorResponse res;
 	res.message = std::move(errMsg);
 	return JsonResponsePacketSerializer::serializeResponse(res);
+}
+
+void Communicator::terminateConnection(SOCKET clientSocket, const std::optional<map_iterator>& handlerSearchResult)
+{
+	std::cerr << "User " << clientSocket << " disconnected." << std::endl;
+	auto handlerSearch = handlerSearchResult.value_or(_clients.find(clientSocket));
+	if (handlerSearch != _clients.end())
+	{
+		handlerSearch->second->handleDisconnect();
+		handlerSearch->second.release();
+		_clients.erase(clientSocket);
+	}
+	closesocket(clientSocket);
 }
 
 Communicator::Communicator()
