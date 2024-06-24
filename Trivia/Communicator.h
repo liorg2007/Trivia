@@ -26,6 +26,7 @@ private:
 
 	/* Initialize listening socket for the server */
 	void bindAndListen();
+	void acceptClients();
 
 	/* handles a client socket */
 	void handleNewClient(SOCKET clientSocket);

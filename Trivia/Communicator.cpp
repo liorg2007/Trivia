@@ -16,6 +16,11 @@ void Communicator::bindAndListen()
 		throw std::exception(__FUNCTION__ " - listen");
 	std::cout << "Listening on port " << _PORT << std::endl;
 
+	acceptClients();
+}
+
+void Communicator::acceptClients()
+{
 	while (true)
 	{
 		std::cout << "Waiting for client connection request" << std::endl;
