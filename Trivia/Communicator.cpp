@@ -167,17 +167,13 @@ Communicator& Communicator::getInstance()
 
 Communicator::~Communicator()
 {
-	try
+	for (const auto& pThread : _threadPool)
 	{
-		for (const auto& pThread : _threadPool)
-		{
-			pThread->join();
-			delete pThread;
-		}
-
-		closesocket(_serverSocket);
+		pThread->join();
+		delete pThread;
 	}
-	catch (...) {}
+
+	closesocket(_serverSocket);
 }
 
 void Communicator::startHandleRequests()
