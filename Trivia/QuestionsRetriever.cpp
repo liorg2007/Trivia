@@ -61,8 +61,11 @@ std::vector<Question> QuestionsRetriever::deserializeQuestionsJson(Buffer& buff,
 	for (auto& question : questions.at(RESULTS_JSON))
 	{
 		int correctAnswerIndex; // gets set by the getAnswers function
-		auto answers = getAnswersFromQuestion(question, correctAnswerIndex);
-		questionsList.emplace_back(std::move(question.at(QUESTION_STRING_JSON)), std::move(answers), correctAnswerIndex);
+		std::vector<std::string> answers = getAnswersFromQuestion(question, correctAnswerIndex);
+		parseHTMLString(question.at(QUESTION_STRING_JSON).get_ref<std::string&>());
+		for (auto& ans : answers)
+			parseHTMLString(ans);
+		questionsList.emplace_back(std::move(question.at(QUESTION_STRING_JSON).get_ref<std::string&>()), std::move(answers), correctAnswerIndex);
 	}
 	return questionsList;
 }
@@ -72,18 +75,17 @@ std::vector<std::string> QuestionsRetriever::getAnswersFromQuestion(json& questi
 	/* For randomily organizing the answers.
 	 * (Has to be static since all shuffles must have the random same engine) */
 	static auto randomEngine = std::default_random_engine();
-	static std::uniform_int_distribution<> randomAnswerIndexGenerator(0, ANSWER_AMOUNT - 1);
 
 	std::vector<std::string> answers;
 	answers.reserve(ANSWER_AMOUNT);
 
-	correctAnswerIndex = randomAnswerIndexGenerator(randomEngine);
+	correctAnswerIndex = std::rand() % ANSWER_AMOUNT;
 	json& correctAnswer = question.at(CORRECT_ANSWER_JSON);
 
 	json& incorrectAnswers = question.at(INCORRECT_ANSWERS_ARRAY_JSON);
 	std::shuffle(incorrectAnswers.begin(), incorrectAnswers.end(), randomEngine);
-	auto incorrectAnswerIt = incorrectAnswers.begin();
 
+	auto incorrectAnswerIt = incorrectAnswers.begin();
 	for (int i = 0; i < ANSWER_AMOUNT; ++i)
 	{
 		if (i == correctAnswerIndex)
@@ -92,8 +94,38 @@ std::vector<std::string> QuestionsRetriever::getAnswersFromQuestion(json& questi
 		}
 		else if (incorrectAnswerIt != incorrectAnswers.end())
 		{
-			answers.emplace_back(std::move(*(++incorrectAnswerIt)));
+			answers.emplace_back(std::move(*(incorrectAnswerIt++)));
 		}
 	}
 	return answers;
+}
+
+void QuestionsRetriever::parseHTMLString(std::string& str)
+{
+	static std::unordered_map<std::string, std::string> HTMLToAscii
+	{
+		{ "&Eacute;", "E" },
+		{ "&Aacute;", "A" },
+		{ "&quot;",  "\'" },
+		{ "&rsquo;",  "\'" },
+		{ "&apos;",  "\'" },
+		{ "&#34;",   "\'" },
+		{ "&#039;",  "\'" },
+		{ "&amp;",   "&"  },
+		{ "&gt;",    ">"  },
+		{ "&lt;",    "<"  },
+		{ "&frasl;", "/"  },
+		{ "&nbsp;",  " "  },
+		{ "&reg;",   ""   },
+		{ "&copy;",  ""   }
+	};
+	for (const auto& [toReplace, replaceWith] : HTMLToAscii)
+	{
+		auto pos = str.find(toReplace);
+		while (pos != std::string::npos)
+		{
+			str.replace(pos, toReplace.size(), replaceWith);
+			pos = str.find(toReplace, pos + replaceWith.size());
+		}
+	}
 }

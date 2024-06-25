@@ -8,9 +8,11 @@
 
 int main()
 {
+	std::srand(std::time(nullptr)); // For randomly generating numbers using std::rand()
 	WSAInitializer wsaInit;
-
-	try {
+	auto a = QuestionsRetriever::retrieveQuestions(5);
+	try
+	{
 		Server& server = Server::getInstance();
 		server.run();
 	}
@@ -20,7 +22,5 @@ int main()
 	}
 
 	system("PAUSE");
-
-
 	return 0;
 }
