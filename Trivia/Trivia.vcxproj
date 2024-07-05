@@ -145,6 +145,7 @@
     <ClCompile Include="LoggedUser.cpp" />
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="MenuRequestHandler.cpp" />
+    <ClCompile Include="OTPCryptoAlgorithm.cpp" />
     <ClCompile Include="Question.cpp" />
     <ClCompile Include="QuestionsRetriever.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="JsonResponsePacketSerializer.h" />
     <ClInclude Include="MenuRequestHandler.h" />
+    <ClInclude Include="OTPCryptoAlgorithm.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="QuestionsRetriever.h" />
     <ClInclude Include="RequestHandlerFactory.h" />
