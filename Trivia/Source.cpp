@@ -5,9 +5,17 @@
 #include "QuestionsRetriever.h"
 
 #include "time.h"
+#include "AESCryptoAlgorithm.h"
+#include "aes.h"
 
 int main()
 {
+	Buffer key(CryptoPP::AES::DEFAULT_KEYLENGTH);
+	std::string message("test");
+	Buffer m(message.begin(), message.end());
+
+	AESCryptoAlgorithm().encrypt(m, key);
+	/*
 	std::srand(std::time(nullptr)); // For randomly generating numbers using std::rand()
 	WSAInitializer wsaInit;
 	auto a = QuestionsRetriever::retrieveQuestions(5);
@@ -22,5 +30,5 @@ int main()
 	}
 
 	system("PAUSE");
-	return 0;
+	return 0;*/
 }
