@@ -151,7 +151,8 @@ void Communicator::terminateConnection(SOCKET clientSocket, const std::optional<
 
 Communicator::Communicator()
 	: _serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)),
-	_handlerFactory(RequestHandlerFactory::getInstance())
+	_handlerFactory(RequestHandlerFactory::getInstance()),
+	_cryptoAlgorithm(std::make_unique<OTPCryptoAlgorithm>())
 {
 	if (_serverSocket == INVALID_SOCKET)
 	{
