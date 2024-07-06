@@ -11,10 +11,17 @@
 int main()
 {
 	Buffer key(CryptoPP::AES::DEFAULT_KEYLENGTH);
-	std::string message("test");
+	std::string message("testtesttesttesttesttesttesttesttest");
 	Buffer m(message.begin(), message.end());
 
-	AESCryptoAlgorithm().encrypt(m, key);
+	AESCryptoAlgorithm algo;
+
+	auto a = algo.encrypt(m, key);
+	std::cout << (char*)a.data() << std::endl;
+	auto b = algo.decrypt(a, key);
+	
+	std::cout << (char*)b.data() << std::endl;
+	
 	/*
 	std::srand(std::time(nullptr)); // For randomly generating numbers using std::rand()
 	WSAInitializer wsaInit;
