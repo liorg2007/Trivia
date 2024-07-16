@@ -136,6 +136,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AESCryptoAlgorithm.cpp" />
     <ClCompile Include="BaseRoomRequestHandler.cpp" />
     <ClCompile Include="CheckSignupData.cpp" />
     <ClCompile Include="Communicator.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameRequestHandler.h" />
+    <ClInclude Include="AESCryptoAlgorithm.h" />
     <ClInclude Include="ICryptoAlgorithm.h" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="IRequestHandler.h" />
