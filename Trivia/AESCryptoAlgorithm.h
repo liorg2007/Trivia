@@ -2,9 +2,9 @@
 #include "ICryptoAlgorithm.h"
 
 // Crypto++
-#include "aes.h"
-#include "modes.h"
-#include "filters.h"
+#include <aes.h>
+#include <modes.h>
+#include <filters.h>
 
 class AESCryptoAlgorithm : public ICryptoAlgorithm
 {
