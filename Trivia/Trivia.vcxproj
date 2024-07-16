@@ -76,10 +76,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>;$(CRYPTPP_PATH)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CRYPTPP_PATH)\x64\Output\Debug\cryptlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -104,12 +107,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(CRYPTPP_PATH)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CRYPTPP_PATH)\x64\Output\Debug\cryptlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,6 +136,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AESCryptoAlgorithm.cpp" />
     <ClCompile Include="BaseRoomRequestHandler.cpp" />
     <ClCompile Include="CheckSignupData.cpp" />
     <ClCompile Include="Communicator.cpp" />
@@ -145,6 +151,7 @@
     <ClCompile Include="LoggedUser.cpp" />
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="MenuRequestHandler.cpp" />
+    <ClCompile Include="OTPCryptoAlgorithm.cpp" />
     <ClCompile Include="Question.cpp" />
     <ClCompile Include="QuestionsRetriever.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
@@ -168,6 +175,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameRequestHandler.h" />
+    <ClInclude Include="AESCryptoAlgorithm.h" />
+    <ClInclude Include="ICryptoAlgorithm.h" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="json.hpp" />
@@ -178,6 +187,7 @@
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="JsonResponsePacketSerializer.h" />
     <ClInclude Include="MenuRequestHandler.h" />
+    <ClInclude Include="OTPCryptoAlgorithm.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="QuestionsRetriever.h" />
     <ClInclude Include="RequestHandlerFactory.h" />

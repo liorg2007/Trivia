@@ -46,6 +46,12 @@
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{317a5274-d064-4847-b7e0-7c38ab1c7d4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Crypto">
+      <UniqueIdentifier>{b83d6529-ccf8-4e0d-8c34-66850cc432b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Crypto">
+      <UniqueIdentifier>{effbb33d-3161-4c3c-bc91-4dfb208874fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Communicator.cpp">
@@ -128,6 +134,12 @@
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="AESCryptoAlgorithm.cpp">
+      <Filter>Source Files\Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="OTPCryptoAlgorithm.cpp">
+      <Filter>Source Files\Crypto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +238,15 @@
     </ClInclude>
     <ClInclude Include="GameManager.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="AESCryptoAlgorithm.h">
+      <Filter>Header Files\Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="ICryptoAlgorithm.h">
+      <Filter>Header Files\Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="OTPCryptoAlgorithm.h">
+      <Filter>Header Files\Crypto</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
