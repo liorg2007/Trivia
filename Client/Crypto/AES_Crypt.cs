@@ -9,16 +9,16 @@ using System.Windows.Input;
 
 namespace Client.Crypto
 {
-    internal class AES : Crypto
+    public class AES_Crypt : Crypto
     {
         Aes aes;
 
-        public AES() 
+        public AES_Crypt() 
         {
             aes = Aes.Create();
         }
 
-        public override byte[] encrypt(byte[] buffer)
+        public override byte[] encrypt(string buffer)
         {
             byte[] encrypted;
 
@@ -49,9 +49,9 @@ namespace Client.Crypto
             return encrypted;
         }
 
-        public override byte[] decrypt(byte[] buffer)
+        public override string decrypt(byte[] buffer)
         {
-            byte[] decrypted;
+            string decrypted;
 
             using (Aes aesAlg = Aes.Create())
             {
@@ -68,14 +68,7 @@ namespace Client.Crypto
                     {
                         using (StreamReader srDecrypt = new StreamReader(csDecrypt))
                         {
-
-                            // Read the decrypted bytes from the decrypting stream
-                            // and place them in a string.
-                            using (MemoryStream ms = new MemoryStream())
-                            {
-                                srDecrypt.BaseStream.CopyTo(ms);
-                                decrypted = ms.ToArray();
-                            }
+                            decrypted = srDecrypt.ReadToEnd();
                         }
                     }
                 }

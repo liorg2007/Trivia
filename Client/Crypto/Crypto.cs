@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Client.Crypto
 {
-    abstract class Crypto
+    public abstract class Crypto
     {
-        public abstract byte[] encrypt(byte[] buffer);
-        public abstract byte[] decrypt(byte[] buffer);
+        public abstract byte[] encrypt(string buffer);
+        public abstract string decrypt(byte[] buffer);
     }
 }
