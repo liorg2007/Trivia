@@ -160,6 +160,7 @@
     <ClCompile Include="RoomAdminRequestHandler.cpp" />
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="RoomMemberRequestHandler.cpp" />
+    <ClCompile Include="RSACryptoAlgorithm.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SqliteDatabase.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="RoomData.h" />
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="RoomMemberRequestHandler.h" />
+    <ClInclude Include="RSACryptoAlgorithm.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="SqliteDatabase.h" />
     <ClInclude Include="StatisticsManager.h" />

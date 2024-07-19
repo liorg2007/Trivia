@@ -1,24 +1,25 @@
 #pragma once
 
-#include "ICryptoAlgorithm.h"
+#include "Constants.h"
 
 #include <rsa.h>
 #include <osrng.h>
 #include <base64.h>
 #include <hex.h>
 
-class RSACryptoAlgorithm : public ICryptoAlgorithm
+class RSACryptoAlgorithm
 {
 public:
 	RSACryptoAlgorithm();
 
 	//	for both there is no need for a key
-	Buffer encrypt(const Buffer& message, const Buffer& key = {}) const override; 
-	Buffer decrypt(const Buffer& message, const Buffer& key = {}) const override;
+	Buffer sign(const Buffer& message) const; 
+	Buffer decrypt(const Buffer& message) const;
 
 private:
 	auto static constexpr k_keySize = 1024;
 
-	CryptoPP::RSA::PrivateKey sk_;	//  secret/private key
-	CryptoPP::RSA::PublicKey pk_;	//	public key
+	CryptoPP::RSA::PrivateKey _sk;	//  secret/private key
+	CryptoPP::RSA::PublicKey _pk;	//	public key
+	mutable CryptoPP::AutoSeededRandomPool _rng;	// rng number
 };
