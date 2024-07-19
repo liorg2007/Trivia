@@ -1,6 +1,8 @@
 #include "Server.h"
 #include "WSAInitializer.h"
 
+#include "RSACryptoAlgorithm.h"
+
 int main()
 {
 	std::srand(std::time(nullptr)); // For randomly generating numbers using std::rand()
