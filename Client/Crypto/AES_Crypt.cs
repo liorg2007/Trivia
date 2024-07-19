@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace Client.Crypto
 {
-    public class AES_Crypt : Crypto
+    public class AES_Crypt
     {
         Aes aes;
 
@@ -18,7 +18,7 @@ namespace Client.Crypto
             aes = Aes.Create();
         }
 
-        public override byte[] encrypt(string buffer)
+        public byte[] Encrypt(string buffer)
         {
             byte[] encrypted;
 
@@ -49,7 +49,7 @@ namespace Client.Crypto
             return encrypted;
         }
 
-        public override string decrypt(byte[] buffer)
+        public string Eecrypt(byte[] buffer)
         {
             string decrypted;
 

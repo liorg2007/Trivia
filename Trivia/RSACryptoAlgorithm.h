@@ -12,8 +12,6 @@ class RSACryptoAlgorithm
 public:
 	RSACryptoAlgorithm();
 
-	//	for both there is no need for a key
-	Buffer sign(const Buffer& message) const; 
 	Buffer decrypt(const Buffer& message) const;
 
 private:
