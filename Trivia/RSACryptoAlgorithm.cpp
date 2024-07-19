@@ -24,3 +24,15 @@ Buffer RSACryptoAlgorithm::decrypt(const Buffer& message) const
 
 	return decryptedText;
 }
+
+Buffer RSACryptoAlgorithm::getKey() const
+{
+	CryptoPP::ByteQueue queue;
+	_pk.Save(queue);
+
+	size_t size = queue.MaxRetrievable();
+	std::vector<uint8_t> vec(size);
+
+	queue.Get(vec.data(), vec.size());
+	return vec;
+}
