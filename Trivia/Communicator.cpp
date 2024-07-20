@@ -31,7 +31,7 @@ void Communicator::acceptClients()
 			throw std::exception(__FUNCTION__);
 
 		std::cout << "New client accepted, starting a new thread" << std::endl;
-		_clients.emplace(clientSocket, _handlerFactory.createLoginRequestHandler());
+		_clients.emplace(clientSocket, _handlerFactory.createClientHelloRequestHandler(clientSocket));
 		_threadPool.push_back(
 			new std::thread(&Communicator::handleNewClient,
 				this, clientSocket));
@@ -151,8 +151,7 @@ void Communicator::terminateConnection(SOCKET clientSocket, const std::optional<
 
 Communicator::Communicator()
 	: _serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)),
-	_handlerFactory(RequestHandlerFactory::getInstance()),
-	_cryptoAlgorithm(std::make_unique<OTPCryptoAlgorithm>())
+	_handlerFactory(RequestHandlerFactory::getInstance())
 {
 	if (_serverSocket == INVALID_SOCKET)
 	{
@@ -182,4 +181,10 @@ void Communicator::startHandleRequests()
 	_threadPool.push_back(
 		new std::thread(&Communicator::bindAndListen,
 			this));
+}
+
+void Communicator::addEncryptionToClient(SOCKET clientSocket, const KeyAndIv& keyAndIv)
+{
+	std::unique_lock<std::shared_mutex> lock(_clientKeysMtx);
+	_clientKeys.at(clientSocket) = keyAndIv;
 }

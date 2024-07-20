@@ -10,7 +10,7 @@
 #include "IRequestHandler.h"
 #include "LoginRequestHandler.h"
 #include "RequestHandlerFactory.h"
-#include "OTPCryptoAlgorithm.h"
+#include "AESCryptoAlgorithm.h"
 
 typedef std::unordered_map<SOCKET, std::unique_ptr<IRequestHandler>>::iterator map_iterator;
 
@@ -18,9 +18,11 @@ class Communicator {
 private:
 	SOCKET _serverSocket;
 	RequestHandlerFactory& _handlerFactory;
-	std::unique_ptr<ICryptoAlgorithm> _cryptoAlgorithm;
 
 	std::unordered_map<SOCKET, std::unique_ptr<IRequestHandler>> _clients;
+	std::unordered_map<SOCKET, KeyAndIv> _clientKeys;
+
+	std::shared_mutex _clientKeysMtx;
 	
 	std::vector<std::thread*> _threadPool;
 
@@ -48,6 +50,8 @@ public:
 
 	/* starts handling the client requests */
 	void startHandleRequests();
+
+	void addEncryptionToClient(SOCKET clientSocket, const KeyAndIv& keyAndIv);
 
 	Communicator(Communicator&) = delete;
 	void operator=(const Communicator&) = delete;

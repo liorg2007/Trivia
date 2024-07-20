@@ -37,8 +37,8 @@ public:
 
 	std::unique_ptr<GameRequestHandler> createGameRequestHandler(const LoggedUser& user, Game& game);
 
-	std::unique_ptr<ClientHelloRequestHandler> createClientHelloRequestHandler();
-	std::unique_ptr<KeyExchangeRequestHandler> createKeyExchangeRequestHandler(std::shared_ptr<RSACryptoAlgorithm> rsaEncryption);
+	std::unique_ptr<ClientHelloRequestHandler> createClientHelloRequestHandler(SOCKET clientSocket);
+	std::unique_ptr<KeyExchangeRequestHandler> createKeyExchangeRequestHandler(std::shared_ptr<RSACryptoAlgorithm> rsaEncryption, SOCKET clientSocket);
 
 	std::shared_ptr<RSACryptoAlgorithm> createRSAEncryption();
 

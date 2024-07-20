@@ -8,13 +8,14 @@
 class ClientHelloRequestHandler : public IRequestHandler
 {
 public:
-	ClientHelloRequestHandler();
+	ClientHelloRequestHandler(SOCKET socket);
 
 	virtual bool isRequestRelevant(const RequestInfo& reqInfo) override;
 	virtual RequestResult handleRequest(const RequestInfo& reqInfo) override;
 	virtual void handleDisconnect() override;
 
 private:
+	SOCKET _clientSocket;
 	std::shared_ptr<RSACryptoAlgorithm> _rsaEncryption;
 	RequestHandlerFactory& _handlerFactory;
 };

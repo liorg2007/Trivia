@@ -47,14 +47,14 @@ std::unique_ptr<GameRequestHandler> RequestHandlerFactory::createGameRequestHand
 	return std::make_unique<GameRequestHandler>(user, game);
 }
 
-std::unique_ptr<ClientHelloRequestHandler> RequestHandlerFactory::createClientHelloRequestHandler()
+std::unique_ptr<ClientHelloRequestHandler> RequestHandlerFactory::createClientHelloRequestHandler(SOCKET clientSocket)
 {
-	return std::make_unique<ClientHelloRequestHandler>();
+	return std::make_unique<ClientHelloRequestHandler>(clientSocket);
 }
 
-std::unique_ptr<KeyExchangeRequestHandler> RequestHandlerFactory::createKeyExchangeRequestHandler(std::shared_ptr<RSACryptoAlgorithm> rsaEncryption)
+std::unique_ptr<KeyExchangeRequestHandler> RequestHandlerFactory::createKeyExchangeRequestHandler(std::shared_ptr<RSACryptoAlgorithm> rsaEncryption, SOCKET clientSocket)
 {
-	return std::make_unique<KeyExchangeRequestHandler>(rsaEncryption);
+	return std::make_unique<KeyExchangeRequestHandler>(rsaEncryption, clientSocket);
 }
 
 std::shared_ptr<RSACryptoAlgorithm> RequestHandlerFactory::createRSAEncryption()

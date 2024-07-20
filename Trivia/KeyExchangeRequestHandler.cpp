@@ -19,7 +19,7 @@ RequestResult KeyExchangeRequestHandler::handleRequest(const RequestInfo& reqInf
 	Buffer decryptedBuffer = _rsaEncryption->decrypt(reqInfo.buffer);
 
 	try {
-		auto data = JsonRequestPacketDeserializer::deserialzieKeyExchangeRequest(decryptedBuffer);
+		keyAndIv = JsonRequestPacketDeserializer::deserialzieKeyExchangeRequest(decryptedBuffer).keyAndIv;
 		res.status = SUCCESS;
 		result.newHandler = _handlerFactory.createLoginRequestHandler();
 	}
@@ -29,6 +29,8 @@ RequestResult KeyExchangeRequestHandler::handleRequest(const RequestInfo& reqInf
 	}
 
 	result.response = JsonResponsePacketSerializer::serializeResponse(res);
+
+	Communicator::getInstance().addEncryptionToClient(_clientSocket, keyAndIv);
 
 	return result;
 }

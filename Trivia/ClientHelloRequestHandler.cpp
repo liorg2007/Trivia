@@ -1,7 +1,7 @@
 #include "ClientHelloRequestHandler.h"
 
-ClientHelloRequestHandler::ClientHelloRequestHandler()
-	:_handlerFactory(RequestHandlerFactory::getInstance())
+ClientHelloRequestHandler::ClientHelloRequestHandler(SOCKET socket)
+	:_handlerFactory(RequestHandlerFactory::getInstance()), _clientSocket(socket)
 {
 	_rsaEncryption = _handlerFactory.createRSAEncryption();
 }
@@ -20,7 +20,7 @@ RequestResult ClientHelloRequestHandler::handleRequest(const RequestInfo& reqInf
 	res.publicKey = _rsaEncryption->getKey();
 
 	result.response = JsonResponsePacketSerializer::serializeResponse(res);
-	result.newHandler = _handlerFactory.createKeyExchangeRequestHandler(_rsaEncryption);
+	result.newHandler = _handlerFactory.createKeyExchangeRequestHandler(_rsaEncryption, _clientSocket);
 
 	return result;
 }
