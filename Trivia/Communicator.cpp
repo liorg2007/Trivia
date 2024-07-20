@@ -109,6 +109,7 @@ void Communicator::sendData(SOCKET clientSocket, const Buffer& buff) const
 RequestInfo Communicator::recieveData(SOCKET clientSocket) const
 {
 	RequestInfo req;
+	Buffer encryptedBuffer;
 	req.buffer = Buffer(HEADER_FIELD_LENGTH);
 	uint32_t msgSize = 0;
 
@@ -117,12 +118,26 @@ RequestInfo Communicator::recieveData(SOCKET clientSocket) const
 		throw std::exception("Invalid packet protocol");
 	}
 	std::memcpy(&msgSize, &req.buffer.at(CODE_FIELD_LENGTH), SIZE_FIELD_LENGTH);
-	req.buffer.resize(HEADER_FIELD_LENGTH + msgSize);
+	encryptedBuffer.resize(msgSize);
 	if (msgSize > 0)
-		if (recv(clientSocket, reinterpret_cast<char*>(&req.buffer.at(HEADER_FIELD_LENGTH)), msgSize, 0) != msgSize)
+		if (recv(clientSocket, reinterpret_cast<char*>(encryptedBuffer.data()), msgSize, 0) != msgSize)
 		{
 			throw std::exception("Packet length is not as expected");
 		}
+
+	if (_clientKeys.contains(clientSocket)) //if the map has the socket than the data should be encrypted
+	{
+		Buffer decryptedData = AESCryptoAlgorithm::decrypt(encryptedBuffer, _clientKeys.at(clientSocket));
+
+		req.buffer.resize(HEADER_FIELD_LENGTH + decryptedData.size());
+		std::memcpy(req.buffer.data() + HEADER_FIELD_LENGTH, decryptedData.data(), decryptedData.size());
+	}
+	else
+	{
+		req.buffer.resize(HEADER_FIELD_LENGTH + msgSize);
+		std::memcpy(req.buffer.data() + HEADER_FIELD_LENGTH, encryptedBuffer.data(), msgSize);
+	}
+
 	req.id = static_cast<ProtocolCode>(req.buffer.at(0));
 	req.receivalTime = std::time(0);
 	// std::cout << "Client says: " << (char*)&req.buffer.at(0) << std::endl;
