@@ -4,16 +4,16 @@
 #include "RSACryptoAlgorithm.h"
 #include "RequestHandlerFactory.h"
 
-class KeyExchangeRequestHandler : IRequestHandler
+class KeyExchangeRequestHandler : public IRequestHandler
 {
 public:
-	KeyExchangeRequestHandler(std::unique_ptr<RSACryptoAlgorithm> rsaEncryption);
+	KeyExchangeRequestHandler(std::shared_ptr<RSACryptoAlgorithm> rsaEncryption);
 
 	virtual bool isRequestRelevant(const RequestInfo& reqInfo) override;
 	virtual RequestResult handleRequest(const RequestInfo& reqInfo) override;
 	virtual void handleDisconnect() override;
 
 private:
-	std::unique_ptr<RSACryptoAlgorithm> _rsaEncryption;
+	std::shared_ptr<RSACryptoAlgorithm> _rsaEncryption;
 	RequestHandlerFactory& _handlerFactory;
 };

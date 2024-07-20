@@ -15,6 +15,6 @@ public:
 	virtual void handleDisconnect() override;
 
 private:
-	std::unique_ptr<RSACryptoAlgorithm> _rsaEncryption;
+	std::shared_ptr<RSACryptoAlgorithm> _rsaEncryption;
 	RequestHandlerFactory& _handlerFactory;
 };

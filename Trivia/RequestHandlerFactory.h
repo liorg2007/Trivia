@@ -13,6 +13,7 @@
 #include "RSACryptoAlgorithm.h"
 #include "AESCryptoAlgorithm.h"
 #include "ClientHelloRequestHandler.h"
+#include "KeyExchangeRequestHandler.h";
 
 class LoginRequestHandler;
 class MenuRequestHandler;
@@ -20,6 +21,7 @@ class RoomMemberRequestHandler;
 class RoomAdminRequestHandler;
 class GameRequestHandler;
 class ClientHelloRequestHandler;
+class KeyExchangeRequestHandler;
 
 class RequestHandlerFactory
 {
@@ -36,9 +38,9 @@ public:
 	std::unique_ptr<GameRequestHandler> createGameRequestHandler(const LoggedUser& user, Game& game);
 
 	std::unique_ptr<ClientHelloRequestHandler> createClientHelloRequestHandler();
-	std::unique_ptr<KeyExchangeRequestHandler> createKeyExchangeRequestHandler();
+	std::unique_ptr<KeyExchangeRequestHandler> createKeyExchangeRequestHandler(std::shared_ptr<RSACryptoAlgorithm> rsaEncryption);
 
-	std::unique_ptr<RSACryptoAlgorithm> createRSAEncryption();
+	std::shared_ptr<RSACryptoAlgorithm> createRSAEncryption();
 
 	LoginManager& getLoginManager();
 	StatisticsManager& getStatisticsManager();

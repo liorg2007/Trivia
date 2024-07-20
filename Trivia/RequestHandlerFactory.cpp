@@ -52,9 +52,14 @@ std::unique_ptr<ClientHelloRequestHandler> RequestHandlerFactory::createClientHe
 	return std::make_unique<ClientHelloRequestHandler>();
 }
 
-std::unique_ptr<RSACryptoAlgorithm> RequestHandlerFactory::createRSAEncryption()
+std::unique_ptr<KeyExchangeRequestHandler> RequestHandlerFactory::createKeyExchangeRequestHandler(std::shared_ptr<RSACryptoAlgorithm> rsaEncryption)
 {
-	return std::make_unique<RSACryptoAlgorithm>();
+	return std::make_unique<KeyExchangeRequestHandler>(rsaEncryption);
+}
+
+std::shared_ptr<RSACryptoAlgorithm> RequestHandlerFactory::createRSAEncryption()
+{
+	return std::make_shared<RSACryptoAlgorithm>();
 }
 
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()
