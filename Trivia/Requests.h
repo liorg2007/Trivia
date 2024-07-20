@@ -3,6 +3,7 @@
 #include <ctime>
 #include "Constants.h"
 #include "IRequestHandler.h"
+#include "AESCryptoAlgorithm.h"
 #include <memory>
 
 struct RequestInfo
@@ -56,4 +57,9 @@ struct GetPlayersInRoomRequest
 struct SubmitAnswerRequest
 {
 	unsigned int answerId;
+};
+
+struct KeyExchangeRequest
+{
+	KeyAndIv keyAndIv;
 };

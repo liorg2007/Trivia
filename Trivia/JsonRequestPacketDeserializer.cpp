@@ -57,6 +57,19 @@ SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerReques
 	return request;
 }
 
+KeyExchangeRequest JsonRequestPacketDeserializer::deserialzieKeyExchangeRequest(const Buffer& buff)
+{
+	json data = deserializeJsonObject(buff);
+	KeyExchangeRequest request;
+
+	std::string iv = data.at(IV_HEADER).get<std::string>();
+
+	request.keyAndIv.key = data.at(KEY_HEADER).get<Buffer>();
+	std::copy(iv.begin(), iv.begin() + sizeof(request.keyAndIv.iv), request.keyAndIv.iv);
+
+	return request;
+}
+
 json JsonRequestPacketDeserializer::deserializeJsonObject(const Buffer& buff)
 {
 	if (buff.size() <= HEADER_FIELD_LENGTH)

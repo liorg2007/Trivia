@@ -7,12 +7,30 @@ KeyExchangeRequestHandler::KeyExchangeRequestHandler(std::shared_ptr<RSACryptoAl
 
 bool KeyExchangeRequestHandler::isRequestRelevant(const RequestInfo& reqInfo)
 {
-	return false;
+	return reqInfo.id == ProtocolCode::KeyExchange;
 }
 
 RequestResult KeyExchangeRequestHandler::handleRequest(const RequestInfo& reqInfo)
 {
-	return RequestResult();
+	RequestResult result;
+	KeyExchangeResponse res;
+	KeyAndIv keyAndIv;
+	
+	Buffer decryptedBuffer = _rsaEncryption->decrypt(reqInfo.buffer);
+
+	try {
+		auto data = JsonRequestPacketDeserializer::deserialzieKeyExchangeRequest(decryptedBuffer);
+		res.status = SUCCESS;
+		result.newHandler = _handlerFactory.createLoginRequestHandler();
+	}
+	catch (...)
+	{
+		res.status = FAILURE;
+	}
+
+	result.response = JsonResponsePacketSerializer::serializeResponse(res);
+
+	return result;
 }
 
 void KeyExchangeRequestHandler::handleDisconnect()

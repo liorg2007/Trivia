@@ -31,6 +31,7 @@ public:
 	static Buffer serializeResponse(const LeaveGameResponse& res);
 
 	static Buffer serializeResponse(const ClientHelloResponse& res);
+	static Buffer serializeResponse(const KeyExchangeResponse& res);
 
 private:
 	static Buffer buildBuffer(ProtocolCode resCode, const json& jsonObj);

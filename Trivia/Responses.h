@@ -109,3 +109,8 @@ struct ClientHelloResponse
 	unsigned int status;
 	Buffer publicKey;
 };
+
+struct KeyExchangeResponse
+{
+	unsigned int status;
+};

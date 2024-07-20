@@ -142,6 +142,12 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const ClientHelloResponse
 	return buildBuffer(ProtocolCode::ClientHello, jsonObj);
 }
 
+Buffer JsonResponsePacketSerializer::serializeResponse(const KeyExchangeResponse& res)
+{
+	json jsonObj{ { "status", res.status } };
+	return buildBuffer(ProtocolCode::KeyExchange, jsonObj);
+}
+
 Buffer JsonResponsePacketSerializer::buildBuffer(ProtocolCode resCode, const json& jsonObj)
 {
 	auto msg = jsonObj.dump();

@@ -18,6 +18,8 @@ public:
 
 	static SubmitAnswerRequest deserializeSubmitAnswerRequest(const Buffer& buff);
 
+	static KeyExchangeRequest deserialzieKeyExchangeRequest(const Buffer& buff);
+
 private:
 	static json deserializeJsonObject(const Buffer& buff);
 
@@ -36,4 +38,6 @@ private:
 
 	static constexpr auto ANSWERID_HEADER = "answerId";
 
+	static constexpr auto KEY_HEADER = "key";
+	static constexpr auto IV_HEADER = "iv";
 };

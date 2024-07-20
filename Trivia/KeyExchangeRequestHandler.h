@@ -2,6 +2,7 @@
 
 #include "IRequestHandler.h"
 #include "RSACryptoAlgorithm.h"
+#include "AESCryptoAlgorithm.h"
 #include "RequestHandlerFactory.h"
 
 class KeyExchangeRequestHandler : public IRequestHandler
