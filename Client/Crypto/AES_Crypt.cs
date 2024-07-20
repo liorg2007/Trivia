@@ -49,7 +49,7 @@ namespace Client.Crypto
             return encrypted;
         }
 
-        public string Eecrypt(byte[] buffer)
+        public string Decrypt(byte[] buffer)
         {
             string decrypted;
 

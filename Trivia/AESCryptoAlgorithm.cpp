@@ -1,18 +1,12 @@
 #include "AESCryptoAlgorithm.h"
 
-AESCryptoAlgorithm::AESCryptoAlgorithm()
-{
-    int16_t time = std::time(nullptr);
-    std::memcpy(_iv, &time, CryptoPP::AES::BLOCKSIZE);
-}
-
 // Key needs to be in length 16 (CryptoPP::AES::DEFAULT_KEYLENGTH)
-Buffer AESCryptoAlgorithm::encrypt(const Buffer& message, const Buffer& key) const
+Buffer AESCryptoAlgorithm::encrypt(const Buffer& message, const KeyAndIv& keyAndIv)
 {
     Buffer encrypted;
 
-    CryptoPP::AES::Encryption aesEncryption(key.data(), key.size());
-    CryptoPP::CBC_Mode_ExternalCipher::Encryption cbcEncryption(aesEncryption, _iv);
+    CryptoPP::AES::Encryption aesEncryption(keyAndIv.key.data(), keyAndIv.key.size());
+    CryptoPP::CBC_Mode_ExternalCipher::Encryption cbcEncryption(aesEncryption, keyAndIv.iv);
 
     CryptoPP::StreamTransformationFilter stfEncryptor(cbcEncryption, new CryptoPP::VectorSink(encrypted));
     stfEncryptor.Put(message.data(), message.size());
@@ -21,12 +15,12 @@ Buffer AESCryptoAlgorithm::encrypt(const Buffer& message, const Buffer& key) con
     return encrypted;
 }
 
-Buffer AESCryptoAlgorithm::decrypt(const Buffer& message, const Buffer& key) const
+Buffer AESCryptoAlgorithm::decrypt(const Buffer& message, const KeyAndIv& keyAndIv)
 {
     Buffer decrypted;
 
-    CryptoPP::AES::Decryption aesDecryption(key.data(), key.size());
-    CryptoPP::CBC_Mode_ExternalCipher::Decryption cbcDecryption(aesDecryption, _iv);
+    CryptoPP::AES::Decryption aesDecryption(keyAndIv.key.data(), keyAndIv.key.size());
+    CryptoPP::CBC_Mode_ExternalCipher::Decryption cbcDecryption(aesDecryption, keyAndIv.iv);
 
     CryptoPP::StreamTransformationFilter stfDecryptor(cbcDecryption, new CryptoPP::VectorSink(decrypted));
     stfDecryptor.Put(message.data(), message.size());

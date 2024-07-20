@@ -6,13 +6,15 @@
 #include <modes.h>
 #include <filters.h>
 
-class AESCryptoAlgorithm : public ICryptoAlgorithm
+struct KeyAndIv {
+	Buffer key;
+	CryptoPP::byte iv[CryptoPP::AES::BLOCKSIZE];
+};
+
+
+static class AESCryptoAlgorithm
 {
 public:
-	AESCryptoAlgorithm();
-	Buffer encrypt(const Buffer& message, const Buffer& key) const override;
-	Buffer decrypt(const Buffer& message, const Buffer& key) const override;
-private:
-	// Initialization vector
-	CryptoPP::byte _iv[CryptoPP::AES::BLOCKSIZE];
+	static Buffer encrypt(const Buffer& message, const KeyAndIv& keyAndIv);
+	static Buffer decrypt(const Buffer& message, const KeyAndIv& keyAndIv);
 };
