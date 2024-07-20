@@ -47,6 +47,16 @@ std::unique_ptr<GameRequestHandler> RequestHandlerFactory::createGameRequestHand
 	return std::make_unique<GameRequestHandler>(user, game);
 }
 
+std::unique_ptr<ClientHelloRequestHandler> RequestHandlerFactory::createClientHelloRequestHandler()
+{
+	return std::make_unique<ClientHelloRequestHandler>();
+}
+
+std::unique_ptr<RSACryptoAlgorithm> RequestHandlerFactory::createRSAEncryption()
+{
+	return std::make_unique<RSACryptoAlgorithm>();
+}
+
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 {
 	return _statisticsManager;

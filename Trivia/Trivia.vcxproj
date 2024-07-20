@@ -139,6 +139,7 @@
     <ClCompile Include="AESCryptoAlgorithm.cpp" />
     <ClCompile Include="BaseRoomRequestHandler.cpp" />
     <ClCompile Include="CheckSignupData.cpp" />
+    <ClCompile Include="ClientHelloRequestHandler.cpp" />
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameData.h" />
@@ -170,6 +171,7 @@
   <ItemGroup>
     <ClInclude Include="BaseRoomRequestHandler.h" />
     <ClInclude Include="CheckSignupData.h" />
+    <ClInclude Include="ClientHelloRequestHandler.h" />
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="DatabaseException.hpp" />

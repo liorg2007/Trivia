@@ -10,12 +10,16 @@
 #include "RoomAdminRequestHandler.h"
 #include "RoomMemberRequestHandler.h"
 #include "GameRequestHandler.h"
+#include "RSACryptoAlgorithm.h"
+#include "AESCryptoAlgorithm.h"
+#include "ClientHelloRequestHandler.h"
 
 class LoginRequestHandler;
 class MenuRequestHandler;
 class RoomMemberRequestHandler;
 class RoomAdminRequestHandler;
 class GameRequestHandler;
+class ClientHelloRequestHandler;
 
 class RequestHandlerFactory
 {
@@ -30,6 +34,10 @@ public:
 	std::unique_ptr<RoomMemberRequestHandler> createRoomMemberRequestHandler(int roomId, const LoggedUser& user);
 
 	std::unique_ptr<GameRequestHandler> createGameRequestHandler(const LoggedUser& user, Game& game);
+
+	std::unique_ptr<ClientHelloRequestHandler> createClientHelloRequestHandler();
+
+	std::unique_ptr<RSACryptoAlgorithm> createRSAEncryption();
 
 	LoginManager& getLoginManager();
 	StatisticsManager& getStatisticsManager();

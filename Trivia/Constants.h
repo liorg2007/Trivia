@@ -54,4 +54,8 @@ enum class ProtocolCode : Byte
 	SubmitAnswer,
 	GetQuestion,
 	LeaveGame,
+
+	/* Cryptographic Handshake State */
+	ClientHello,
+	KeyExchange,
 };
