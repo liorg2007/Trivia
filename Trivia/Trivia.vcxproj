@@ -148,6 +148,7 @@
     <ClCompile Include="IDatabase.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
     <ClCompile Include="JsonResponsePacketSerializer.cpp" />
+    <ClCompile Include="KeyExchangeRequestHandler.cpp" />
     <ClCompile Include="Lib\sqlite3.c" />
     <ClCompile Include="LoggedUser.cpp" />
     <ClCompile Include="LoginManager.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonRequestPacketDeserializer.h" />
+    <ClInclude Include="KeyExchangeRequestHandler.h" />
     <ClInclude Include="Lib\sqlite3.h" />
     <ClInclude Include="LoggedUser.h" />
     <ClInclude Include="LoginManager.h" />

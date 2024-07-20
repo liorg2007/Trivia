@@ -147,6 +147,9 @@
     <ClCompile Include="ClientHelloRequestHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="KeyExchangeRequestHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h">
@@ -258,6 +261,9 @@
       <Filter>Header Files\Login</Filter>
     </ClInclude>
     <ClInclude Include="ClientHelloRequestHandler.h">
+      <Filter>Header Files\Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyExchangeRequestHandler.h">
       <Filter>Header Files\Crypto</Filter>
     </ClInclude>
   </ItemGroup>

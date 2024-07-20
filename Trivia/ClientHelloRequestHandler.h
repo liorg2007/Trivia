@@ -3,6 +3,7 @@
 #include "IRequestHandler.h"
 #include "RequestHandlerFactory.h"
 #include "RSACryptoAlgorithm.h"
+#include "Constants.h"
 
 class ClientHelloRequestHandler : public IRequestHandler
 {

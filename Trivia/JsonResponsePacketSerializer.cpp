@@ -136,6 +136,12 @@ Buffer JsonResponsePacketSerializer::serializeResponse(const LeaveGameResponse& 
 	return buildBuffer(ProtocolCode::LeaveGame, jsonObj);
 }
 
+Buffer JsonResponsePacketSerializer::serializeResponse(const ClientHelloResponse& res)
+{
+	json jsonObj{ { "status", res.status }, { "publicKey", res.publicKey } };
+	return buildBuffer(ProtocolCode::ClientHello, jsonObj);
+}
+
 Buffer JsonResponsePacketSerializer::buildBuffer(ProtocolCode resCode, const json& jsonObj)
 {
 	auto msg = jsonObj.dump();

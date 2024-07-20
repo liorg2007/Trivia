@@ -103,3 +103,9 @@ struct LeaveGameResponse
 {
 	unsigned int status;
 };
+
+struct ClientHelloResponse
+{
+	unsigned int status;
+	Buffer publicKey;
+};
