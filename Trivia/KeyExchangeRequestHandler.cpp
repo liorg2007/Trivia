@@ -1,7 +1,7 @@
 #include "KeyExchangeRequestHandler.h"
 
-KeyExchangeRequestHandler::KeyExchangeRequestHandler(std::shared_ptr<RSACryptoAlgorithm> rsaEncryption, SOCKET clientSocket)
-	:_rsaEncryption(rsaEncryption), _handlerFactory(RequestHandlerFactory::getInstance()), _clientSocket(clientSocket)
+KeyExchangeRequestHandler::KeyExchangeRequestHandler(std::shared_ptr<RSACryptoAlgorithm> rsaEncryption)
+	:_rsaEncryption(rsaEncryption), _handlerFactory(RequestHandlerFactory::getInstance())
 {
 }
 

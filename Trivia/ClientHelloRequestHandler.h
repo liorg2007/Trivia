@@ -4,13 +4,11 @@
 #include "RequestHandlerFactory.h"
 #include "RSACryptoAlgorithm.h"
 #include "Constants.h"
-		
-#include <WinSock2.h>
 
 class ClientHelloRequestHandler : public IRequestHandler
 {
 public:
-	ClientHelloRequestHandler(SOCKET _clientSocket);
+	ClientHelloRequestHandler(SOCKET socket);
 
 	virtual bool isRequestRelevant(const RequestInfo& reqInfo) override;
 	virtual RequestResult handleRequest(const RequestInfo& reqInfo) override;
