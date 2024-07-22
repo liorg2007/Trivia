@@ -1,7 +1,7 @@
 #include "ClientHelloRequestHandler.h"
 
-ClientHelloRequestHandler::ClientHelloRequestHandler(SOCKET socket)
-	:_handlerFactory(RequestHandlerFactory::getInstance()), _clientSocket(socket)
+ClientHelloRequestHandler::ClientHelloRequestHandler(SOCKET clientSocket)
+	:_handlerFactory(RequestHandlerFactory::getInstance()), _clientSocket(clientSocket)
 {
 	_rsaEncryption = _handlerFactory.createRSAEncryption();
 }

@@ -8,6 +8,9 @@ using System.IO;
 using System.Net.Sockets;
 using System.Net;
 using static Client.Requests;
+using System.Windows.Controls;
+using Client.Crypto;
+using System.Text.Json;
 
 namespace Client
 {
@@ -19,11 +22,12 @@ namespace Client
 
     public class Server
     {
-        private NetworkStream _socket {  get; set; }
+        private NetworkStream _socket { get; set; }
+        private AES_Crypt aesEncryption { get; set; }
 
         public Server()
         {
-
+            aesEncryption = new AES_Crypt();
         }
 
         public ServerData getServerConnData()
@@ -66,6 +70,35 @@ namespace Client
 
             return true;
         }
+
+        public void StartHandshake()
+        {
+            var rsaPublicKey = ClientHello();
+            KeyExchange(rsaPublicKey);
+        }
+
+        private byte[] ClientHello()
+        {
+            var message = Helper.createProtocol(Code.ClientHello);
+            ServerResponse response = Helper.SendMessageWithByteArr(message, (App)Application.Current);
+            ClientHelloResponse data = JsonPacketDeserializer.DeserializeClientHelloResponse(response.message);
+
+            return data.PublicKey;
+        }
+
+        private void KeyExchange(byte[] rsaPublicKey)
+        {
+            KeyIvPair keyIvPair = aesEncryption.GetKeyIv();
+
+            var json = JsonSerializer.SerializeToUtf8Bytes(keyIvPair);
+
+            var encryptedKey = RSA_Crypt.Encrypt(rsaPublicKey, json);
+
+            var message = Helper.createProtocol(Code.KeyExchange, encryptedKey);
+
+            ServerResponse response = Helper.SendMessageWithByteArr(message, (App)Application.Current);
+        }
+
 
         public void sendMessage(byte[] buffer)
         {

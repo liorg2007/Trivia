@@ -46,6 +46,8 @@ namespace Client
                 System.Environment.Exit(0);
             }
 
+            _server.StartHandshake();
+
             startMusic();
 
             LoginWindow mainWindow = new LoginWindow();

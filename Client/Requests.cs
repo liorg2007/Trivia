@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.RightsManagement;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using static Client.DataStructs;
 
@@ -39,6 +41,10 @@ namespace Client
             SubmitAnswer,
             GetQuestion,
             LeaveGame,
+
+            /* Cryptographic handshake state */
+            ClientHello,
+            KeyExchange,
         }
 
         public struct ServerResponse
@@ -181,5 +187,21 @@ namespace Client
             public uint status { get; set; }
             public List<PlayerResults> results { get; set; }
         }
+
+
+        public struct ClientHelloResponse
+        {
+            [JsonPropertyName("status")]
+            public uint Status { get; set; }
+
+            [JsonPropertyName("publicKey")]
+            [JsonConverter(typeof(ByteArrayConverter))]
+            public byte[] PublicKey { get; set; }
+        };
+
+        public struct KeyExchangeResponse
+        {
+            public uint status;
+        };
     }
 }

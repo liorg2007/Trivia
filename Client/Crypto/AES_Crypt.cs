@@ -9,6 +9,12 @@ using System.Windows.Input;
 
 namespace Client.Crypto
 {
+    public struct KeyIvPair
+    {
+        public byte[] Key { get; set; }
+        public byte[] IV { get; set; }
+    }
+
     public class AES_Crypt
     {
         Aes aes;
@@ -77,9 +83,12 @@ namespace Client.Crypto
             return decrypted;
         }
 
-        public byte[] GetKey()
+        public KeyIvPair GetKeyIv()
         {
-            return aes.Key;
+            KeyIvPair keyIvPair = new KeyIvPair();
+            keyIvPair.Key = aes.Key;
+            keyIvPair.IV = aes.IV;
+            return keyIvPair;
         }
     }
 }

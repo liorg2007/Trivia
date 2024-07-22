@@ -199,5 +199,10 @@ namespace Client
         {
             return JsonSerializer.Deserialize<GetGameResultsResponse>(message);
         }
+
+        public static ClientHelloResponse DeserializeClientHelloResponse(string message)
+        {
+            return JsonSerializer.Deserialize<ClientHelloResponse>(message);
+        }
     }
 }
