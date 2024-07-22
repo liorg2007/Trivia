@@ -1,5 +1,5 @@
 #include "JsonRequestPacketDeserializer.h"
-#include <iostream>
+
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const Buffer& buff)
 {
 	json data = deserializeJsonObject(buff);
@@ -59,15 +59,30 @@ SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerReques
 
 KeyExchangeRequest JsonRequestPacketDeserializer::deserialzieKeyExchangeRequest(const Buffer& buff)
 {
-	json data = deserializeJsonObject(buff);
+	std::string jsonStr(buff.begin(), buff.end());  // Safely convert the vector to a string
+	json data = json::parse(jsonStr);
 	KeyExchangeRequest request;
 
-	std::string iv = data.at(IV_HEADER).get<std::string>();
+	std::string iv = base64Decode(data.at(IV_HEADER).get<std::string>());
 
-	request.keyAndIv.key = data.at(KEY_HEADER).get<Buffer>();
-	std::copy(iv.begin(), iv.begin() + sizeof(request.keyAndIv.iv), request.keyAndIv.iv);
+	// Convert the JSON string or array to Buffer
+	std::string keyStr = base64Decode(data.at(KEY_HEADER).get<std::string>());
+	request.keyAndIv.key = Buffer(keyStr.begin(), keyStr.end());
+
+	std::copy(iv.begin(), iv.end(), request.keyAndIv.iv);
 
 	return request;
+}
+
+std::string JsonRequestPacketDeserializer::base64Decode(const std::string& encoded)
+{
+	std::string decoded;
+	CryptoPP::StringSource ss(encoded, true,
+		new CryptoPP::Base64Decoder(
+			new CryptoPP::StringSink(decoded)
+		)
+	);
+	return decoded;
 }
 
 json JsonRequestPacketDeserializer::deserializeJsonObject(const Buffer& buff)

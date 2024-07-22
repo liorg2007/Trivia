@@ -186,5 +186,5 @@ void Communicator::startHandleRequests()
 void Communicator::addEncryptionToClient(SOCKET clientSocket, const KeyAndIv& keyAndIv)
 {
 	std::unique_lock<std::shared_mutex> lock(_clientKeysMtx);
-	_clientKeys.at(clientSocket) = keyAndIv;
+	_clientKeys.insert({clientSocket, keyAndIv});
 }

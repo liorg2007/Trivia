@@ -4,6 +4,9 @@
 #include "Responses.h"
 #include "Constants.h"
 
+#include <base64.h>
+#include <filters.h>
+
 using json = nlohmann::json;
 
 class JsonRequestPacketDeserializer
@@ -21,6 +24,8 @@ public:
 	static KeyExchangeRequest deserialzieKeyExchangeRequest(const Buffer& buff);
 
 private:
+	static std::string base64Decode(const std::string& encoded);
+
 	static json deserializeJsonObject(const Buffer& buff);
 
 	static constexpr auto USERNAME_HEADER = "username";
@@ -38,6 +43,6 @@ private:
 
 	static constexpr auto ANSWERID_HEADER = "answerId";
 
-	static constexpr auto KEY_HEADER = "key";
-	static constexpr auto IV_HEADER = "iv";
+	static constexpr auto KEY_HEADER = "Key";
+	static constexpr auto IV_HEADER = "IV";
 };

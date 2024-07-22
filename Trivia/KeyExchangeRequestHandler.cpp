@@ -15,17 +15,26 @@ RequestResult KeyExchangeRequestHandler::handleRequest(const RequestInfo& reqInf
 	RequestResult result;
 	KeyExchangeResponse res;
 	KeyAndIv keyAndIv;
+	Buffer encryptedBuffer;
+
+	int msgSize;
+	std::memcpy(&msgSize, &reqInfo.buffer.at(CODE_FIELD_LENGTH), SIZE_FIELD_LENGTH);
+
+	encryptedBuffer.resize(msgSize);
+
+	encryptedBuffer = { reqInfo.buffer.begin() + HEADER_FIELD_LENGTH, reqInfo.buffer.end()};
 	
-	Buffer decryptedBuffer = _rsaEncryption->decrypt(reqInfo.buffer);
+	Buffer decryptedBuffer = _rsaEncryption->decrypt(encryptedBuffer);
 
 	try {
 		keyAndIv = JsonRequestPacketDeserializer::deserialzieKeyExchangeRequest(decryptedBuffer).keyAndIv;
 		res.status = SUCCESS;
 		result.newHandler = _handlerFactory.createLoginRequestHandler();
 	}
-	catch (...)
+	catch (std::exception e)
 	{
 		res.status = FAILURE;
+		throw(e);
 	}
 
 	result.response = JsonResponsePacketSerializer::serializeResponse(res);

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Formats.Asn1;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,12 +11,14 @@ namespace Client.Crypto
 {
     public class RSA_Crypt
     {
-        public static byte[] Encrypt(byte[] data, string publicKey)
+        public static byte[] Encrypt(byte[] data, byte[] publicKey)
         {
-            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+            using (RSA rsa = RSA.Create())
             {
-                rsa.FromXmlString(publicKey);
-                return rsa.Encrypt(data, false);
+                rsa.ImportSubjectPublicKeyInfo(publicKey, out _);
+                byte[] encryptedData = rsa.Encrypt(data, RSAEncryptionPadding.OaepSHA1);
+
+                return encryptedData;
             }
         }
     }

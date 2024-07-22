@@ -92,7 +92,7 @@ namespace Client
 
             var json = JsonSerializer.SerializeToUtf8Bytes(keyIvPair);
 
-            var encryptedKey = RSA_Crypt.Encrypt(rsaPublicKey, json);
+            var encryptedKey = RSA_Crypt.Encrypt(json, rsaPublicKey);
 
             var message = Helper.createProtocol(Code.KeyExchange, encryptedKey);
 
