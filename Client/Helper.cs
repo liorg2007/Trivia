@@ -13,6 +13,7 @@ namespace Client
     internal static class Helper
     {
         public const int HEADER_LENGTH = 5;
+        public const int ENC_HEADER_LENGTH = 4;
 
         public static void raiseErrorBox(string message)
         {

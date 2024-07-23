@@ -11,6 +11,7 @@ using static Client.Requests;
 using System.Windows.Controls;
 using Client.Crypto;
 using System.Text.Json;
+using System.Collections;
 
 namespace Client
 {
@@ -24,9 +25,11 @@ namespace Client
     {
         private NetworkStream _socket { get; set; }
         private AES_Crypt aesEncryption { get; set; }
+        private bool finishedKeyExchange;
 
         public Server()
         {
+            finishedKeyExchange = false;
             aesEncryption = new AES_Crypt();
         }
 
@@ -75,6 +78,7 @@ namespace Client
         {
             var rsaPublicKey = ClientHello();
             KeyExchange(rsaPublicKey);
+            finishedKeyExchange = true;
         }
 
         private byte[] ClientHello()
@@ -102,11 +106,71 @@ namespace Client
 
         public void sendMessage(byte[] buffer)
         {
-            _socket.Write(buffer, 0, buffer.Length);
-            _socket.Flush();
+            if (finishedKeyExchange)
+            {
+                byte[] encryptedBuffer = EncryptBuffer(buffer);
+
+                _socket.Write(encryptedBuffer, 0, encryptedBuffer.Length);
+                _socket.Flush();
+            }
+            else
+            {
+                _socket.Write(buffer, 0, buffer.Length);
+                _socket.Flush();
+            }
         }
 
+        private byte[] EncryptBuffer(byte[] buffer)
+        {
+            byte[] encrypted = aesEncryption.Encrypt(System.Text.Encoding.ASCII.GetString(buffer));
+            int msgLen = encrypted.Length;
+            byte[] finalBuffer = new byte[4 + msgLen];
+
+            finalBuffer[0] = (byte)msgLen;
+            finalBuffer[1] = (byte)(msgLen >> 8);
+            finalBuffer[2] = (byte)(msgLen >> 0x10);
+            finalBuffer[3] = (byte)(msgLen >> 0x18);
+
+            encrypted?.CopyTo(finalBuffer, 4);
+
+            return finalBuffer;
+        }
+
+
         public ServerResponse receiveMessage()
+        {
+            if(finishedKeyExchange)
+                return receiveMessageEncrypted();
+
+            return receiveMessageWithoutEncryption();
+        }
+
+
+        public ServerResponse receiveMessageEncrypted()
+        {
+            byte[] headerBuff = new byte[Helper.ENC_HEADER_LENGTH];
+            _socket.Read(headerBuff, 0, Helper.ENC_HEADER_LENGTH);
+            int encryptedMessageLength = BitConverter.ToInt32(headerBuff);
+
+            byte[] encryptedBuffer = new byte[encryptedMessageLength];
+            _socket.Read(encryptedBuffer, 0, encryptedMessageLength);
+
+            byte[] decryptedBuffer = Encoding.ASCII.GetBytes(aesEncryption.Decrypt(encryptedBuffer));
+
+            Code code = (Code)decryptedBuffer[0];
+
+            // get string length 
+            byte[] subset = new byte[4];
+            Array.Copy(decryptedBuffer, 1, subset, 0, 4);
+            int messageLength = BitConverter.ToInt32(subset, 0);
+
+            string message = Encoding.ASCII.GetString(decryptedBuffer, Helper.HEADER_LENGTH, messageLength);
+
+            return new ServerResponse() { code = code, message = message };
+        }
+
+
+        public ServerResponse receiveMessageWithoutEncryption()
         {
             byte[] headerBuff = new byte[Helper.HEADER_LENGTH];
             _socket.Read(headerBuff, 0, Helper.HEADER_LENGTH);
@@ -119,5 +183,6 @@ namespace Client
 
             return new ServerResponse() { code = code, message = message };
         }
+
     }
 }
