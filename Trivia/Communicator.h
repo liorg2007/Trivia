@@ -22,7 +22,7 @@ private:
 	std::unordered_map<SOCKET, std::unique_ptr<IRequestHandler>> _clients;
 	std::unordered_map<SOCKET, KeyAndIv> _clientKeys;
 
-	std::shared_mutex _clientKeysMtx;
+	mutable std::shared_mutex _clientKeysMtx;
 	
 	std::vector<std::thread*> _threadPool;
 
@@ -36,7 +36,11 @@ private:
 	void handleNewClient(SOCKET clientSocket);
 
 	void sendData(SOCKET clientSocket, const Buffer& buff) const;
-	RequestInfo recieveData(SOCKET clientSocket) const;
+	void sendEncryptedData(SOCKET clientSocket, const Buffer& buff) const;
+
+	RequestInfo receiveData(SOCKET clientSocket) const;
+	RequestInfo receiveEncryptedData(SOCKET clientSocket) const;
+	RequestInfo receiveRegularData(SOCKET clientSocket) const;
 	Buffer parseErrorMessage(std::string&& errMsg) const;
 
 	void terminateConnection(SOCKET clientSocket, const std::optional<map_iterator>& handlerSearchResult);

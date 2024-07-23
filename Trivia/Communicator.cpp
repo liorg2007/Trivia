@@ -56,7 +56,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			RequestInfo reqInfo;
 			try
 			{
-				reqInfo = recieveData(clientSocket);
+				reqInfo = receiveData(clientSocket);
 			}
 			catch (const std::exception& e)
 			{
@@ -100,13 +100,91 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 void Communicator::sendData(SOCKET clientSocket, const Buffer& buff) const
 {
-	if (send(clientSocket, reinterpret_cast<const char*>(&buff.at(0)), buff.size(), 0) == INVALID_SOCKET)
+	bool isDataEncrypted;
+	{
+		std::shared_lock<std::shared_mutex> lock(_clientKeysMtx);
+		isDataEncrypted = _clientKeys.contains(clientSocket);
+	}
+
+	if (!isDataEncrypted)
+	{
+		if (send(clientSocket, reinterpret_cast<const char*>(&buff.at(0)), buff.size(), 0) == INVALID_SOCKET)
+		{
+			throw std::exception("Error while sending message to client");
+		}
+	}
+	else
+		sendEncryptedData(clientSocket, buff);
+}
+
+void Communicator::sendEncryptedData(SOCKET clientSocket, const Buffer& buff) const
+{
+	Buffer encryptedMsg;
+	Buffer finalBuffer;
+	{
+		std::shared_lock<std::shared_mutex> lock(_clientKeysMtx);
+		encryptedMsg = AESCryptoAlgorithm::encrypt(buff, _clientKeys.at(clientSocket));
+	}
+	int msgSize = encryptedMsg.size();
+
+	finalBuffer.resize(msgSize + SIZE_FIELD_LENGTH);
+
+	std::memcpy(&finalBuffer.at(0), &msgSize, SIZE_FIELD_LENGTH);
+	std::memcpy(&finalBuffer.at(SIZE_FIELD_LENGTH), &encryptedMsg, msgSize);
+
+	if (send(clientSocket, reinterpret_cast<const char*>(&finalBuffer.at(0)), finalBuffer.size(), 0) == INVALID_SOCKET)
 	{
 		throw std::exception("Error while sending message to client");
 	}
 }
 
-RequestInfo Communicator::recieveData(SOCKET clientSocket) const
+RequestInfo Communicator::receiveData(SOCKET clientSocket) const
+{
+	bool isDataEncrypted;
+	{
+		std::shared_lock<std::shared_mutex> lock(_clientKeysMtx);
+		isDataEncrypted = _clientKeys.contains(clientSocket);
+	}
+
+	if (isDataEncrypted)
+		return receiveEncryptedData(clientSocket);
+
+	return receiveRegularData(clientSocket);
+}
+
+RequestInfo Communicator::receiveEncryptedData(SOCKET clientSocket) const
+{
+	RequestInfo req;
+	Buffer encryptedBuffer;
+	req.buffer = Buffer(SIZE_FIELD_LENGTH);
+	uint32_t msgSize = 0;
+
+	if (recv(clientSocket, reinterpret_cast<char*>(&req.buffer.at(0)), SIZE_FIELD_LENGTH, 0) != SIZE_FIELD_LENGTH)
+	{
+		throw std::exception("Invalid packet protocol");
+	}
+	std::memcpy(&msgSize, &req.buffer.at(0), SIZE_FIELD_LENGTH);
+
+	encryptedBuffer.resize(msgSize);
+
+	if (msgSize > 0)
+		if (recv(clientSocket, reinterpret_cast<char*>(&encryptedBuffer.at(0)), msgSize, 0) != msgSize)
+		{
+			throw std::exception("Packet length is not as expected");
+		}
+
+	{
+		std::shared_lock<std::shared_mutex> lock(_clientKeysMtx);
+		req.buffer = AESCryptoAlgorithm::decrypt(encryptedBuffer, _clientKeys.at(clientSocket));
+	}
+
+	req.id = static_cast<ProtocolCode>(req.buffer.at(0));
+	req.receivalTime = std::time(0);
+
+	return req;
+}
+
+RequestInfo Communicator::receiveRegularData(SOCKET clientSocket) const
 {
 	RequestInfo req;
 	req.buffer = Buffer(HEADER_FIELD_LENGTH);

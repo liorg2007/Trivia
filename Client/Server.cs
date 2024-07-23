@@ -78,7 +78,6 @@ namespace Client
         {
             var rsaPublicKey = ClientHello();
             KeyExchange(rsaPublicKey);
-            finishedKeyExchange = true;
         }
 
         private byte[] ClientHello()
@@ -100,7 +99,11 @@ namespace Client
 
             var message = Helper.createProtocol(Code.KeyExchange, encryptedKey);
 
-            ServerResponse response = Helper.SendMessageWithByteArr(message, (App)Application.Current);
+            sendMessage(message);
+
+            finishedKeyExchange = true;
+
+            receiveMessage();
         }
 
 
@@ -155,7 +158,7 @@ namespace Client
             byte[] encryptedBuffer = new byte[encryptedMessageLength];
             _socket.Read(encryptedBuffer, 0, encryptedMessageLength);
 
-            byte[] decryptedBuffer = Encoding.ASCII.GetBytes(aesEncryption.Decrypt(encryptedBuffer));
+            byte[] decryptedBuffer = Encoding.UTF8.GetBytes(aesEncryption.Decrypt(encryptedBuffer));
 
             Code code = (Code)decryptedBuffer[0];
 
