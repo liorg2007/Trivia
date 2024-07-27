@@ -26,7 +26,7 @@ This project is a multi-threaded (MT) server implemented in C++ and a client app
 
 2. **Clone the Repository:**
    ```sh
-   git clone https://gitlab.com/USERNAME/trivia_lior_itay.git
+   git clone https://gitlab.com/lior-gleizer/trivia_lior_itay.git
    cd trivia_lior_itay/Trivia
    
 3. **Open the Project:**
