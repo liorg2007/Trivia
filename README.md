@@ -26,11 +26,11 @@ This project is a multi-threaded (MT) server implemented in C++ and a client app
 
 2. **Clone the Repository:**
    ```sh
-   git clone https://github.com/yourusername/trivia-project.git
-   cd trivia-project/server
+   git clone https://gitlab.com/USERNAME/trivia_lior_itay.git
+   cd trivia_lior_itay/Trivia
    
 3. **Open the Project:**
-   - Open the `TriviaServer.sln` solution file in Visual Studio.
+   - Open the `Trivia.sln` solution file in Visual Studio.
 
 4. **Build the Project:**
    - Build the solution by selecting `Build > Build Solution` from the menu.
@@ -39,14 +39,13 @@ This project is a multi-threaded (MT) server implemented in C++ and a client app
 1. **Install Visual Studio:**
    - Ensure you have Visual Studio 2019 or later installed with the .NET desktop development tools.
 
-2. **Clone the Repository:**
+2. **Switch Directory:**
    ```sh
-   git clone https://github.com/yourusername/trivia-project.git
-   cd trivia-project/client
+   cd trivia_lior_itay/Client
    ```
 
 3. **Open the Project:**
-   - Open the `TriviaClient.sln` solution file in Visual Studio.
+   - Open the `Client.sln` solution file in Visual Studio.
 
 4. **Build the Project:**
    - Build the solution by selecting `Build > Build Solution` from the menu.
@@ -59,7 +58,7 @@ This project is a multi-threaded (MT) server implemented in C++ and a client app
 
 ### Client
 1. After building the project, run the client application by pressing `Ctrl+F5` in Visual Studio.
-2. Connect to the server by entering the server's IP address and port number to the 'serverConfig.txt' file
+2. Connect to the server by entering the server's IP address and port number to the 'serverConfig.txt' file, make sure the txt file is in the same directory as the executable. *(If you run through Visual Studio then the txt file should be in `bin\Debug\net8.0-windows directory`)
 3. Join a trivia game and start playing!
 
 ---
