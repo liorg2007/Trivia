@@ -12,7 +12,7 @@ This project is a multi-threaded (MT) server implemented in C++ and a client app
 ## Prerequisites
 ### Server
 - Visual Studio (2019 or later) with C++ development tools
-- Boost libraries (for threading and networking)
+- sqlite3.c/h in the Trivia/Lib directory
 
 ### Client
 - Visual Studio (2019 or later) with .NET desktop development tools
